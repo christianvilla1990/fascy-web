@@ -2,7 +2,7 @@ class Dashboard::BannersController < Dashboard::BaseController
   before_action :set_banner, only: [:edit, :update, :destroy]
 
   def index
-    @banners = Banner.all
+    @banners = Banner.all.where(tipo: ['principal']).order(:created_at)
   end
 
   def new

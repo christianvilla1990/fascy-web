@@ -4,8 +4,8 @@ class HomeController < ApplicationController
     # Solo categorías con productos destacados
     @categorias_destacadas = Categoria.joins(:productos).merge(Producto.destacados).distinct.order(:nombre)
     @productos_promo_mes = Producto.where(mas_vendido: true)
-    @banners_principales = Banner.all
-    @banners_secundarios = []
+    @banners_principales = Banner.where(tipo: "principal").order(created_at: :desc)
+    @banners_secundarios = Banner.where(tipo: "secundario").order(created_at: :desc)
 
     if params[:categoria].present?
       @productos_destacados = Producto.destacados.where(categoria_id: params[:categoria])

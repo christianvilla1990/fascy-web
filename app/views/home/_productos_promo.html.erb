@@ -1,0 +1,50 @@
+<div class="block block-products block-products--layout--large-first" data-mobile-grid-columns="2">
+  <div class="container">
+    <div class="block-header">
+      <h3 class="block-header__title">Promo del Mes</h3>
+      <div class="block-header__divider"></div>
+    </div>
+    <div class="block-products__body">
+      <% if @productos_promo_mes.present? %>
+        <div class="row">
+          <% @productos_promo_mes.first(4).each do |producto| %>
+            <div class="col-md-3 col-12">
+              <div class="product-card product-card--hidden-actions">
+                 <button class="product-card__quickview" type="button">
+                                                <svg width="16px" height="16px">
+                                                    <use xlink:href="images/sprite.svg#quickview-16"></use>
+                                                </svg>
+                                                <span class="fake-svg-icon"></span>
+                                            </button>
+                                            <div class="product-card__badges-list">
+                                                <div class="product-card__badge product-card__badge--new">Promo del Mes</div>
+                                    </div>
+                <div class="product-card__image product-image">
+                  <a href="<%= home_productos_detalle_path(producto.id) %>" class="product-image__body">
+                    <% if producto.respond_to?(:imagen_portada) && producto.imagen_portada.present? %>
+                      <%= image_tag producto.imagen_portada, class: "product-image__img", alt: producto.caracteristica %>
+                    <% else %>
+                      <img class="product-image__img" src="images/products/default.jpg" alt="<%= producto.caracteristica %>">
+                    <% end %>
+                  </a>
+                </div>
+                <div class="product-card__info">
+                  <div class="product-card__name">
+                    <a href="<%= home_productos_detalle_path(producto.id) %>"><%= producto.caracteristica %></a>
+                  </div>
+                </div>
+                <div class="product-card__actions">
+                  <div class="product-card__prices">
+               
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No hay productos en promoción este mes.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
