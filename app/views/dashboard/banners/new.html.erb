@@ -1,0 +1,26 @@
+<h1>Nuevo Banner</h1>
+
+<%= form_with(model: [:dashboard, @banner], local: true, html: { multipart: true }) do |f| %>
+  <div class="mb-3">
+    <%= f.label :titulo, "Título" %>
+    <%= f.text_field :titulo, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :descripcion, "Descripción" %>
+    <%= f.text_area :descripcion, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :tipo, "Tipo" %>
+    <%= f.select :tipo, [["Principal", "principal"], ["Secundario", "secundario"]], {}, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :link, "Link" %>
+    <%= f.text_field :link, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :imagen, "Imagen" %>
+    <%= f.file_field :imagen, class: "form-control" %>
+  </div>
+  <%= f.submit "Guardar", class: "btn btn-primary" %>
+  <%= link_to "Volver", dashboard_banners_path, class: "btn btn-secondary ms-2" %>
+<% end %>

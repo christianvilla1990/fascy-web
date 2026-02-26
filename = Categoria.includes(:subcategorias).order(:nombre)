@@ -1,0 +1,62 @@
+=> 
+[[32m#<Categoria:0x00007f9a4adcb400[0m
+  id: [34m[1m29[0m,
+  nombre: [31m[1m"[0m[31mHERRAMIENTAS MANUALES[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.283666000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.283666000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcb2c0[0m
+  id: [34m[1m30[0m,
+  nombre: [31m[1m"[0m[31mMOVIMIENTO Y CARGA[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.311437000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.311437000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcb180[0m
+  id: [34m[1m31[0m,
+  nombre: [31m[1m"[0m[31mTALLER[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.322234000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.322234000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcb040[0m
+  id: [34m[1m32[0m,
+  nombre: [31m[1m"[0m[31mBOMBAS DE AGUA Y VACIO[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.337257000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.337257000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcaf00[0m
+  id: [34m[1m33[0m,
+  nombre: [31m[1m"[0m[31mHERRAMIENTAS ELECTRICAS[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.462694000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.462694000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcadc0[0m
+  id: [34m[1m34[0m,
+  nombre: [31m[1m"[0m[31mAGRICOLA Y JARDIN[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.509002000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.509002000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcac80[0m
+  id: [34m[1m35[0m,
+  nombre: [31m[1m"[0m[31mMEDICION[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.520381000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.520381000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcab40[0m
+  id: [34m[1m36[0m,
+  nombre: [31m[1m"[0m[31mHERRAMIENTAS A BATERIA[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.560059000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.560059000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adcaa00[0m
+  id: [34m[1m37[0m,
+  nombre: [31m[1m"[0m[31mGENERADORES[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.662532000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.662532000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [32m#<Categoria:0x00007f9a4adca8c0[0m
+  id: [34m[1m38[0m,
+  nombre: [31m[1m"[0m[31mCONSTRUCCION[0m[31m[1m"[0m,
+  external_id: [36m[1mnil[0m,
+  created_at: [31m[1m"[0m[31m2025-11-10 19:46:02.766592000 +0000[0m[31m[1m"[0m,
+  updated_at: [31m[1m"[0m[31m2025-11-10 19:46:02.766592000 +0000[0m[31m[1m"[0m[32m>[0m,
+ [31m[1m"[0m[31m...[0m[31m[1m"[0m]

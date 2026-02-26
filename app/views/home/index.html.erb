@@ -1,0 +1,36 @@
+<!-- site -->
+<div class="site">
+    <div class="site__body">
+        <!-- .block-slideshow -->
+        <div class="block-slideshow block-slideshow--layout--with-departments block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 d-none d-lg-block"></div>
+                    <div class="col-12 col-lg-12">
+                        <div class="block-slideshow__body">
+                            <div class="owl-carousel">
+                                <% @banners_principales.each do |banner| %>
+                                    <a class="block-slideshow__slide" href="<%= banner.link %>">
+                                        <% if banner.imagen.attached? %>
+                                            <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
+                                            <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
+                                        <% end %>
+                                        <div class="block-slideshow__slide-content">
+                                            <div class="block-slideshow__slide-title"><%= banner.titulo %></div>
+                                            <div class="block-slideshow__slide-text"><%= banner.descripcion %></div>
+                                            <div class="block-slideshow__slide-button">
+                                                <span class="btn btn-primary btn-lg">Ver más</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .block-slideshow / end -->
+        <!-- Aquí continúa el resto del contenido original de la página -->
+    </div>
+</div>

@@ -1,0 +1,6 @@
+es:
+  pagy:
+    nav:
+      prev: "Anterior"
+      next: "Siguiente"
+      gap: "&hellip;"

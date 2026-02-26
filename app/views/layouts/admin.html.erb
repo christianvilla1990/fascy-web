@@ -1,0 +1,23 @@
+<!-- filepath: app/views/layouts/admin.html.erb -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Panel de Administración</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <%= stylesheet_link_tag 'admin', media: 'all' %>
+  </head>
+  <body>
+    <nav>
+      <!-- Menú de administración -->
+      <%# <%= link_to "Productos", productos_path %> 
+      <%# <%= link_to "Categorías", categorias_path %> 
+      <%# <%= link_to "Subcategorías", subcategorias_path %> 
+    </nav>
+    <div class="container">
+      <h1>Panel de Administración</h1>
+      <%= yield %>
+    </div>
+  </body>
+</html>

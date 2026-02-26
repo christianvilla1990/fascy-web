@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Fascy Web" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    
+
+   <%# <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %> 
+
+
+   <%= stylesheet_link_tag 'vendor/bootstrap/css/bootstrap.min','application',
+                        'vendor/fontawesome/css/all.min',
+                        'vendor/select2/css/select2.min',
+                        'vendor/owl-carousel/assets/owl.carousel.min',
+                        'vendor/photoswipe/photoswipe',
+                        'vendor/photoswipe/default-skin/default-skin',
+                        media:'all' %>
+<%= javascript_include_tag 'vendor/jquery/jquery.min',
+                           'vendor/bootstrap/js/bootstrap.bundle.min',
+                           'vendor/owl-carousel/owl.carousel.min',
+                           'vendor/select2/select2.min',
+                           'vendor/nouislider/nouislider.min',
+                           'vendor/photoswipe/photoswipe.min',
+                           'vendor/photoswipe/photoswipe-ui-default.min',
+                           'vendor/svg4everybody/svg4everybody.min',
+                           'js/main','js/header','js/number',
+                           'data-turbo-track':'reload' %>
+  </head>
+   
+        
+
+  <body>
+
+      <header>
+          <%= render 'layouts/header' %>
+     </header>
+
+       <%= yield %>
+
+        <%# <%= javascript_include_tag "application" %>
+        <script>
+            svg4everybody();
+        </script>
+
+  </body>
+</html>

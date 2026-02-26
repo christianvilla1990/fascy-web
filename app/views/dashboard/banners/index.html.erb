@@ -1,0 +1,33 @@
+<h1>Banners</h1>
+
+<%= link_to "Nuevo Banner", new_dashboard_banner_path, class: "btn btn-primary mb-3" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Tipo</th>
+      <th>Imagen</th>
+      <th>Link</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @banners.each do |banner| %>
+      <tr>
+        <td><%= banner.titulo %></td>
+        <td><%= banner.tipo %></td>
+        <td>
+          <% if banner.imagen.attached? %>
+            <%= image_tag banner.imagen.variant(resize_to_limit: [100, 50]), class: "img-thumbnail" %>
+          <% end %>
+        </td>
+        <td><%= banner.link %></td>
+        <td>
+          <%= link_to "Editar", edit_dashboard_banner_path(banner), class: "btn btn-sm btn-primary" %>
+          <%= link_to "Eliminar", dashboard_banner_path(banner), method: :delete, data: { confirm: "¿Eliminar?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

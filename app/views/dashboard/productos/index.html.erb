@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0">Productos</h1>
+  <%= link_to "Nuevo", new_dashboard_producto_path, class: "btn btn-primary" %>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <%= form_with url: dashboard_productos_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
+      <div class="col-md-6">
+        <label class="form-label">Buscar</label>
+        <input type="text" name="q" value="<%= @q %>" class="form-control" placeholder="External ID, marca, categoría, subcategoría">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Por página</label>
+        <select name="per_page" class="form-select">
+          <% [10, 20, 50, 100].each do |n| %>
+            <option value="<%= n %>" <%= 'selected' if params[:per_page].to_i == n %>><%= n %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-outline-primary w-100" type="submit">Aplicar</button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<%= turbo_frame_tag "productos" do %>
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Portada</th>
+      <th>Sku</th>
+      <th>External</th>
+      <th>Marca</th>
+      <th>Categoria</th>
+      <th>Destacado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @productos.each do |p| %>
+      <tr>
+        <td style="width:90px">
+          <% if p.portada.present? %>
+            <%= image_tag(p.portada.variant(resize_to_limit: [80, 80])) rescue image_tag(p.portada) %>
+          <% end %>
+        </td>
+        <td><%= p.sku %></td>
+        <td><%= p.external_id %></td>
+        <td><%= p.marca&.nombre %></td>
+        <td><%= p.categoria&.nombre %></td>
+        <td><%= p.destacado ? "Sí" : "No" %></td>
+        <td class="text-end">
+          <%= link_to "Ver", [:dashboard, p], class: "btn btn-sm btn-outline-secondary" %>
+          <%= link_to "Editar", edit_dashboard_producto_path(p), class: "btn btn-sm btn-primary" %>
+          <%= link_to "Eliminar", [:dashboard, p], data: { turbo_method: :delete, turbo_confirm: "¿Eliminar?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @pagy && @pagy.pages > 1 %>
+  <div class="d-flex justify-content-center my-3">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+<% end %>
+<% end %>

@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  external_id: MyString
+  string: MyString
+  caracteristica: MyString
+  sku: MyString
+  price: MyString
+  decimal12: MyString
+  decimal2: MyString
+  data: MyString
+  jsonb: MyString
+  marca: one
+  categoria: one
+  subcategoria: one
+
+two:
+  external_id: MyString
+  string: MyString
+  caracteristica: MyString
+  sku: MyString
+  price: MyString
+  decimal12: MyString
+  decimal2: MyString
+  data: MyString
+  jsonb: MyString
+  marca: two
+  categoria: two
+  subcategoria: two
