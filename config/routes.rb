@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get "home/index"
   get "home/categoria/:id", to: "home#categoria", as: :home_categoria
   get "home/productos/:id", to: "home#productos_detalle", as: :home_productos_detalle
+  get "home/buscar_productos", to: "home#buscar_productos"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

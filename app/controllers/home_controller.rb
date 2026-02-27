@@ -1,4 +1,12 @@
 class HomeController < ApplicationController
+  def buscar_productos
+    query = params[:search].to_s.strip
+    @categoria = nil
+    @subcategoria = nil
+    @productos = Producto.where("caracteristica ILIKE ?", "%#{query}%").order(:caracteristica)
+    @pagy, @productos = pagy(@productos, items: 24)
+    render :categoria
+  end
   def index
     @titulo = "Bienvenido a Fascy Web"
     # Solo categorías con productos destacados
