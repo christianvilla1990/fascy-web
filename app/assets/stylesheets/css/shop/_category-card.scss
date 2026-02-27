@@ -140,3 +140,14 @@
         margin-top: 5px;
     }
 }
+
+.fade-in-banner {
+  opacity: 0;
+  animation: fadeInBanner 1.2s ease forwards;
+}
+
+@keyframes fadeInBanner {
+  to {
+    opacity: 1;
+  }
+}

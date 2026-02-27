@@ -1,18 +1,18 @@
-  <div class="block block-banner">
-                    <div class="container">
-                        <% @banners_secundarios.each do |banner| %>
-                        <a href="<%= banner.link %>" class="block-banner__body">
-                            <% if banner.imagen.attached? %>
-                            <div class="block-banner__image block-banner__image--desktop" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
-                            <div class="block-banner__image block-banner__image--mobile" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
-                            <% end %>
-                            <div class="block-banner__title"><%= banner.titulo %></div>
-                            <div class="block-banner__text"><%= banner.descripcion %></div>
-                            <div class="block-banner__button">
-                            <span class="btn btn-sm btn-primary">Shop Now</span>
-                            </div>
-                        </a>
-                        <% end %>
+    <div class="block block-banner">
+        <div class="container">
+            <% @banners_secundarios.each do |banner| %>
+                <a href="<%= banner.link %>" class="block-banner__body fade-in-banner">
+                    <% if banner.imagen.attached? %>
+                        <div class="block-banner__image block-banner__image--desktop" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
+                        <div class="block-banner__image block-banner__image--mobile" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
+                    <% end %>
+                    <div class="block-banner__title"><%= banner.titulo %></div>
+                    <div class="block-banner__text"><%= banner.descripcion %></div>
+                    <div class="block-banner__button">
+                        <span class="btn btn-sm btn-primary">Shop Now</span>
                     </div>
+                </a>
+            <% end %>
+        </div>
     </div>
 

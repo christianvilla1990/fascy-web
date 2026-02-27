@@ -3,6 +3,7 @@
     <div class="block-header">
       <h3 class="block-header__title">Promo del Mes</h3>
       <div class="block-header__divider"></div>
+      <%= link_to 'Ver todos', home_categoria_path('promo_mes'), class: 'btn btn-outline-primary btn-lg' %>
     </div>
     <div class="block-products__body">
       <% if @productos_promo_mes.present? %>
@@ -18,7 +19,7 @@
                                             </button>
                                             <div class="product-card__badges-list">
                                                 <div class="product-card__badge product-card__badge--new">Promo del Mes</div>
-                                    </div>
+                                           </div>
                 <div class="product-card__image product-image">
                   <a href="<%= home_productos_detalle_path(producto.id) %>" class="product-image__body">
                     <% if producto.respond_to?(:imagen_portada) && producto.imagen_portada.present? %>

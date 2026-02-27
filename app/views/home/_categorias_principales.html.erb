@@ -1,0 +1,55 @@
+            <div class="block block--highlighted block-categories block-categories--layout--classic">
+              <div class="container">
+                <div class="block-header">
+                  <h3 class="block-header__title">Categorías principales</h3>
+                  <div class="block-header__divider"></div>
+                </div>
+                <div class="block-categories__list owl-carousel" id="categorias-carousel">
+                  <% categorias.each do |categoria| %>
+                    <div class="block-categories__item category-card category-card--layout--classic">
+                      <div class="category-card__body" style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="category-card__image">
+                          <a href="<%= home_categoria_path(categoria.id) %>">
+                            <% if categoria.imagen.attached? %>
+                              <%= image_tag categoria.imagen.variant(resize_to_limit: [200,200]), alt: categoria.nombre %>
+                            <% else %>
+                              <img src="/images/categories/default.jpg" alt="<%= categoria.nombre %>">
+                            <% end %>
+                          </a>
+                        </div>
+                        <div class="category-card__name" style="font-size: 0.85rem; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; margin-top: 0.5rem;">
+                          <a href="<%= home_categoria_path(categoria.id) %>" style="display: inline-block; width: 100%;"> <%= categoria.nombre %> </a>
+                        </div>
+                        <div class="category-card__content">
+                          <div class="category-card__all">
+                            <a href="<%= home_categoria_path(categoria.id) %>">Ver todo</a>
+                          </div>
+                          <div class="category-card__products">
+                            <%= categoria.productos.count %> Productos
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                if (window.$ && $.fn.owlCarousel) {
+                  $('#categorias-carousel').owlCarousel({
+                    items: 4,
+                    loop: true,
+                    margin: 20,
+                    autoplay: true,
+                    autoplayTimeout: 3500,
+                    autoplayHoverPause: true,
+                    responsive: {
+                      0: { items: 1 },
+                      600: { items: 2 },
+                      1000: { items: 4 }
+                    }
+                  });
+                }
+              });
+            </script>

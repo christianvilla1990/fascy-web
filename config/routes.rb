@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       root to: "productos#index"
       resources :productos
       resources :banners
+      resources :categorias, only: [:index, :edit, :update]
     end
 
 

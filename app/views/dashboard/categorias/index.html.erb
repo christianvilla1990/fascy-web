@@ -1,0 +1,25 @@
+<h1>Categorías</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Principal</th>
+      <th>Imagen</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categorias.each do |categoria| %>
+      <tr>
+        <td><%= categoria.nombre %></td>
+        <td><%= categoria.principal? ? 'Sí' : 'No' %></td>
+        <td>
+          <% if categoria.imagen.attached? %>
+            <%= image_tag categoria.imagen.variant(resize_to_limit: [60,60]) rescue image_tag categoria.imagen %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Editar', edit_dashboard_categoria_path(categoria), class: 'btn btn-sm btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

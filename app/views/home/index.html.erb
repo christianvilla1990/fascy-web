@@ -93,5 +93,8 @@
             <%= render 'banner_secundario' %>  
 
             <%= render 'productos_promo' %>
+
+            <% categorias_principales = Categoria.where(principal: true).order(:prioridad) %>
+            <%= render partial: 'categorias_principales', locals: { categorias: categorias_principales } %>
     </div>
 </div>

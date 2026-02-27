@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_23_195137) do
     t.string "external_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "principal", default: false
+    t.integer "prioridad", default: 0
   end
 
   create_table "marcas", force: :cascade do |t|

@@ -20,9 +20,30 @@ class HomeController < ApplicationController
   end
 
   def categoria
-    @subcategoria = Subcategoria.find(params[:id])
-    
-    @pagy, @productos = pagy(@subcategoria.productos.order(:caracteristica), items: 24)
+    if params[:id] == 'destacados'
+      @categoria = nil
+      @subcategoria = nil
+      @productos = Producto.destacados.order(:caracteristica)
+      @pagy, @productos = pagy(@productos, items: 24)
+    elsif params[:id] == 'promo_mes'
+      @categoria = nil
+      @subcategoria = nil
+      @productos = Producto.where(mas_vendido: true).order(:caracteristica)
+      @pagy, @productos = pagy(@productos, items: 24)
+    elsif Categoria.exists?(params[:id])
+      @categoria = Categoria.find(params[:id])
+      subcategorias_ids = @categoria.subcategorias.pluck(:id)
+      @productos = Producto.where(subcategoria_id: subcategorias_ids).order(:caracteristica)
+      @pagy, @productos = pagy(@productos, items: 24)
+    elsif Subcategoria.exists?(params[:id])
+      @subcategoria = Subcategoria.find(params[:id])
+      @pagy, @productos = pagy(@subcategoria.productos.order(:caracteristica), items: 24)
+    else
+      @categoria = nil
+      @subcategoria = nil
+      @productos = []
+      @pagy, @productos = pagy(@productos, items: 24)
+    end
     render layout: false if turbo_frame_request?
   end
 

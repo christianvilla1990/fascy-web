@@ -11,12 +11,28 @@
                   <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
                 </svg>
               </li>
-              <li class="breadcrumb-item active" aria-current="page"><%= @subcategoria.nombre %></li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <% if defined?(@subcategoria) && @subcategoria.present? %>
+                  <%= @subcategoria.nombre %>
+                <% elsif defined?(@categoria) && @categoria.present? %>
+                  <%= @categoria.nombre %>
+                <% end %>
+              </li>
             </ol>
           </nav>
         </div>
         <div class="page-header__title">
-          <h1><%= @subcategoria.nombre %></h1>
+          <h1>
+            <% if params[:id] == 'destacados' %>
+              Productos destacados
+            <% elsif params[:id] == 'promo_mes' %>
+              Promo del Mes
+            <% elsif defined?(@subcategoria) && @subcategoria.present? %>
+              <%= @subcategoria.nombre %>
+            <% elsif defined?(@categoria) && @categoria.present? %>
+              <%= @categoria.nombre %>
+            <% end %>
+          </h1>
         </div>
       </div>
     </div>
