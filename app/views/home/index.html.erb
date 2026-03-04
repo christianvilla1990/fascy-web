@@ -96,5 +96,7 @@
 
             <% categorias_principales = Categoria.where(principal: true).order(:prioridad) %>
             <%= render partial: 'categorias_principales', locals: { categorias: categorias_principales } %>
+
+            <%= render 'footer'%>
     </div>
 </div>
