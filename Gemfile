@@ -19,7 +19,7 @@ gem "jbuilder"
 gem 'sassc-rails'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
-gem "pagy", "~> 6.4"
+gem "pagy", "~> 43.3"
 gem "image_processing", "~> 1.12"
 
 gem "net-ftp", require: "net/ftp"
