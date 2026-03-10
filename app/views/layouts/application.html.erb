@@ -26,17 +26,10 @@
                         'vendor/photoswipe/photoswipe',
                         'vendor/photoswipe/default-skin/default-skin',
                         media:'all' %>
-<%= javascript_include_tag 'vendor/jquery/jquery.min',
-                           'vendor/bootstrap/js/bootstrap.bundle.min',
-                           'vendor/owl-carousel/owl.carousel.min',
-                           'vendor/select2/select2.min',
-                           'vendor/nouislider/nouislider.min',
-                           'vendor/photoswipe/photoswipe.min',
-                           'vendor/photoswipe/photoswipe-ui-default.min',
-                           'vendor/svg4everybody/svg4everybody.min',
-                           'js/main','js/header','js/number',
-                           'data-turbo-track':'reload' %>
+<%= javascript_include_tag "application", "data-turbo-track": "reload" %>
   </head>
+
+  <!-- CKEditor ahora se carga vía Stimulus controller -->
    
         
 
@@ -54,4 +47,23 @@
         </script>
 
   </body>
+  <script>
+    function initCKEditors() {
+      if (window.CKEDITOR) {
+        document.querySelectorAll('.ckeditor').forEach(function(area) {
+          if (!area.id) {
+            area.id = 'ckeditor_' + Math.random().toString(36).substr(2, 9);
+          }
+          if (CKEDITOR.instances[area.id]) {
+            CKEDITOR.instances[area.id].destroy(true);
+          }
+          setTimeout(function() {
+            CKEDITOR.replace(area.id);
+          }, 0);
+        });
+      }
+    }
+    document.addEventListener('turbo:load', initCKEditors);
+    document.addEventListener('DOMContentLoaded', initCKEditors);
+  </script>
 </html>

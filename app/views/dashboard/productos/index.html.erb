@@ -8,7 +8,7 @@
     <%= form_with url: dashboard_productos_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
       <div class="col-md-6">
         <label class="form-label">Buscar</label>
-        <input type="text" name="q" value="<%= @q %>" class="form-control" placeholder="External ID, marca, categoría, subcategoría">
+        <input type="text" name="q" value="<%= @q %>" class="form-control" placeholder="Característica, SKU, External ID, marca, categoría, subcategoría">
       </div>
       <div class="col-md-3">
         <label class="form-label">Por página</label>
@@ -29,12 +29,12 @@
 <%= turbo_frame_tag "productos" do %>
 <table class="table table-striped align-middle">
   <thead>
-    <tr>
-      <th>Portada</th>
+      <tr>
+        <th>Portada</th>
+      <th>Nombre</th>
       <th>Sku</th>
       <th>External</th>
-      <th>Marca</th>
-      <th>Categoria</th>
+      <th>Promo</th>
       <th>Destacado</th>
       <th></th>
     </tr>
@@ -47,10 +47,10 @@
             <%= image_tag(p.portada.variant(resize_to_limit: [80, 80])) rescue image_tag(p.portada) %>
           <% end %>
         </td>
+        <td><%= p.caracteristica %></td>
         <td><%= p.sku %></td>
         <td><%= p.external_id %></td>
-        <td><%= p.marca&.nombre %></td>
-        <td><%= p.categoria&.nombre %></td>
+        <td><%= p.mas_vendido ? "Sí" : "No" %></td>
         <td><%= p.destacado ? "Sí" : "No" %></td>
         <td class="text-end">
           <%= link_to "Ver", [:dashboard, p], class: "btn btn-sm btn-outline-secondary" %>

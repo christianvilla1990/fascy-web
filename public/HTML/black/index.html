@@ -9651,6 +9651,66 @@
     <script>
         svg4everybody();
     </script>
+        <script>
+        (function(){
+            function openMobileCategories(){
+                console.debug('openMobileCategories: start');
+                var desktopBtn = document.querySelector('.departments__button');
+                if(desktopBtn){ console.debug('click departments__button'); desktopBtn.click(); return; }
+                var menuBtn = document.querySelector('.mobile-header__menu-button');
+                if(menuBtn){ console.debug('click mobile-header__menu-button'); menuBtn.click(); }
+
+                var attempts = 0;
+                var maxAttempts = 24;
+                var timer = setInterval(function(){
+                    attempts++;
+                    var items = document.querySelectorAll('.mobilemenu .mobile-links__item');
+                    for(var i=0;i<items.length;i++){
+                        var link = items[i].querySelector('.mobile-links__item-link');
+                        if(!link) continue;
+                        var txt = (link.textContent || '').trim();
+                        if(/cat|categoria|categor|depart/i.test(txt)){
+                            var trigger = items[i].querySelector('[data-collapse-trigger]');
+                            if(trigger){ console.debug('found categories item:', txt); trigger.click(); clearInterval(timer); return; }
+                        }
+                    }
+                    if(attempts>=maxAttempts){ console.debug('openMobileCategories: giving up after', attempts); clearInterval(timer); }
+                }, 250);
+            }
+
+            // Directly attach to known header elements to avoid missing SVG hit-testing
+            var attachHandlers = function(){
+                var menuBtn = document.querySelector('.mobile-header__menu-button');
+                if(menuBtn) menuBtn.addEventListener('click', function(){ setTimeout(openMobileCategories, 50); }, {passive:true});
+                var deptBtn = document.querySelector('.departments__button');
+                if(deptBtn) deptBtn.addEventListener('click', function(e){ e.preventDefault(); openMobileCategories(); });
+                var logos = document.querySelectorAll('.mobile-header__logo, .site-header__logo');
+                for(var i=0;i<logos.length;i++){ logos[i].addEventListener('click', function(e){ e.preventDefault(); openMobileCategories(); }); }
+            };
+
+            // If DOM not ready, wait
+            if(document.readyState === 'loading'){
+                document.addEventListener('DOMContentLoaded', attachHandlers);
+            } else { attachHandlers(); }
+
+            // Fallback: detect clicks on the sprite use element
+            document.addEventListener('click', function(e){
+                var el = e.target;
+                var useEl = el.closest ? el.closest('use') : null;
+                if(!useEl){
+                    var svg = el.closest ? el.closest('svg') : null;
+                    if(svg) useEl = svg.querySelector('use');
+                }
+                if(useEl){
+                    var href = useEl.getAttribute('xlink:href') || useEl.getAttribute('href') || '';
+                    if(href.indexOf('#menu-18x14') !== -1){
+                        e.preventDefault();
+                        openMobileCategories();
+                    }
+                }
+            }, false);
+        })();
+        </script>
 </body>
 
 </html>

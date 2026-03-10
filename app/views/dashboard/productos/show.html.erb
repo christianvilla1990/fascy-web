@@ -1,14 +1,18 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h4 m-0">Producto <%= @producto.id %></h1>
+  <h1 class="h4 m-0">Producto: <%= @producto.caracteristica %> (ID: <%= @producto.id %>)</h1>
   <div>
     <%= link_to "Editar", edit_dashboard_producto_path(@producto), class: "btn btn-primary" %>
     <%= link_to "Volver", dashboard_productos_path, class: "btn btn-secondary ms-2" %>
   </div>
 </div>
 
+
+
 <dl class="row">
   <dt class="col-sm-3">External</dt>
   <dd class="col-sm-9"><%= @producto.external_id %></dd>
+  <dt class="col-sm-3">Nombre</dt>
+  <dd class="col-sm-9"><%= @producto.caracteristica %></dd>
   <dt class="col-sm-3">Marca</dt>
   <dd class="col-sm-9"><%= @producto.marca&.nombre %></dd>
   <dt class="col-sm-3">Categoria</dt>
@@ -28,3 +32,35 @@
     <%= image_tag(img.variant(resize_to_limit: [160, 160])) rescue image_tag(img) %>
   <% end %>
 </div>
+
+<% if @producto.descripcion.present? %>
+  <div class="card mt-4">
+    <div class="card-header">
+      <strong>Descripción</strong>
+    </div>
+    <div class="card-body" style="white-space: pre-wrap;">
+      <% desc = @producto.descripcion %>
+      <% if desc =~ /<[^>]+>/ %>
+        <%= sanitize(desc).html_safe %>
+      <% else %>
+        <%= simple_format(desc) %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if @producto.especificaciones_tecnicas.present? %>
+  <div class="card mt-4">
+    <div class="card-header">
+      <strong>Especificaciones técnicas</strong>
+    </div>
+    <div class="card-body" style="white-space: pre-wrap;">
+      <% specs = @producto.especificaciones_tecnicas %>
+      <% if specs =~ /<[^>]+>/ %>
+        <%= sanitize(specs).html_safe %>
+      <% else %>
+        <%= simple_format(specs) %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

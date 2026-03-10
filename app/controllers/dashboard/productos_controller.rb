@@ -6,6 +6,7 @@ class Dashboard::ProductosController < Dashboard::BaseController
     @marcas        = Marca.order(:nombre)
     @categorias    = Categoria.order(:nombre)
     @subcategorias = Subcategoria.order(:nombre)
+    @productos     = Producto.order(:caracteristica).to_a
   end
 
   def index
@@ -17,7 +18,7 @@ class Dashboard::ProductosController < Dashboard::BaseController
       q = "%#{@q.downcase}%"
       scope = scope.left_joins(:marca, :categoria, :subcategoria)
                    .where(
-                     "LOWER(productos.external_id) LIKE :q OR LOWER(marcas.nombre) LIKE :q OR LOWER(categorias.nombre) LIKE :q OR LOWER(subcategorias.nombre) LIKE :q",
+                     "LOWER(productos.external_id) LIKE :q OR LOWER(productos.sku) LIKE :q OR LOWER(productos.caracteristica) LIKE :q OR LOWER(marcas.nombre) LIKE :q OR LOWER(categorias.nombre) LIKE :q OR LOWER(subcategorias.nombre) LIKE :q",
                      q: q
                    )
     end
@@ -82,12 +83,12 @@ class Dashboard::ProductosController < Dashboard::BaseController
   end
 
   def producto_params
-
     params.require(:producto).permit(
       :external_id, :sku, :marca_id, :categoria_id, :subcategoria_id,
       :destacado, :mas_vendido,
-      imagenes: []
+      :descripcion, :especificaciones_tecnicas,
+      imagenes: [],
+      related_product_ids: []
     )
-
   end
 end

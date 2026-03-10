@@ -1,5 +1,18 @@
       
-            <div class="block block-products-carousel" data-layout="grid-4" data-mobile-grid-columns="2">
+                        <div class="block block-products-carousel" data-layout="grid-4" data-mobile-grid-columns="2">
+                                <style>
+                                    /* hover effect for featured products */
+                                    .block-products-carousel .product-card__image{background:#fff;padding:8px;border-radius:8px}
+                                    .block-products-carousel .product-card__image .product-image__img{
+                                        transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s ease;
+                                        will-change: transform;
+                                    }
+                                    .block-products-carousel .product-card__image:hover .product-image__img,
+                                    .block-products-carousel .product-card__image:focus-within .product-image__img{
+                                        transform: translateY(-6px) scale(1.03);
+                                        box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+                                    }
+                                </style>
                 <div class="container">
                     <div class="block-header">
                         <div style="display: flex; align-items: center; justify-content: space-between;">

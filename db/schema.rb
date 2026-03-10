@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_23_195137) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +67,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_23_195137) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "newsletter_subscriptions", force: :cascade do |t|
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_newsletter_subscriptions_on_email", unique: true
+  end
+
   create_table "productos", force: :cascade do |t|
     t.string "external_id"
     t.string "string"
@@ -87,12 +94,23 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_23_195137) do
     t.integer "source", default: 0, null: false
     t.boolean "destacado", default: false, null: false
     t.boolean "mas_vendido", default: false, null: false
+    t.text "descripcion"
+    t.text "especificaciones_tecnicas"
     t.index ["categoria_id"], name: "index_productos_on_categoria_id"
     t.index ["destacado"], name: "index_productos_on_destacado"
     t.index ["marca_id"], name: "index_productos_on_marca_id"
     t.index ["mas_vendido"], name: "index_productos_on_mas_vendido"
     t.index ["source"], name: "index_productos_on_source"
     t.index ["subcategoria_id"], name: "index_productos_on_subcategoria_id"
+  end
+
+  create_table "related_products", force: :cascade do |t|
+    t.bigint "producto_id", null: false
+    t.bigint "related_producto_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["producto_id", "related_producto_id"], name: "index_related_on_producto_and_related", unique: true
+    t.index ["related_producto_id"], name: "index_related_products_on_related_producto_id"
   end
 
   create_table "subcategorias", force: :cascade do |t|

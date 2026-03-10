@@ -1,3 +1,5 @@
+//= link controllers/ckeditor_controller.js
+//= link controllers/multiselect_controller.js
 //= link vendor/bootstrap/css/bootstrap.min.css
 //= link application.css
 //= link vendor/fontawesome/css/all.min.css
@@ -15,6 +17,7 @@
 //= link vendor/jquery/jquery.min.js
 //= link vendor/bootstrap/js/bootstrap.bundle.min.js
 //= link vendor/owl-carousel/owl.carousel.min.js
+
 
 //= link vendor/nouislider/nouislider.min.js
 //= link vendor/photoswipe/photoswipe.min.js

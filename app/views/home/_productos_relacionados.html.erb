@@ -1,0 +1,84 @@
+        <%# Dynamic related products partial - accepts local `productos` or defaults to @producto.related_products %>
+                <% productos = local_assigns.fetch(:productos, (defined?(@producto) ? @producto.related_products : [])) %>
+                <% productos = productos.to_a.first(8) %>
+
+                <% if productos.present? %>
+                    <div class="productos-relacionados-responsive">
+                        <style>
+                            .productos-relacionados-responsive .owl-carousel{display:flex;gap:1rem;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:0.5rem}
+                            .productos-relacionados-responsive .owl-carousel::-webkit-scrollbar{height:8px}
+                            .productos-relacionados-responsive .block-products-carousel__column{flex:0 0 auto;width:220px}
+                            .productos-relacionados-responsive .product-image__img{max-width:100%;height:auto;display:block}
+                            /* hover effect: elevate + slight scale */
+                            .productos-relacionados-responsive .product-card__image{display:block;background:#fff;padding:8px;border-radius:8px}
+                            .productos-relacionados-responsive .product-card__image .product-image__img{
+                                transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s ease;
+                                will-change: transform;
+                            }
+                            .productos-relacionados-responsive .product-card__image:hover .product-image__img,
+                            .productos-relacionados-responsive .product-card__image:focus-within .product-image__img{
+                                transform: translateY(-6px) scale(1.03);
+                                box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+                            }
+                            @media(min-width:768px){
+                                .productos-relacionados-responsive .owl-carousel{display:block;overflow:visible}
+                                .productos-relacionados-responsive .block-products-carousel__column{width:auto;flex:initial}
+                            }
+                        </style>
+                        <div class="block block-products-carousel" data-layout="grid-5" data-mobile-grid-columns="2">
+                        <div class="container">
+                            <div class="block-header">
+                                <h3 class="block-header__title">Productos relacionados</h3>
+                                <div class="block-header__divider"></div>
+                                <div class="block-header__arrows-list">
+                                    <button class="block-header__arrow block-header__arrow--left" type="button">
+                                        <svg width="7px" height="11px"><use xlink:href="images/sprite.svg#arrow-rounded-left-7x11"></use></svg>
+                                    </button>
+                                    <button class="block-header__arrow block-header__arrow--right" type="button">
+                                        <svg width="7px" height="11px"><use xlink:href="images/sprite.svg#arrow-rounded-right-7x11"></use></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="block-products-carousel__slider">
+                                <div class="block-products-carousel__preloader"></div>
+                                <div class="owl-carousel">
+                                    <% productos.each do |producto| %>
+                                        <div class="block-products-carousel__column">
+                                            <div class="block-products-carousel__cell">
+                                                <div class="product-card product-card--hidden-actions">
+                                                    <button class="product-card__quickview" type="button">
+                                                        <svg width="16px" height="16px"><use xlink:href="images/sprite.svg#quickview-16"></use></svg>
+                                                        <span class="fake-svg-icon"></span>
+                                                    </button>
+                                                    <div class="product-card__badges-list">
+                                                        <div class="product-card__badge product-card__badge--new">Relacionado</div>
+                                                    </div>
+                                                    <div class="product-card__image product-image">
+                                                        <a href="<%= home_productos_detalle_path(producto.id) %>" class="product-image__body">
+                                                            <% portada = producto.imagen_portada || producto.portada %>
+                                                            <% if portada.present? %>
+                                                                <%= image_tag portada, class: "product-image__img", alt: producto.caracteristica %>
+                                                            <% else %>
+                                                                <img class="product-image__img" src="images/products/default.jpg" alt="<%= producto.caracteristica %>">
+                                                            <% end %>
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-card__info">
+                                                        <div class="product-card__name">
+                                                            <a href="<%= home_productos_detalle_path(producto.id) %>"><%= producto.caracteristica %></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <% end %>
+
+
+
+                                                            

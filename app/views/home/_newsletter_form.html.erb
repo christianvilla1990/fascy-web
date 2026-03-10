@@ -1,0 +1,14 @@
+<div id="footer-newsletter-form">
+  <%= form_with model: (local_assigns[:subscription] || NewsletterSubscription.new), url: newsletter_subscriptions_path, local: false do |f| %>
+    <%= f.label :email, "Correo electrónico", class: "sr-only" %>
+    <div class="input-group">
+      <%= f.email_field :email, class: "footer-newsletter__form-input form-control", placeholder: "Correo electrónico...", required: true %>
+      <div class="input-group-append">
+        <%= f.submit "Suscribirse", class: "footer-newsletter__form-button btn btn-primary" %>
+      </div>
+    </div>
+    <% if f.object && f.object.errors.any? %>
+      <div class="text-danger mt-2"><%= f.object.errors.full_messages.join(', ') %></div>
+    <% end %>
+  <% end %>
+</div>

@@ -5,6 +5,14 @@ class Producto < ApplicationRecord
 
   has_many_attached :imagenes
 
+  # Related products (self-referential)
+  has_many :related_product_links, class_name: 'RelatedProduct', foreign_key: 'producto_id', dependent: :destroy, inverse_of: :producto
+  has_many :related_products, through: :related_product_links, source: :related_producto
+
+  # Inverse relations (products that reference this product)
+  has_many :inverse_related_product_links, class_name: 'RelatedProduct', foreign_key: 'related_producto_id', dependent: :destroy, inverse_of: :related_producto
+  has_many :related_by_products, through: :inverse_related_product_links, source: :producto
+
   scope :destacados, -> { where(destacado: true) }
   scope :mas_vendidos, -> { where(mas_vendido: true) }
 

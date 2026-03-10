@@ -1,51 +1,61 @@
-<div class="block block-products block-products--layout--large-first" data-mobile-grid-columns="2">
+<div class="block block-products-carousel" data-layout="grid-4" data-mobile-grid-columns="2">
+  <style>
+    /* use same hover / image treatment as featured products */
+    .block-products-carousel .product-card__image{background:#fff;padding:8px;border-radius:8px}
+    .block-products-carousel .product-card__image .product-image__img{
+      transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s ease;
+      will-change: transform;
+    }
+    .block-products-carousel .product-card__image:hover .product-image__img,
+    .block-products-carousel .product-card__image:focus-within .product-image__img{
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+  </style>
   <div class="container">
     <div class="block-header">
       <h3 class="block-header__title">Promo del Mes</h3>
       <div class="block-header__divider"></div>
       <%= link_to 'Ver todos', home_categoria_path('promo_mes'), class: 'btn btn-outline-primary btn-lg' %>
     </div>
-    <div class="block-products__body">
-      <% if @productos_promo_mes.present? %>
-        <div class="row">
-          <% @productos_promo_mes.first(4).each do |producto| %>
-            <div class="col-md-3 col-12">
-              <div class="product-card product-card--hidden-actions">
-                 <button class="product-card__quickview" type="button">
-                                                <svg width="16px" height="16px">
-                                                    <use xlink:href="images/sprite.svg#quickview-16"></use>
-                                                </svg>
-                                                <span class="fake-svg-icon"></span>
-                                            </button>
-                                            <div class="product-card__badges-list">
-                                                <div class="product-card__badge product-card__badge--new">Promo del Mes</div>
-                                           </div>
-                <div class="product-card__image product-image">
-                  <a href="<%= home_productos_detalle_path(producto.id) %>" class="product-image__body">
-                    <% if producto.respond_to?(:imagen_portada) && producto.imagen_portada.present? %>
-                      <%= image_tag producto.imagen_portada, class: "product-image__img", alt: producto.caracteristica %>
-                    <% else %>
-                      <img class="product-image__img" src="images/products/default.jpg" alt="<%= producto.caracteristica %>">
-                    <% end %>
-                  </a>
-                </div>
-                <div class="product-card__info">
-                  <div class="product-card__name">
-                    <a href="<%= home_productos_detalle_path(producto.id) %>"><%= producto.caracteristica %></a>
+    <div class="block-products-carousel__slider">
+      <div class="block-products-carousel__preloader"></div>
+      <div class="owl-carousel">
+        <% if @productos_promo_mes.present? %>
+          <% @productos_promo_mes.to_a.first(8).each do |producto| %>
+            <div class="block-products-carousel__column">
+              <div class="block-products-carousel__cell">
+                <div class="product-card product-card--hidden-actions">
+                  <button class="product-card__quickview" type="button">
+                    <svg width="16px" height="16px"><use xlink:href="images/sprite.svg#quickview-16"></use></svg>
+                    <span class="fake-svg-icon"></span>
+                  </button>
+                  <div class="product-card__badges-list">
+                    <div class="product-card__badge product-card__badge--new">Promo del Mes</div>
                   </div>
-                </div>
-                <div class="product-card__actions">
-                  <div class="product-card__prices">
-               
+                  <div class="product-card__image product-image">
+                    <a href="<%= home_productos_detalle_path(producto.id) %>" class="product-image__body">
+                      <% portada = producto.imagen_portada || producto.portada %>
+                      <% if portada.present? %>
+                        <%= image_tag portada, class: "product-image__img", alt: producto.caracteristica %>
+                      <% else %>
+                        <img class="product-image__img" src="images/products/default.jpg" alt="<%= producto.caracteristica %>">
+                      <% end %>
+                    </a>
+                  </div>
+                  <div class="product-card__info">
+                    <div class="product-card__name">
+                      <a href="<%= home_productos_detalle_path(producto.id) %>"><%= producto.caracteristica %></a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           <% end %>
-        </div>
-      <% else %>
-        <p>No hay productos en promoción este mes.</p>
-      <% end %>
+        <% else %>
+          <p>No hay productos en promoción este mes.</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

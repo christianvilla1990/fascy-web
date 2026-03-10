@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       resources :categorias, only: [:index, :edit, :update]
     end
 
+    resources :newsletter_subscriptions, only: [:create]
+
 
   # Defines the root path route ("/")
   root "home#index"
