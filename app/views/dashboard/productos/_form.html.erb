@@ -1,11 +1,24 @@
 <%= form_with(model: [:dashboard, @producto], html: { class: "needs-validation" }) do |f| %>
+  <% if @producto.errors.any? %>
+    <div class="alert alert-danger">
+      <h5>Errores:</h5>
+      <ul>
+        <% @producto.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
 <% api = @producto.source_api? %>
  
-  <div class="mb-3">
-    <%= f.label :external_id, class: "form-label" %>
-    <%= f.text_field :external_id, class: "form-control", readonly: api  %>
-  </div>
+  <%# Show external_id only for API-sourced products to avoid duplicates when creating manually %>
+  <% if @producto.source_api? %>
+    <div class="mb-3">
+      <%= f.label :external_id, class: "form-label" %>
+      <%= f.text_field :external_id, class: "form-control", readonly: api  %>
+    </div>
+  <% end %>
 
   <div class="mb-3">
     <%= f.label :sku, class: "form-label" %>
@@ -19,11 +32,11 @@
     </div>
     <div class="col-md-4">
       <%= f.label :categoria_id, "Categoria", class: "form-label" %>
-      <%= f.collection_select :categoria_id, @categorias, :id, :nombre, { include_blank: true }, class: "form-select", disabled: api %>
+      <%= f.collection_select :categoria_id, @categorias, :id, :nombre, { include_blank: true }, { class: "form-select", disabled: api, data: { controller: "category-subcategories", action: "change->category-subcategories#load" } } %>
     </div>
     <div class="col-md-4">
       <%= f.label :subcategoria_id, "Subcategoria", class: "form-label" %>
-      <%= f.collection_select :subcategoria_id, @subcategorias, :id, :nombre, { include_blank: true }, class: "form-select", disabled: api %>
+      <%= f.collection_select :subcategoria_id, @subcategorias, :id, :nombre, { include_blank: true }, { class: "form-select", disabled: api, data: { "category-subcategories-target": "subcategoria", "selected-value": @producto.subcategoria_id } } %>
     </div>
   </div>
 
@@ -109,5 +122,41 @@
     <%= link_to "Cancelar", @producto.persisted? ? [:dashboard, @producto] : dashboard_productos_path, class: "btn btn-secondary ms-2" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var cat = document.getElementById('producto_categoria_id')
+    var sub = document.getElementById('producto_subcategoria_id')
+    if (!cat || !sub) return
+
+    async function loadSubs(catId, preselected) {
+      sub.innerHTML = ''
+      var blank = document.createElement('option')
+      blank.value = ''
+      blank.text = ''
+      sub.appendChild(blank)
+      if (!catId) return
+      try {
+        var resp = await fetch('/dashboard/categorias/' + catId + '/subcategorias', { headers: { 'Accept': 'application/json' } })
+        if (!resp.ok) return
+        var subs = await resp.json()
+        subs.forEach(function(s) {
+          var opt = document.createElement('option')
+          opt.value = s.id
+          opt.text = s.nombre
+          if (preselected && String(preselected) === String(s.id)) opt.selected = true
+          sub.appendChild(opt)
+        })
+      } catch (e) { console.error(e) }
+    }
+
+    cat.addEventListener('change', function() { loadSubs(this.value) })
+
+    // initial load
+    var initialCat = cat.value
+    var pre = sub.getAttribute('data-selected-value') || sub.dataset.selectedValue
+    if (initialCat) loadSubs(initialCat, pre)
+  })
+</script>
 
 

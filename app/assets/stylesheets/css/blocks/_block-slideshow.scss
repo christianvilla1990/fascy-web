@@ -69,9 +69,20 @@ $local-dot-size: $local-dots-height - $local-dots-padding * 2;
     position: absolute;
     left: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     background-repeat: no-repeat;
+    background-position: center center;
+    /* background-size removed: prefer <img> with object-fit for responsiveness */
+        img.banner-mobile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+        }
 }
 .block-slideshow__slide-image--mobile {
     display: none;
@@ -197,13 +208,28 @@ $local-dot-size: $local-dots-height - $local-dots-padding * 2;
 
 
 @media (max-width: breakpoint(sm-end)) {
+    /* remove extra spacing above banner on small screens */
+    .block-slideshow,
+    .block-slideshow--layout--full {
+        margin-top: 0;
+    }
     .block-slideshow__body,
     .block-slideshow__slide {
-        height: 395px;
+        height: auto;
+        /* use fixed padding on mobile to control spacing */
+        padding-top: 50px;
+        min-height: 260px;
+        max-height: 75vh;
+    }
+    .block-slideshow__slide-image--desktop {
+        display: none;
     }
     .block-slideshow__slide-image--mobile {
-        background-position: top center;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain; /* show whole image on mobile (no crop) */
         display: block;
+        background-origin: padding-box;
     }
     .block-slideshow__slide-content {
         top: 30px;
@@ -226,5 +252,66 @@ $local-dot-size: $local-dots-height - $local-dots-padding * 2;
     }
     .block-slideshow__slide-button .btn {
         @include btn-sm();
+    }
+}
+
+/* Fix for mid-size tablets (e.g. 834px width) */
+@media (min-width: 768px) and (max-width: 900px) {
+    .block-slideshow__body,
+    .block-slideshow__slide {
+        height: 520px !important;
+    }
+    .block-slideshow__slide-image--desktop {
+        background-size: contain !important; /* show full image */
+        background-position: center center !important;
+        display: block !important;
+    }
+    .block-slideshow__slide-image--mobile {
+        display: none !important;
+    }
+}
+
+/* Ensure carousel images fit mobile viewport */
+@media (max-width: breakpoint(sm-end)) {
+    #bannerPrincipalCarousel .carousel-inner img.banner-principal-img {
+        width: 100%;
+        height: auto;
+        max-height: 60vh; /* never larger than 60% of viewport height */
+        object-fit: contain;
+    }
+    #bannerPrincipalCarousel .carousel-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Bootstrap carousel specific adjustments */
+#bannerPrincipalCarousel {
+        .carousel-inner {
+        .carousel-item {
+            height: auto;
+        }
+        img.banner-principal-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
+
+@media (max-width: breakpoint(sm-end)) {
+    #bannerPrincipalCarousel .carousel-inner img.banner-principal-img {
+        height: auto;
+        aspect-ratio: 16/7.5;
+        max-height: 420px;
+        object-fit: contain;
+        object-position: center center;
+        background-color: #000;
+    }
+    #bannerPrincipalCarousel .carousel-caption {
+        display: block;
+        bottom: 5%;
     }
 }

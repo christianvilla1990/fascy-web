@@ -1,0 +1,54 @@
+:root{
+  --devise-bg-1:#071026;
+  --devise-bg-2:#0b3754;
+  --card-bg: #ffffff;
+  --accent: #0d6efd;
+}
+
+.devise-login-bg{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(135deg,var(--devise-bg-1),var(--devise-bg-2));
+  padding: 2rem;
+}
+
+.devise-card{
+  width: 380px;
+  border-radius: 14px;
+  padding: 2rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+}
+
+.devise-logo{
+  width: 110px;
+  height: auto;
+  display:block;
+  margin: 0 auto 12px;
+}
+
+.devise-card h3{ color: #0b2230; font-weight:600; }
+.devise-card p { color: #6b727a; }
+
+.devise-card .form-control{
+  border-radius: 10px;
+  padding: .75rem .9rem;
+  box-shadow: none;
+  border: 1px solid #e6e9ee;
+}
+
+.devise-card .btn-primary{
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  font-weight:600;
+}
+
+.devise-card .small{ color: #68707a; }
+
+@media (max-width: 420px){
+  .devise-card{ width: 92%; padding: 1.25rem; }
+}

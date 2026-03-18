@@ -21,6 +21,10 @@
     <%= f.label :imagen, "Imagen" %>
     <%= f.file_field :imagen, class: "form-control" %>
   </div>
+  <div class="mb-3">
+    <%= f.label :imagen_mobile, "Imagen (mobile, opcional)" %>
+    <%= f.file_field :imagen_mobile, class: "form-control" %>
+  </div>
   <%= f.submit "Guardar", class: "btn btn-primary" %>
   <%= link_to "Volver", dashboard_banners_path, class: "btn btn-secondary ms-2" %>
 <% end %>

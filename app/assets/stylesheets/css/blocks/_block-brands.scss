@@ -6,7 +6,9 @@
 @import '../mixins/card';
 
 
-.block-brands {}
+.block-brands {
+    margin-bottom: 2.5rem;
+}
 .block-brands__slider {
     @include card();
 }
@@ -22,5 +24,8 @@
 @media (max-width: breakpoint(sm-end)) {
     .block-brands__item {
         padding: 20px 24px;
+    }
+    .block-brands {
+        margin-bottom: 3rem;
     }
 }

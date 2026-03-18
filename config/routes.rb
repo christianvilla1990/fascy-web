@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :admin_users
   get "categorias/index"
   get "home/index"
   get "home/categoria/:id", to: "home#categoria", as: :home_categoria
@@ -18,10 +19,12 @@ Rails.application.routes.draw do
   
 
     namespace :dashboard do
-      root to: "productos#index"
+      root to: "home#index"
       resources :productos
       resources :banners
       resources :categorias, only: [:index, :edit, :update]
+      get 'categorias/:id/subcategorias', to: 'categorias#subcategorias', as: 'categoria_subcategorias'
+      post 'import_products', to: 'imports#create', as: 'import_products'
     end
 
     resources :newsletter_subscriptions, only: [:create]

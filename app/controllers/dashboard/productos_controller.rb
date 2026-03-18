@@ -41,9 +41,13 @@ class Dashboard::ProductosController < Dashboard::BaseController
   def edit; end
 
   def create
-    @producto = Producto.new(producto_params)
-    @producto.source ||= :manual
+    related_ids = producto_params[:related_product_ids]
+    attrs = producto_params.except(:related_product_ids)
+    @producto = Producto.new(attrs)
+    # Force manual source for dashboard creations to avoid API-only validations
+    @producto.source = :manual
     if @producto.save
+      @producto.related_product_ids = related_ids if related_ids.present?
       redirect_to [:dashboard, @producto], notice: "Producto creado."
     else
       render :new, status: :unprocessable_entity
@@ -64,7 +68,10 @@ class Dashboard::ProductosController < Dashboard::BaseController
       end
     end
   
-    if @producto.update(producto_params)
+    related_ids = producto_params[:related_product_ids]
+    attrs = producto_params.except(:related_product_ids)
+    if @producto.update(attrs)
+      @producto.related_product_ids = related_ids if related_ids.present?
       redirect_to [:dashboard, @producto], notice: "Producto actualizado."
     else
       render :edit, status: :unprocessable_entity

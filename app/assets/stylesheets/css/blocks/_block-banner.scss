@@ -25,6 +25,7 @@
     height: 100%;
     background-repeat: no-repeat;
     background-position: center;
+    /* background-size removed: use <img> with object-fit instead */
     z-index: -1;
 }
 .block-banner__image--mobile {
@@ -49,13 +50,25 @@
 
 @media (max-width: breakpoint(sm-end)) {
     .block-banner__body {
-        height: 390px;
+        height: auto;
+        aspect-ratio: 1600/650;
+        max-height: 480px;
     }
     .block-banner__image--desktop {
         display: none;
     }
     .block-banner__image--mobile {
         display: block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        img.banner-mobile-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+            max-height: 60vh;
+        }
     }
     .block-banner__title,
     .block-banner__text,

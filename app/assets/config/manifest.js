@@ -1,4 +1,5 @@
 //= link controllers/ckeditor_controller.js
+//= link controllers/category_subcategories_controller.js
 //= link controllers/multiselect_controller.js
 //= link vendor/bootstrap/css/bootstrap.min.css
 //= link application.css
@@ -10,6 +11,8 @@
 //= link vendor/select2/css/select2.min.css
 //= link admin.css
 
+// Link for custom devise stylesheet
+//= link devise.css
 
 //= link_tree ../images
 

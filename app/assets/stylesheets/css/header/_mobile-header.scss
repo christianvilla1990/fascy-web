@@ -126,4 +126,15 @@
         visibility: visible;
         opacity: 1;
     }
+
+    /* Small vertical offset for the mobile search container to increase spacing */
+    .mobile-header__search-container {
+        margin-top: 1rem;
+    }
+
+    @media (max-width: breakpoint(sm-end)) {
+        .mobile-header__search-container {
+            margin-top: 1.25rem;
+        }
+    }
 }

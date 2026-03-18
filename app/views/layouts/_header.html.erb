@@ -14,6 +14,18 @@
                                 <%= image_tag 'slides/marca.jpg', alt: 'Fascy', class: 'mobile-header__img', style: 'height:80px;width:auto;' %>
                             </a>
                         </div>
+                        <div class="mobile-header__search-container">
+                            <div class="container" style="padding:0 1rem;">
+                                <form class="search__form" action="/home/buscar_productos" method="get">
+                                    <div style="display:flex;gap:.5rem;align-items:center;">
+                                        <input name="search" class="search__input" placeholder="Buscar productos" aria-label="Buscar" type="text" autocomplete="off" style="flex:1;padding:.5rem;border:1px solid #ddd;border-radius:4px;">
+                                        <button class="search__button" type="submit" style="background:none;border:none;padding:.4rem;">
+                                            <svg width="20px" height="20px"><use xlink:href="<%= asset_path('sprite.svg#search-20') %>"></use></svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -31,10 +43,11 @@
                         </button>
                     </div>
                     <div class="mobilemenu__content">
+                        
                         <ul class="mobile-links mobile-links--level--0" data-collapse data-collapse-opened-class="mobile-links__item--open">
                             <li class="mobile-links__item" data-collapse-item>
                                 <div class="mobile-links__item-title">
-                                    <%= link_to 'Home', root_path, class: 'mobile-links__item-link' %>
+                                    <%= link_to 'Inicio', root_path, class: 'mobile-links__item-link' %>
                                 </div>
                             </li>
                             <li class="mobile-links__item" data-collapse-item>
@@ -191,7 +204,7 @@
 
                                                                                                 <% @categorias.each do |cat| %>
                                                                                                         <li class="departments__item">
-                                                                                                                <a class="departments__item-link" href="">
+                                                                                                                <a class="departments__item-link" href="<%= home_categoria_path(cat) %>" data-turbo-frame="productos">
                                                                                                                     <% if cat.imagen.attached? %>
                                                                                                                         <%= image_tag cat.imagen.variant(resize_to_limit: [32,32]), alt: cat.nombre, style: 'margin-right:8px;vertical-align:middle;border-radius:4px;' %>
                                                                                                                     <% else %>
@@ -211,9 +224,6 @@
                                                                     <li class="menu__item">
                                                                         <!-- This is a synthetic element that allows to adjust the vertical offset of the submenu using CSS. -->
                                                                         <div class="menu__item-submenu-offset"></div>
-                                                                        <%# <a class="menu__item-link" href="">
-                                                                            <%= sub.nombre %>
-                                                                        <%# </a> %> 
                                                                         <%= link_to sub.nombre, home_categoria_path(sub), data: { turbo_frame: "productos" }, class: "menu__item-link" %>
                                                                     </li>
                                                                 <% end %>    
@@ -279,54 +289,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <!-- .nav-links / end -->
-                                <div class="nav-panel__indicators">
-                                    <div class="indicator indicator--trigger--click">
-                                        <div class="indicator__dropdown">
-                                            <div class="account-menu">
-                                                <form class="account-menu__form">
-                                                    <div class="account-menu__form-title">Log In to Your Account</div>
-                                                    <div class="form-group">
-                                                        <label for="header-signin-email" class="sr-only">Email address</label>
-                                                        <input id="header-signin-email" type="email" class="form-control form-control-sm" placeholder="Email address">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="header-signin-password" class="sr-only">Password</label>
-                                                        <div class="account-menu__form-forgot">
-                                                            <input id="header-signin-password" type="password" class="form-control form-control-sm" placeholder="Password">
-                                                            <a href="" class="account-menu__form-forgot-link">Forgot?</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group account-menu__form-button">
-                                                        <button type="submit" class="btn btn-primary btn-sm">Login</button>
-                                                    </div>
-                                                    <div class="account-menu__form-link"><a href="account-login.html">Create An Account</a></div>
-                                                </form>
-                                                <div class="account-menu__divider"></div>
-                                                <a href="account-dashboard.html" class="account-menu__user">
-                                                    <div class="account-menu__user-avatar">
-                                                        <img src="<%= asset_path('avatars/avatar-3.jpg') %>" alt="">
-                                                    </div>
-                                                    <div class="account-menu__user-info">
-                                                        <div class="account-menu__user-name">Helena Garcia</div>
-                                                        <div class="account-menu__user-email">stroyka@example.com</div>
-                                                    </div>
-                                                </a>
-                                                <div class="account-menu__divider"></div>
-                                                <ul class="account-menu__links">
-                                                    <li><a href="account-profile.html">Edit Profile</a></li>
-                                                    <li><a href="account-orders.html">Order History</a></li>
-                                                    <li><a href="account-addresses.html">Addresses</a></li>
-                                                    <li><a href="account-password.html">Password</a></li>
-                                                </ul>
-                                                <div class="account-menu__divider"></div>
-                                                <ul class="account-menu__links">
-                                                    <li><a href="account-login.html">Logout</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                              
                             </div>
                         </div>
                     </div>

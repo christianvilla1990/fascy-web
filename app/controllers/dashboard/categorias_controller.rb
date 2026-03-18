@@ -16,6 +16,12 @@ class Dashboard::CategoriasController < Dashboard::BaseController
     end
   end
 
+  # GET /dashboard/categorias/:id/subcategorias
+  def subcategorias
+    subs = Subcategoria.where(categoria_id: params[:id]).order(:nombre).select(:id, :nombre)
+    render json: subs
+  end
+
   private
 
   def set_categoria

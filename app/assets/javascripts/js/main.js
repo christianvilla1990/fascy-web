@@ -127,7 +127,12 @@
             nav: false,
             dots: true,
             loop: true,
-            rtl: isRTL()
+            rtl: isRTL(),
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            autoHeight: false,
+            lazyLoad: true
         });
     });
 

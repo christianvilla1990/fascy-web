@@ -1,0 +1,49 @@
+es:
+  activerecord:
+    errors:
+      models:
+        producto:
+          attributes:
+            external_id:
+              blank: "no puede estar en blanco"
+              taken: "ya existe otro producto con ese identificador"
+        related_product:
+          attributes:
+            related_producto_id:
+              cant_be_same: "no puede relacionarse consigo mismo"
+      messages:
+        record_invalid: "La validación falló: %{errors}"
+        restrict_dependent_destroy: "No se puede eliminar porque existen dependencias"
+        blank: "no puede estar en blanco"
+        taken: "ya está en uso"
+        too_short: "es demasiado corto (mínimo %{count} caracteres)"
+        too_long: "es demasiado largo (máximo %{count} caracteres)"
+        not_a_number: "no es un número"
+        greater_than: "debe ser mayor que %{count}"
+        invalid: "no es válido"
+  errors:
+    format: "%{attribute} %{message}"
+  helpers:
+    submit:
+      create: "Crear %{model}"
+      update: "Actualizar %{model}"
+      submit: "Guardar %{model}"
+  attributes:
+    producto:
+      external_id: "Identificador externo"
+      sku: "SKU"
+      marca_id: "Marca"
+      categoria_id: "Categoría"
+      subcategoria_id: "Subcategoría"
+      descripcion: "Descripción"
+      especificaciones_tecnicas: "Especificaciones técnicas"
+    related_product:
+      producto_id: "Producto"
+      related_producto_id: "Producto relacionado"
+  devise:
+    sessions:
+      signed_in: "Has iniciado sesión correctamente."
+    failure:
+      invalid: "Email o contraseña inválidos."
+    passwords:
+      send_instructions: "Si existe una cuenta con ese email, recibirás instrucciones para restablecer la contraseña."

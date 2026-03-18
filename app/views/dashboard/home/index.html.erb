@@ -1,0 +1,43 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Panel de administración</h1>
+    <div>
+      <%= button_to 'Sincronizar productos (ejecutar)', dashboard_import_products_path, method: :post, class: 'btn btn-primary', data: { confirm: 'Esto importará/actualizará productos desde la API. Continuar?' } %>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Productos</h5>
+          <p class="card-text">Crear, editar y listar productos.</p>
+          <a href="<%= dashboard_productos_path %>" class="btn btn-outline-primary">Ver productos</a>
+          <a href="<%= new_dashboard_producto_path %>" class="btn btn-primary ms-2">Crear producto</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Banners</h5>
+          <p class="card-text">Administrar banners del sitio.</p>
+          <a href="<%= dashboard_banners_path %>" class="btn btn-outline-primary">Ver banners</a>
+          <a href="<%= new_dashboard_banner_path %>" class="btn btn-primary ms-2">Crear banner</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Categorías</h5>
+          <p class="card-text">Gestionar categorías y subcategorías.</p>
+          <a href="<%= dashboard_categorias_path %>" class="btn btn-outline-primary">Ver categorías</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 

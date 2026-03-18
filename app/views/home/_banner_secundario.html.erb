@@ -3,8 +3,11 @@
             <% @banners_secundarios.each do |banner| %>
                 <a href="<%= banner.link %>" class="block-banner__body fade-in-banner">
                     <% if banner.imagen.attached? %>
-                        <div class="block-banner__image block-banner__image--desktop" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
-                        <div class="block-banner__image block-banner__image--mobile" style="background-image: url('<%= url_for(banner.imagen) %>')"></div>
+                        <picture>
+                          <source media="(min-width: 768px)" srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>">
+                          <source media="(max-width: 767px)" srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [800, 420])) %>">
+                          <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1200, 500])) %>" alt="<%= banner.titulo %>" class="block-banner__image block-banner__image--mobile banner-mobile-img">
+                        </picture>
                     <% end %>
                     <div class="block-banner__title"><%= banner.titulo %></div>
                     <div class="block-banner__text"><%= banner.descripcion %></div>

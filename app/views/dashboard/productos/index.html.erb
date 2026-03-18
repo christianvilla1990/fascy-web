@@ -55,7 +55,7 @@
         <td class="text-end">
           <%= link_to "Ver", [:dashboard, p], class: "btn btn-sm btn-outline-secondary" %>
           <%= link_to "Editar", edit_dashboard_producto_path(p), class: "btn btn-sm btn-primary" %>
-          <%= link_to "Eliminar", [:dashboard, p], data: { turbo_method: :delete, turbo_confirm: "¿Eliminar?" }, class: "btn btn-sm btn-danger" %>
+          <%= button_to "Eliminar", [:dashboard, p], method: :delete, data: { confirm: '¿Eliminar?' }, form: { class: 'd-inline' }, class: "btn btn-sm btn-danger" %>
         </td>
       </tr>
     <% end %>

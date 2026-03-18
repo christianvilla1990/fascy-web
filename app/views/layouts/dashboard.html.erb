@@ -63,6 +63,11 @@
         <a class="navbar-brand" href="<%= dashboard_root_path %>">Dashboard</a>
         <div class="navbar-nav flex-row gap-3">
           <a class="nav-link" href="<%= dashboard_productos_path %>">Productos</a>
+          <% if admin_user_signed_in? %>
+            <%= link_to 'Salir', destroy_admin_user_session_path, method: :delete, class: 'nav-link' %>
+          <% else %>
+            <%= link_to 'Ingresar', new_admin_user_session_path, class: 'nav-link' %>
+          <% end %>
         </div>
       </div>
     </nav>

@@ -22,6 +22,9 @@ gem 'sassc-rails'
 gem "pagy", "~> 6.4"
 gem "image_processing", "~> 1.12"
 
+# Authentication
+gem 'devise'
+
 gem "net-ftp", require: "net/ftp"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]

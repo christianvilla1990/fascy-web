@@ -2,7 +2,7 @@ class Dashboard::BannersController < Dashboard::BaseController
   before_action :set_banner, only: [:edit, :update, :destroy]
 
   def index
-    @banners = Banner.all.where(tipo: ['principal']).order(:created_at)
+    @banners = Banner.all
   end
 
   def new
@@ -41,6 +41,6 @@ class Dashboard::BannersController < Dashboard::BaseController
   end
 
   def banner_params
-    params.require(:banner).permit(:titulo, :descripcion, :tipo, :link, :imagen)
+    params.require(:banner).permit(:titulo, :descripcion, :tipo, :link, :imagen, :imagen_mobile)
   end
 end
