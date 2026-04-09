@@ -134,7 +134,15 @@
 
     @media (max-width: breakpoint(sm-end)) {
         .mobile-header__search-container {
-            margin-top: 1.25rem;
+            /* prevent search container from pushing content down; overlay it instead */
+            margin-top: 0 !important;
+            position: absolute;
+            /* add small gap below the header/brand on mobile */
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 12;
         }
     }
 }

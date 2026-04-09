@@ -35,9 +35,7 @@
 
   <body>
 
-      <header>
           <%= render 'layouts/header' %>
-     </header>
 
        <%= yield %>
 
@@ -48,6 +46,41 @@
 
   </body>
   <script>
+    // Adjust site__body padding to account for mobile header height
+    function adjustSiteBodyForMobileHeader() {
+      var siteHeader = document.querySelector('.site__header.d-lg-none');
+      var siteBody = document.querySelector('.site__body');
+      if (!siteHeader || !siteBody) return;
+
+      var headerRect = siteHeader.getBoundingClientRect();
+      var maxBottom = headerRect.bottom;
+
+      var searchContainer = siteHeader.querySelector('.mobile-header__search-container');
+      if (searchContainer) {
+        try {
+          var scRect = searchContainer.getBoundingClientRect();
+          if (scRect.bottom > maxBottom) maxBottom = scRect.bottom;
+        } catch (e) {}
+      }
+
+      // total height needed to clear the lowest element (header or search)
+      var totalHeight = Math.max(0, maxBottom - headerRect.top);
+
+      // Add a small visual gap between header and banner so they don't feel glued
+      var gap = 24; // px (increased gap between header and banner)
+
+      // Clamp to avoid huge gaps (allow more room now)
+      var maxPadding = 64; // px
+      if (totalHeight + gap > maxPadding) totalHeight = maxPadding - gap;
+
+      siteBody.style.paddingTop = Math.ceil(totalHeight + gap) + 'px';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      adjustSiteBodyForMobileHeader();
+      window.addEventListener('resize', adjustSiteBodyForMobileHeader);
+      document.addEventListener('turbo:load', adjustSiteBodyForMobileHeader);
+    });
+
     function initCKEditors() {
       if (window.CKEDITOR) {
         document.querySelectorAll('.ckeditor').forEach(function(area) {

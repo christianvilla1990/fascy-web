@@ -1,19 +1,10 @@
-    <div class="block block-banner">
+    <div class="block block-banner block-banner--secondary">
         <div class="container">
             <% @banners_secundarios.each do |banner| %>
                 <a href="<%= banner.link %>" class="block-banner__body fade-in-banner">
                     <% if banner.imagen.attached? %>
-                        <picture>
-                          <source media="(min-width: 768px)" srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>">
-                          <source media="(max-width: 767px)" srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [800, 420])) %>">
-                          <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1200, 500])) %>" alt="<%= banner.titulo %>" class="block-banner__image block-banner__image--mobile banner-mobile-img">
-                        </picture>
+                        <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>" alt="<%= banner.titulo %>" class="block-banner__image banner-desktop-only">
                     <% end %>
-                    <div class="block-banner__title"><%= banner.titulo %></div>
-                    <div class="block-banner__text"><%= banner.descripcion %></div>
-                    <div class="block-banner__button">
-                        <span class="btn btn-sm btn-primary">Shop Now</span>
-                    </div>
                 </a>
             <% end %>
         </div>

@@ -1,317 +1,128 @@
-/*
-// .block-slideshow
-*/
+/* Minimal slideshow styles (trimmed unused rules) */
 @import '../variables';
-@import '../functions';
-@import '../mixins/buttons';
 @import '../mixins/direction';
 
-
-$local-dots-height: 18px;
-$local-dots-padding: 4px;
-$local-dot-size: $local-dots-height - $local-dots-padding * 2;
-
-
 .block-slideshow {
-    margin-bottom: $block-margin-bottom;
-    position: relative;
+  margin-bottom: $block-margin-bottom;
+  position: relative;
 
-    .owl-carousel {
-        .owl-dots {
-            bottom: 16px;
-            position: absolute;
-            background: $block-slideshow-dots-bg;
-            display: flex;
-            padding: $local-dots-padding;
-            border-radius: $local-dots-height * .5;
-
-            @include direction {
-                #{$inset-inline-start}: 50%;
-                transform: translateX(#{-50% * $transform-direction});
-            }
-        }
-
-        .owl-dot {
-            width: $local-dot-size;
-            height: $local-dot-size;
-            border-radius: $local-dot-size * .5;
-            background: $block-slideshow-dot-default-color;
-
-            &:focus {
-                outline: none;
-            }
-
-            &:hover {
-                background: $block-slideshow-dot-hover-color;
-            }
-        }
-        .owl-dot.active {
-            background: $block-slideshow-dot-active-color;
-        }
-
-        .owl-dot + .owl-dot {
-            @include direction {
-                #{$margin-inline-start}: 6px;
-            }
-        }
+  .owl-carousel {
+    .owl-dots {
+      position: absolute;
+      bottom: 16px;
+      display: flex;
+      padding: 6px;
+      background: $block-slideshow-dots-bg;
+      border-radius: 12px;
+      @include direction {
+        #{$inset-inline-start}: 50%;
+        transform: translateX(#{-50% * $transform-direction});
+      }
     }
+
+    .owl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: $block-slideshow-dot-default-color;
+      &.active { background: $block-slideshow-dot-active-color; }
+    }
+  }
+
+  &__body,
+  &__slide { display: block; }
 }
+
+/* Small phone behavior: show full image (no recorte) by using height:auto and contain */
+@media (max-width: 420px) {
+  .block-slideshow__slide-media {
+    aspect-ratio: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .block-slideshow__slide-media img,
+  .banner-principal-img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+
+  .block-slideshow__body { margin-top: 0 !important; }
+}
+
 .block-slideshow__slide {
-    position: relative;
-    display: block;
-    color: inherit;
+  position: relative;
+  color: inherit;
+}
 
-    &:hover {
-        color: inherit;
+/* media container for slideshow images */
+// .block-slideshow__slide-media {
+//   width: 100%;
+//   aspect-ratio: 16/7.5;
+//   max-height: 75vh;
+//   overflow: hidden;
+// }
+
+.banner-principal-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+}
+
+@media (max-width: breakpoint(xs-end)) {
+     .banner-principal-img {
+        height: 250px;
+
+  .block-slideshow__slide-media { aspect-ratio: auto; height: 45vh; max-height: 55vh; }
+  .banner-principal-img { object-fit: cover; }
+        aspect-ratio: auto;
+        height: 40vh !important;
+        max-height: 40vh !important;
     }
 }
-.block-slideshow__slide-image {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-    background-repeat: no-repeat;
-    background-position: center center;
-    /* background-size removed: prefer <img> with object-fit for responsiveness */
-        img.banner-mobile-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-            display: block;
-        }
-}
-.block-slideshow__slide-image--mobile {
-    display: none;
-}
-
-.block-slideshow__slide-content {
-    position: absolute;
-    bottom: 46px;
-
-    @include direction {
-        #{$inset-inline-start}: 46px;
-    }
-}
-.block-slideshow__slide-title {
-    font-size: 30px;
-    line-height: 34px;
-    font-weight: $font-weight-bold;
-    margin-bottom: 12px;
-    opacity: 0;
-    transition: all 1s .2s;
-}
-.block-slideshow__slide-text {
-    line-height: 1.625;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all .8s .5s;
-}
-.block-slideshow__slide-button {
-    margin-top: 40px;
-    opacity: 0;
-    transition: all 1s .4s;
-}
-.block-slideshow .active {
-    .block-slideshow__slide-title,
-    .block-slideshow__slide-text,
-    .block-slideshow__slide-button {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-
-.block-slideshow--layout--full {
-    margin-top: 20px;
-
-    @media (min-width: breakpoint(md-start)) {
-        .block-slideshow__body,
-        .block-slideshow__slide {
-            height: 440px;
-        }
-
-        .block-slideshow__slide-content {
-            bottom: 54px;
-
-            @include direction {
-                #{$inset-inline-start}: 72px;
-            }
-        }
-        .block-slideshow__slide-title {
-            margin-bottom: 16px;
-            line-height: 36px;
-        }
-        .block-slideshow__slide-button {
-            margin-top: 48px;
-        }
-    }
-    @media (min-width: breakpoint(lg-start)) and (max-width: breakpoint(lg-end)) {
-        .block-slideshow__slide-image--desktop {
-            background-position: -70px top;
-        }
-        .block-slideshow__slide-content {
-            @include direction {
-                #{$inset-inline-start}: 56px;
-            }
-        }
-    }
-    @media (min-width: breakpoint(md-start)) and (max-width: breakpoint(md-end)) {
-        .block-slideshow__slide-image--desktop {
-            background-position: -190px top;
-        }
-        .block-slideshow__slide-content {
-            bottom: 56px;
-
-            @include direction {
-                #{$inset-inline-start}: 48px;
-            }
-        }
-        .block-slideshow__slide-title {
-            margin-bottom: 8px;
-        }
-        .block-slideshow__slide-button {
-            margin-top: 40px;
-        }
-    }
-}
-
-
-.block-slideshow--layout--with-departments {
-    $local-margin: 15px;
-
+/* Mobile adjustments */
+@media (max-width: breakpoint(sm-end)) {
     .block-slideshow__body {
-        margin-top: $local-margin;
-        height: 410px - $local-margin;
+        margin-top: -10px !important;
     }
-    .block-slideshow__slide {
-        height: 410px - $local-margin;
-    }
+  .block-slideshow__slide-media { aspect-ratio: auto; height: 50vh; max-height: 60vh; }
+  .banner-principal-img { object-fit: contain; }
 
-    @media (min-width: breakpoint(lg-start)) {
-        .block-slideshow__body {
-            @include direction {
-                #{$margin-inline-start}: (30px - $local-margin) * -1;
-            }
-        }
-    }
+//   .block-slideshow__slide-content {
+//     top: 30px;
+//     text-align: center;
+//     @include direction {
+//       #{$inset-inline-start}: 5%;
+//       #{$inset-inline-end}: 5%;
+//     }
+//   }
 
-    @media (max-width: breakpoint(md-end)) {
-        .block-slideshow__slide-button .btn {
-            @include btn-sm();
-        }
-    }
+//   .block-slideshow__slide-title { font-size: 26px; line-height: 32px; }
+//   .block-slideshow__slide-text { display: none; }
+//   .block-slideshow__slide-button { margin-top: 24px; }
 }
 
+/* Tablet narrow range around 712px: reduce banner height to avoid large vertical gaps */
+@media (min-width: 600px) and (max-width: 768px) {
+  .block-slideshow__slide-media {
+    aspect-ratio: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+  }
 
-@media (max-width: breakpoint(sm-end)) {
-    /* remove extra spacing above banner on small screens */
-    .block-slideshow,
-    .block-slideshow--layout--full {
-        margin-top: 0;
-    }
-    .block-slideshow__body,
-    .block-slideshow__slide {
-        height: auto;
-        /* use fixed padding on mobile to control spacing */
-        padding-top: 50px;
-        min-height: 260px;
-        max-height: 75vh;
-    }
-    .block-slideshow__slide-image--desktop {
-        display: none;
-    }
-    .block-slideshow__slide-image--mobile {
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: contain; /* show whole image on mobile (no crop) */
-        display: block;
-        background-origin: padding-box;
-    }
-    .block-slideshow__slide-content {
-        top: 30px;
-        text-align: center;
-
-        @include direction {
-            #{$inset-inline-start}: 5%;
-            #{$inset-inline-end}: 5%;
-        }
-    }
-    .block-slideshow__slide-title {
-        font-size: 26px;
-        line-height: 32px;
-    }
-    .block-slideshow__slide-text {
-        display: none;
-    }
-    .block-slideshow__slide-button {
-        margin-top: 24px;
-    }
-    .block-slideshow__slide-button .btn {
-        @include btn-sm();
-    }
-}
-
-/* Fix for mid-size tablets (e.g. 834px width) */
-@media (min-width: 768px) and (max-width: 900px) {
-    .block-slideshow__body,
-    .block-slideshow__slide {
-        height: 520px !important;
-    }
-    .block-slideshow__slide-image--desktop {
-        background-size: contain !important; /* show full image */
-        background-position: center center !important;
-        display: block !important;
-    }
-    .block-slideshow__slide-image--mobile {
-        display: none !important;
-    }
-}
-
-/* Ensure carousel images fit mobile viewport */
-@media (max-width: breakpoint(sm-end)) {
-    #bannerPrincipalCarousel .carousel-inner img.banner-principal-img {
-        width: 100%;
-        height: auto;
-        max-height: 60vh; /* never larger than 60% of viewport height */
-        object-fit: contain;
-    }
-    #bannerPrincipalCarousel .carousel-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-/* Bootstrap carousel specific adjustments */
-#bannerPrincipalCarousel {
-        .carousel-inner {
-        .carousel-item {
-            height: auto;
-        }
-        img.banner-principal-img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            display: block;
-        }
-    }
-}
-
-@media (max-width: breakpoint(sm-end)) {
-    #bannerPrincipalCarousel .carousel-inner img.banner-principal-img {
-        height: auto;
-        aspect-ratio: 16/7.5;
-        max-height: 420px;
-        object-fit: contain;
-        object-position: center center;
-        background-color: #000;
-    }
-    #bannerPrincipalCarousel .carousel-caption {
-        display: block;
-        bottom: 5%;
-    }
+  .banner-principal-img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
 }

@@ -1,0 +1,25 @@
+<% if @banners_principales.present? %>
+  <div class="block-slideshow block-slideshow--layout--full block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="block-slideshow__body">
+            <div class="owl-carousel">
+              <% @banners_principales.each do |banner| %>
+                <% desktop = banner.respond_to?(:imagen) && banner.imagen.attached? ? url_for(banner.imagen) : '' %>
+                <% mobile_blob = (banner.respond_to?(:imagen_mobile) && banner.imagen_mobile.attached?) ? banner.imagen_mobile : (banner.respond_to?(:imagen) && banner.imagen.attached? ? banner.imagen : nil) %>
+                <% mobile = mobile_blob.present? ? url_for(mobile_blob) : desktop %>
+
+                <a class="block-slideshow__slide" href="<%= banner.try(:link).presence || '#' %>">
+                  <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('<%= desktop %>')"></div>
+                  <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('<%= mobile %>')"></div>
+                </a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

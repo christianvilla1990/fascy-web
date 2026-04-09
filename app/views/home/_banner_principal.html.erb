@@ -1,78 +1,26 @@
-<% if @banners_principales.present? %>
-  <div class="block-slideshow block-slideshow--layout--full block">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="block-slideshow__body">
-            <div class="owl-carousel">
-              <% @banners_principales.each do |banner| %>
-                <% desktop = banner.respond_to?(:imagen) && banner.imagen.attached? ? url_for(banner.imagen) : '' %>
-                <% mobile_blob = (banner.respond_to?(:imagen_mobile) && banner.imagen_mobile.attached?) ? banner.imagen_mobile : (banner.respond_to?(:imagen) && banner.imagen.attached? ? banner.imagen : nil) %>
-                <% mobile = mobile_blob.present? ? url_for(mobile_blob) : desktop %>
-
-                <a class="block-slideshow__slide" href="<%= banner.try(:link).presence || '#' %>">
-                  <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('<%= desktop %>')"></div>
-                  <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('<%= mobile %>')"></div>
-                  <div class="block-slideshow__slide-content">
-                    <div class="block-slideshow__slide-title"><%= banner.try(:titulo) || banner.try(:title) %></div>
-                    <div class="block-slideshow__slide-text"><%= banner.try(:texto) || banner.try(:text) %></div>
-                    <div class="block-slideshow__slide-button">
-                      <span class="btn btn-primary btn-lg"><%= banner.try(:button_text).presence || 'Shop Now' %></span>
+            <div class="block-slideshow block-slideshow--layout--with-departments block">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="block-slideshow__body">
+                                                        <div class="owl-carousel">
+                                                                <% banners = @banners_principales || [] %>
+                                                                <% seen = {} %>
+                                                                <% banners.each do |b| %>
+                                                                    <% next unless b.respond_to?(:imagen) && b.imagen.attached? %>
+                                                                    <% key = b.imagen.blob.key rescue nil %>
+                                                                    <% next if key && seen[key] %>
+                                                                    <% seen[key] = true if key %>
+                                                                    <a class="block-slideshow__slide" href="<%= b.respond_to?(:link) && b.link.present? ? b.link : '#' %>">
+                                                                        <div class="block-slideshow__slide-media">
+                                                                            <img src="<%= url_for(b.imagen.variant(resize_to_limit: [1600,800])) %>" alt="<%= b.respond_to?(:titulo) ? b.titulo : 'Banner' %>" class="banner-principal-img">
+                                                                        </div>
+                                                            
+                                                                    </a>
+                                                                <% end %>
+                                                        </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </a>
-              <% end %>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% else %>
-  <!-- fallback: static template block -->
-  <div class="block-slideshow block-slideshow--layout--full block">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="block-slideshow__body">
-            <div class="owl-carousel">
-              <a class="block-slideshow__slide" href="">
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('images/slides/slide-1-full.jpg')"></div>
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('images/slides/slide-1-mobile.jpg')"></div>
-                <div class="block-slideshow__slide-content">
-                  <div class="block-slideshow__slide-title">Big choice of<br>Plumbing products</div>
-                  <div class="block-slideshow__slide-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Etiam pharetra laoreet dui quis molestie.</div>
-                  <div class="block-slideshow__slide-button">
-                    <span class="btn btn-primary btn-lg">Shop Now</span>
-                  </div>
-                </div>
-              </a>
-              <a class="block-slideshow__slide" href="">
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('images/slides/slide-2-full.jpg')"></div>
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('images/slides/slide-2-mobile.jpg')"></div>
-                <div class="block-slideshow__slide-content">
-                  <div class="block-slideshow__slide-title">Screwdrivers<br>Professional Tools</div>
-                  <div class="block-slideshow__slide-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Etiam pharetra laoreet dui quis molestie.</div>
-                  <div class="block-slideshow__slide-button">
-                    <span class="btn btn-primary btn-lg">Shop Now</span>
-                  </div>
-                </div>
-              </a>
-              <a class="block-slideshow__slide" href="">
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('images/slides/slide-3-full.jpg')"></div>
-                <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('images/slides/slide-3-mobile.jpg')"></div>
-                <div class="block-slideshow__slide-content">
-                  <div class="block-slideshow__slide-title">One more<br>Unique header</div>
-                  <div class="block-slideshow__slide-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Etiam pharetra laoreet dui quis molestie.</div>
-                  <div class="block-slideshow__slide-button">
-                    <span class="btn btn-primary btn-lg">Shop Now</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
