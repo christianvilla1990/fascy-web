@@ -67,6 +67,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "httparty", "~> 0.23.2"
+gem "httparty", "~> 0.24.2"
 gem "dotenv-rails", "~> 3.1"
 gem 'roo', '~> 2.9'
