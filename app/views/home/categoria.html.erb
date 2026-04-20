@@ -1,3 +1,39 @@
+<% if @subcategoria.present? %>
+  <% content_for :title, @subcategoria.nombre %>
+  <% content_for :meta_description, "Descubrí nuestra selección de productos de #{@subcategoria.nombre} en Fascy. Calidad garantizada y envíos a todo el país." %>
+<% elsif @categoria.present? %>
+  <% content_for :title, @categoria.nombre %>
+  <% content_for :meta_description, "Explorá todos los productos de la categoría #{@categoria.nombre} en Fascy: variedad, calidad y los mejores precios." %>
+<% elsif params[:id] == 'destacados' %>
+  <% content_for :title, "Productos destacados" %>
+  <% content_for :meta_description, "Descubrí nuestros productos destacados: los más elegidos por nuestros clientes, con calidad garantizada y los mejores precios." %>
+<% elsif params[:id] == 'promo_mes' %>
+  <% content_for :title, "Promociones del mes" %>
+  <% content_for :meta_description, "Aprovechá las ofertas del mes en Fascy: productos seleccionados con descuentos especiales y stock limitado." %>
+<% elsif params[:search].present? %>
+  <% content_for :title, "Búsqueda: #{params[:search]}" %>
+  <% content_for :meta_description, "Resultados de búsqueda para \"#{params[:search]}\" en Fascy. Encontrá los productos que necesitás." %>
+<% end %>
+
+<% content_for :head do %>
+  <%
+    crumbs = [["Inicio", root_url]]
+    if @subcategoria.present?
+      if @subcategoria.respond_to?(:categoria) && @subcategoria.categoria.present?
+        crumbs << [@subcategoria.categoria.nombre, home_categoria_url(@subcategoria.categoria)]
+      end
+      crumbs << [@subcategoria.nombre, home_categoria_url(@subcategoria)]
+    elsif @categoria.present?
+      crumbs << [@categoria.nombre, home_categoria_url(@categoria)]
+    elsif params[:id] == 'destacados'
+      crumbs << ["Productos destacados", home_categoria_url('destacados')]
+    elsif params[:id] == 'promo_mes'
+      crumbs << ["Promociones del mes", home_categoria_url('promo_mes')]
+    end
+  %>
+  <%= json_ld_breadcrumbs(crumbs) if crumbs.size > 1 %>
+<% end %>
+
 <%= turbo_frame_tag "productos" do %>
   <div class="site__body">
     <div class="page-header">
@@ -62,21 +98,21 @@
                           </div>
 
                           <div class="product-card__image product-image">
-                              <%= link_to home_productos_detalle_path(p.id), data: { turbo_frame: "productos-detalle" }, class: "product-image__body" do %>
+                              <%= link_to home_productos_detalle_path(p), data: { turbo_frame: "productos-detalle" }, class: "product-image__body" do %>
                                   <% portada = p.imagen_portada %>
                                   <% if portada.present? %>
                                     <%= image_tag portada.variant(resize_to_limit: [600, 600]).processed,
                                                   alt: p.caracteristica,
                                                   class: "product-image__img" %>
                                   <% else %>
-                                    <img class="product-image__img" src="images/products/product-1.jpg" alt="">
+                                    <img class="product-image__img" src="<%= asset_path('products/product-1.jpg') %>" alt="<%= p.caracteristica %>">
                                   <% end %>
                                <% end %>
                           </div>
 
                           <div class="product-card__info">
                             <div class="product-card__name">
-                              <%= link_to home_productos_detalle_path(p.id), data: { turbo_frame: "productos-detalle" } do %>
+                              <%= link_to home_productos_detalle_path(p), data: { turbo_frame: "productos-detalle" } do %>
                                   <%= p.caracteristica %>
                               <% end %>
                             </div>

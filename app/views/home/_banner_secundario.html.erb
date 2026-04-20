@@ -3,10 +3,25 @@
             <% @banners_secundarios.each do |banner| %>
                 <a href="<%= banner.link %>" class="block-banner__body fade-in-banner">
                     <% if banner.imagen.attached? %>
-                        <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>" alt="<%= banner.titulo %>" class="block-banner__image banner-desktop-only">
+                        <picture>
+                            <%# Mobile: use imagen_mobile if available, otherwise crop desktop %>
+                            <% if banner.respond_to?(:imagen_mobile) && banner.imagen_mobile.attached? %>
+                                <source media="(max-width: 575px)"
+                                        srcset="<%= url_for(banner.imagen_mobile.variant(resize_to_limit: [600, 900])) %>">
+                            <% else %>
+                                <source media="(max-width: 575px)"
+                                        srcset="<%= url_for(banner.imagen.variant(resize_to_fill: [600, 400])) %>">
+                            <% end %>
+                            <%# Tablet %>
+                            <source media="(max-width: 991px)"
+                                    srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [992, 420])) %>">
+                            <%# Desktop fallback %>
+                            <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>"
+                                 alt="<%= banner.titulo %>"
+                                 class="block-banner__image">
+                        </picture>
                     <% end %>
                 </a>
             <% end %>
         </div>
     </div>
-

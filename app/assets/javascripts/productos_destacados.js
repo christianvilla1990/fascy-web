@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
               }
               var productosCount = $carousel.find('.block-products-carousel__column').length;
               if (productosCount > 0) {
-                var itemsCount = Math.min(productosCount, 4);
                 $carousel.owlCarousel({
                   items: productosCount,
                   margin: 14,
@@ -36,10 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
                   rtl: document.body.dir === 'rtl',
                   responsive: {
                     1200: {items: productosCount, margin: 14},
-                    992:  {items: productosCount, margin: 10},
-                    768:  {items: Math.min(productosCount, 3), margin: 10},
-                    475:  {items: Math.min(productosCount, 2), margin: 10},
-                    0:    {items: 1}
+                    992:  {items: Math.min(productosCount, 4), margin: 10},
+                    768:  {items: Math.min(productosCount, 4), margin: 10},
+                    576:  {items: Math.min(productosCount, 3), margin: 10},
+                    420:  {items: Math.min(productosCount, 2), margin: 10},
+                    0:    {items: Math.min(productosCount, 2), margin: 6}
                   }
                 });
                 // Sugerencia visual: si hay menos de 4 productos, ajustar el ancho de las columnas

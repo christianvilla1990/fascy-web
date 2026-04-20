@@ -5,50 +5,121 @@
                   <div class="block-header__divider"></div>
                 </div>
                 <style>
-                  /* category image hover: lift effect */
-                  .block-categories__list.owl-carousel{gap:0.5rem}
-                  .block-categories__item{margin:0 6px}
-                  .block-categories .category-card__image{background:#fff;padding:8px;border-radius:10px;overflow:hidden}
-                  .block-categories .category-card__image a{display:flex;align-items:center;justify-content:center;height:auto}
-                  .block-categories .category-card__image img{transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s ease;width:100%;height:auto;max-height:420px;object-fit:contain}
-                  .block-categories .category-card__image:hover img,
-                  .block-categories .category-card__image:focus-within img{transform: translateY(-6px) scale(1.03);box-shadow:0 10px 20px rgba(0,0,0,0.12)}
+                  /* Compact, responsive category cards */
+                  .block-categories__list.owl-carousel { display: block; }
+                  .block-categories__item { margin: 0; }
 
-                  /* category name: limit long names to two lines with ellipsis on small screens */
-                  .block-categories .category-card__name{font-size:1rem;max-width:240px;text-align:center;margin-top:0.6rem}
-                  .block-categories .category-card__name a{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal}
+                  /* Card container: full width, block level */
+                  .block-categories .category-card { display: block; width: 100%; }
 
-                  /* center carousel items when there are few categories */
-                  .block-categories__list.owl-carousel{display:flex;justify-content:center;align-items:stretch}
-                  .block-categories__item{margin:0 auto}
+                  /* Body: vertical stack, children stretched to full width */
+                  .block-categories .category-card .category-card__body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
+                    padding: 8px;
+                    background: #fff;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+                    border-radius: 10px;
+                    text-align: center;
+                    width: 100%;
+                  }
 
-                  @media (max-width: 767px) {
-                    /* let image fill container width and keep aspect ratio to avoid thin/tall appearance */
-                    .block-categories .category-card__image a{height:auto}
-                    .block-categories .category-card__image{padding:8px}
-                    .block-categories .category-card__image img{width:100%;height:auto;object-fit:contain;max-height:420px}
-                    .block-categories .category-card__name{max-width:180px;font-size:0.95rem}
+                  /* Image container: full width of card, no extra padding */
+                  .block-categories .category-card .category-card__image {
+                    width: 100% !important;
+                    margin: 0 0 8px 0 !important;
+                    padding: 0;
+                    background: transparent;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                  }
+                  .block-categories .category-card .category-card__image a {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                  }
+                  .block-categories .category-card .category-card__image img {
+                    width: 100%;
+                    height: auto;
+                    max-height: none;
+                    display: block;
+                    border-radius: 8px;
+                    transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+                  }
+                  .block-categories .category-card .category-card__image:hover img,
+                  .block-categories .category-card .category-card__image:focus-within img {
+                    transform: translateY(-4px) scale(1.03);
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+                  }
+
+                  /* Name: cleaner typography */
+                  .block-categories .category-card .category-card__name {
+                    font-size: 0.95rem;
+                    line-height: 1.25;
+                    margin-top: 4px;
+                    max-width: 100%;
+                  }
+                  .block-categories .category-card .category-card__name a {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+
+                  .block-categories .category-card .category-card__content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 2px;
+                    margin-top: 6px;
+                  }
+                  .block-categories .category-card .category-card__all {
+                    margin-top: 0;
+                    font-size: 0.85rem;
+                  }
+                  .block-categories .category-card .category-card__products {
+                    display: block;
+                    font-size: 0.8rem;
+                    color: #6c757d;
+                  }
+
+                  /* Tablet */
+                  @media (max-width: 991px) {
+                    .block-categories .category-card .category-card__body { padding: 10px 8px; }
+                    .block-categories .category-card .category-card__name { font-size: 0.9rem; }
+                  }
+
+                  /* Mobile */
+                  @media (max-width: 575px) {
+                    .block-categories .category-card .category-card__body { padding: 8px 6px; }
+                    .block-categories .category-card .category-card__image { padding: 4px; margin-bottom: 6px; }
+                    .block-categories .category-card .category-card__name { font-size: 0.82rem; line-height: 1.2; margin-top: 2px; }
+                    .block-categories .category-card .category-card__all { font-size: 0.78rem; }
+                    .block-categories .category-card .category-card__products { font-size: 0.75rem; }
                   }
                 </style>
                 <div class="block-categories__list owl-carousel" id="categorias-carousel">
                   <% categorias.each do |categoria| %>
                     <div class="block-categories__item category-card category-card--layout--classic">
-                      <div class="category-card__body" style="display: flex; flex-direction: column; align-items: center;">
+                      <div class="category-card__body">
                         <div class="category-card__image">
-                          <a href="<%= home_categoria_path(categoria.id) %>">
+                          <a href="<%= home_categoria_path(categoria) %>">
                             <% if categoria.imagen.attached? %>
-                              <%= image_tag categoria.imagen.variant(resize_to_limit: [720,720]), alt: categoria.nombre, class: 'img-fluid' %>
+                              <%= image_tag categoria.imagen.variant(resize_to_limit: [400, 400]), alt: categoria.nombre, class: 'img-fluid' %>
                             <% else %>
                               <img src="/images/categories/default.jpg" alt="<%= categoria.nombre %>" class="img-fluid">
                             <% end %>
                           </a>
                         </div>
                         <div class="category-card__name">
-                          <a href="<%= home_categoria_path(categoria.id) %>"> <%= categoria.nombre %> </a>
+                          <a href="<%= home_categoria_path(categoria) %>"> <%= categoria.nombre %> </a>
                         </div>
                         <div class="category-card__content">
                           <div class="category-card__all">
-                            <a href="<%= home_categoria_path(categoria.id) %>">Ver todo</a>
+                            <a href="<%= home_categoria_path(categoria) %>">Ver todo</a>
                           </div>
                           <div class="category-card__products">
                             <%= categoria.productos.count %> Productos
@@ -57,26 +128,28 @@
                       </div>
                     </div>
                   <% end %>
-                <%# </div> %>
-              <%# </div> %>
-            </div>
+                </div>
             <script>
               document.addEventListener('DOMContentLoaded', function() {
                 if (window.$ && $.fn.owlCarousel) {
                   $('#categorias-carousel').owlCarousel({
-                    items: 3,
+                    items: 5,
                     loop: true,
-                    margin: 8,
+                    margin: 10,
                     autoplay: true,
                     autoplayTimeout: 3500,
                     autoplayHoverPause: true,
                     responsive: {
-                      0: { items: 2 },
-                      480: { items: 2 },
-                      600: { items: 3 },
-                      1000: { items: 3 }
+                      0:    { items: 2, margin: 6 },
+                      420:  { items: 3, margin: 8 },
+                      576:  { items: 3, margin: 8 },
+                      768:  { items: 4, margin: 10 },
+                      992:  { items: 5, margin: 10 },
+                      1200: { items: 5, margin: 12 }
                     }
                   });
                 }
               });
             </script>
+          </div>
+        </div>

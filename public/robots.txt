@@ -1,0 +1,16 @@
+# robots.txt — Fascy
+User-agent: *
+Allow: /
+Disallow: /admin_users/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /users/
+Disallow: /newsletter_subscriptions
+Disallow: /home/buscar_productos
+
+# No indexar rutas con parámetros de filtros o búsquedas
+Disallow: /*?search=
+Disallow: /*?categoria=
+Disallow: /*?page=
+
+Sitemap: https://www.fascy.com.py/sitemap.xml

@@ -21,6 +21,7 @@ gem 'sassc-rails'
 # gem "redis", ">= 4.0.1"
 gem "pagy", "~> 6.4"
 gem "image_processing", "~> 1.12"
+gem "friendly_id", "~> 5.5"
 
 # Authentication
 gem 'devise'

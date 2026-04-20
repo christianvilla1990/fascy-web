@@ -1,6 +1,12 @@
+<%= content_for :head do %>
+  <%= json_ld_organization %>
+<% end %>
 
-<div class="site__body"> 
-        
+<div class="site__body">
+    <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
+      Fascy — Herramientas, productos y soluciones de calidad en Paraguay
+    </h1>
+
              <%= render 'banner_principal' %>
         
         <!-- .block-slideshow / end -->

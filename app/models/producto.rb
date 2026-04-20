@@ -1,4 +1,7 @@
 class Producto < ApplicationRecord
+  extend FriendlyId
+  friendly_id :slug_source, use: [:slugged, :history, :finders]
+
   belongs_to :marca, optional: true
   belongs_to :categoria, optional: true
   belongs_to :subcategoria, optional: true
@@ -44,6 +47,12 @@ class Producto < ApplicationRecord
     imagenes.reject { |att| att == portada }
   end
 
- 
+  # Fuente del slug: característica + SKU (si existe) para garantizar unicidad
+  def slug_source
+    [caracteristica.to_s.strip.presence, sku.to_s.strip.presence].compact.join(" ")
+  end
 
+  def should_generate_new_friendly_id?
+    caracteristica_changed? || sku_changed? || slug.blank?
+  end
 end

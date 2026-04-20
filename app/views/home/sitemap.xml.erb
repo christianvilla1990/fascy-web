@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc><%= root_url %></loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc><%= sobre_nosotros_url %></loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc><%= sucursales_url %></loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc><%= contacto_url %></loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <% @categorias.each do |cat| %>
+    <url>
+      <loc><%= home_categoria_url(cat) %></loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <% cat.subcategorias.each do |sub| %>
+      <url>
+        <loc><%= home_categoria_url(sub) %></loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+      </url>
+    <% end %>
+  <% end %>
+
+  <% @productos.each do |p| %>
+    <url>
+      <loc><%= home_productos_detalle_url(p) %></loc>
+      <lastmod><%= p.updated_at.iso8601 %></lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <% end %>
+</urlset>

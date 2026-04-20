@@ -18,12 +18,19 @@
     <%= f.text_field :link, class: "form-control" %>
   </div>
   <div class="mb-3">
-    <%= f.label :imagen, "Imagen" %>
-    <%= f.file_field :imagen, class: "form-control" %>
+    <%= f.label :imagen, "Imagen para escritorio" %>
+    <%= f.file_field :imagen, class: "form-control", accept: "image/*" %>
+    <small class="form-text text-muted">
+      Proporción recomendada: horizontal panorámica (ej. 1600×500 px o 1600×650 px para banner secundario).
+    </small>
   </div>
   <div class="mb-3">
-    <%= f.label :imagen_mobile, "Imagen (mobile, opcional)" %>
-    <%= f.file_field :imagen_mobile, class: "form-control" %>
+    <%= f.label :imagen_mobile, "Imagen para móvil (opcional, recomendada)" %>
+    <%= f.file_field :imagen_mobile, class: "form-control", accept: "image/*" %>
+    <small class="form-text text-muted">
+      Proporción recomendada: vertical o cuadrada (ej. 600×800 px).
+      Si no cargás una imagen móvil, se recortará el centro de la imagen de escritorio.
+    </small>
   </div>
   <%= f.submit "Guardar", class: "btn btn-primary" %>
   <%= link_to "Volver", dashboard_banners_path, class: "btn btn-secondary ms-2" %>

@@ -1,0 +1,394 @@
+<% content_for :title, "Sucursales" %>
+<% content_for :meta_description, "Encontrá las sucursales de Fascy en Asunción y Ciudad del Este. Horarios, teléfonos, ubicaciones en mapa y WhatsApp directo para consultas." %>
+
+<div class="site__body sucursales-page">
+  <style>
+    .sucursales-page { color: #2b2b2b; }
+
+    /* Hero */
+    .suc-hero {
+      background: linear-gradient(135deg, #fff8e1 0%, #fff4d1 60%, #ffe7a3 100%);
+      padding: 70px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .suc-hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      background: rgba(255, 184, 40, 0.15);
+      border-radius: 50%;
+    }
+    .suc-hero__container { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 0 1rem; }
+    .suc-hero__eyebrow {
+      display: inline-block;
+      background: #ffb828;
+      color: #2b2b2b;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .suc-hero__title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .suc-hero__subtitle {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* Quick stats row */
+    .suc-quickstats {
+      max-width: 900px; margin: -35px auto 0;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 20px 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .suc-quickstat {
+      text-align: center;
+      padding: 10px 16px;
+      border-right: 1px solid #f0f0f0;
+    }
+    .suc-quickstat:last-child { border-right: none; }
+    .suc-quickstat__icon { font-size: 1.6rem; margin-bottom: 4px; }
+    .suc-quickstat__value { font-weight: 700; font-size: 1.05rem; color: #2b2b2b; }
+    .suc-quickstat__label { color: #777; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+    /* Section container */
+    .suc-section { padding: 70px 0; }
+    .suc-section__inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .suc-section__header { text-align: center; margin-bottom: 48px; }
+    .suc-section__eyebrow {
+      color: #ffb828;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .suc-section__title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+    .suc-section__lead {
+      color: #666;
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* Grid de sucursales */
+    .suc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    /* Card */
+    .suc-card {
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
+    }
+    .suc-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    }
+    .suc-card__badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: #ffb828;
+      color: #2b2b2b;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .suc-card__map {
+      position: relative;
+      height: 220px;
+      background: #eee;
+      overflow: hidden;
+    }
+    .suc-card__map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      filter: saturate(0.9);
+      transition: filter .3s ease;
+    }
+    .suc-card:hover .suc-card__map iframe {
+      filter: saturate(1.1);
+    }
+    .suc-card__body { padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1; }
+    .suc-card__name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .suc-card__info { display: flex; flex-direction: column; gap: 10px; }
+    .suc-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #444;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .suc-info-item__icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: rgba(255, 184, 40, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .suc-info-item__content strong { display: block; color: #2b2b2b; font-weight: 600; margin-bottom: 1px; }
+    .suc-info-item__content small { color: #888; font-size: 0.85rem; }
+    .suc-info-item a { color: inherit; text-decoration: none; transition: color .15s; }
+    .suc-info-item a:hover { color: #ffb828; }
+
+    /* Actions */
+    .suc-card__actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+    .suc-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: transform .15s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .suc-btn--primary {
+      background: #ffb828;
+      color: #2b2b2b;
+    }
+    .suc-btn--primary:hover {
+      background: #f0a81c;
+      color: #2b2b2b;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(255,184,40,0.35);
+    }
+    .suc-btn--outline {
+      background: transparent;
+      color: #2b2b2b;
+      border: 1.5px solid #e5e5e5;
+    }
+    .suc-btn--outline:hover {
+      border-color: #2b2b2b;
+      background: #2b2b2b;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* CTA final */
+    .suc-cta {
+      background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%);
+      color: #fff;
+      padding: 60px 0;
+      text-align: center;
+    }
+    .suc-cta__title { font-size: 1.9rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .suc-cta__text { color: #bbb; max-width: 540px; margin: 0 auto 28px; line-height: 1.6; }
+    .suc-cta__btn {
+      display: inline-block;
+      background: #ffb828;
+      color: #2b2b2b;
+      font-weight: 700;
+      padding: 14px 36px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .suc-cta__btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255,184,40,0.45);
+      color: #2b2b2b;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .suc-hero__title { font-size: 2.2rem; }
+      .suc-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 575px) {
+      .suc-hero { padding: 55px 0 50px; }
+      .suc-hero__title { font-size: 1.7rem; }
+      .suc-hero__subtitle { font-size: 0.95rem; }
+      .suc-quickstats { grid-template-columns: 1fr; gap: 6px; padding: 14px; margin: -30px 1rem 0; }
+      .suc-quickstat { border-right: none; border-bottom: 1px solid #f0f0f0; padding: 10px; }
+      .suc-quickstat:last-child { border-bottom: none; }
+      .suc-section { padding: 50px 0; }
+      .suc-section__title { font-size: 1.5rem; }
+      .suc-card__body { padding: 20px 18px; }
+      .suc-card__name { font-size: 1.2rem; }
+      .suc-card__actions { flex-direction: column; }
+      .suc-cta__title { font-size: 1.4rem; }
+    }
+  </style>
+
+  <!-- Hero -->
+  <section class="suc-hero">
+    <div class="suc-hero__container">
+      <span class="suc-hero__eyebrow">Nuestras sucursales</span>
+      <h1 class="suc-hero__title">Visitanos en cualquiera de nuestros locales</h1>
+      <p class="suc-hero__subtitle">
+        Estamos cerca tuyo. Conocé las ubicaciones, horarios y formas de contacto de cada sucursal.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick stats -->
+  <div class="suc-section__inner">
+    <div class="suc-quickstats">
+      <div class="suc-quickstat">
+        <div class="suc-quickstat__icon">🏬</div>
+        <div class="suc-quickstat__value"><%= @sucursales.size %> Sucursales</div>
+        <div class="suc-quickstat__label">En todo el país</div>
+      </div>
+      <div class="suc-quickstat">
+        <div class="suc-quickstat__icon">🕑</div>
+        <div class="suc-quickstat__value">Todos los días</div>
+        <div class="suc-quickstat__label">Atención abierta</div>
+      </div>
+      <div class="suc-quickstat">
+        <div class="suc-quickstat__icon">💬</div>
+        <div class="suc-quickstat__value">WhatsApp</div>
+        <div class="suc-quickstat__label">Respuesta rápida</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid de sucursales -->
+  <section class="suc-section">
+    <div class="suc-section__inner">
+      <div class="suc-section__header">
+        <div class="suc-section__eyebrow">Dónde encontrarnos</div>
+        <h2 class="suc-section__title">Ubicaciones y contactos</h2>
+        <p class="suc-section__lead">Elegí la sucursal que te quede más cómoda y acercate. También podés escribirnos por WhatsApp o llamarnos directamente.</p>
+      </div>
+
+      <div class="suc-grid">
+        <% @sucursales.each do |s| %>
+          <article class="suc-card">
+            <% if s[:destacada] %>
+              <span class="suc-card__badge">Principal</span>
+            <% end %>
+
+            <div class="suc-card__map">
+              <iframe src="<%= s[:map_embed] %>" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="suc-card__body">
+              <h3 class="suc-card__name"><%= s[:nombre] %></h3>
+
+              <div class="suc-card__info">
+                <div class="suc-info-item">
+                  <span class="suc-info-item__icon">📍</span>
+                  <div class="suc-info-item__content">
+                    <strong>Dirección</strong>
+                    <span><%= s[:direccion] %></span>
+                  </div>
+                </div>
+
+                <div class="suc-info-item">
+                  <span class="suc-info-item__icon">📞</span>
+                  <div class="suc-info-item__content">
+                    <strong>Teléfono</strong>
+                    <a href="tel:<%= s[:telefono].gsub(/\D/, '') %>"><%= s[:telefono] %></a>
+                  </div>
+                </div>
+
+                <div class="suc-info-item">
+                  <span class="suc-info-item__icon">🕑</span>
+                  <div class="suc-info-item__content">
+                    <strong>Horarios</strong>
+                    <span><%= s[:horario_semana] %></span>
+                    <% if s[:horario_finde].present? %>
+                      <small><%= s[:horario_finde] %></small>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="suc-info-item">
+                  <span class="suc-info-item__icon">✉️</span>
+                  <div class="suc-info-item__content">
+                    <strong>Email</strong>
+                    <a href="mailto:<%= s[:email] %>"><%= s[:email] %></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="suc-card__actions">
+                <a class="suc-btn suc-btn--primary"
+                   href="https://wa.me/<%= s[:whatsapp] %>"
+                   target="_blank" rel="noopener">
+                  💬 WhatsApp
+                </a>
+                <a class="suc-btn suc-btn--outline"
+                   href="https://www.google.com/maps/search/?api=1&query=<%= ERB::Util.url_encode(s[:direccion]) %>"
+                   target="_blank" rel="noopener">
+                  🗺️ Cómo llegar
+                </a>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="suc-cta">
+    <div class="suc-section__inner">
+      <h2 class="suc-cta__title">¿Preferís comprar desde casa?</h2>
+      <p class="suc-cta__text">
+        Todos nuestros productos están disponibles online. Hacé tu pedido y te lo enviamos adonde estés.
+      </p>
+      <%= link_to "Ver catálogo online", root_path, class: "suc-cta__btn" %>
+    </div>
+  </section>
+
+  <%= render 'footer' %>
+</div>

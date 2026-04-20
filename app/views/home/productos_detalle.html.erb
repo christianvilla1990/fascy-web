@@ -1,3 +1,23 @@
+<% content_for :title, @producto.caracteristica.to_s %>
+<% content_for :meta_description, (@producto.descripcion.presence || @producto.datos_tecnicos.presence || "Comprá #{@producto.caracteristica} al mejor precio en Fascy. Calidad garantizada y envíos a todo el país.") %>
+<% if @producto.imagen_portada.present? %>
+  <% content_for :meta_image, url_for(@producto.imagen_portada.variant(resize_to_limit: [1200, 630])) %>
+<% end %>
+
+<% content_for :head do %>
+  <%= json_ld_product(@producto) %>
+  <%
+    crumbs = [["Inicio", root_url]]
+    if @producto.categoria.present?
+      crumbs << [@producto.categoria.nombre, home_categoria_url(@producto.categoria)]
+    end
+    if @producto.subcategoria.present?
+      crumbs << [@producto.subcategoria.nombre, home_categoria_url(@producto.subcategoria)]
+    end
+    crumbs << [@producto.caracteristica, home_productos_detalle_url(@producto)]
+  %>
+  <%= json_ld_breadcrumbs(crumbs) %>
+<% end %>
 
     <div id="quickview-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -17,7 +37,7 @@
                                     </svg>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <%= link_to home_categoria_path(@producto.subcategoria.id), data: { turbo_frame: "productos-detalle" } do %>
+                                    <%= link_to home_categoria_path(@producto.subcategoria), data: { turbo_frame: "productos-detalle" } do %>
                                              <%= @producto.subcategoria.nombre %>
                                     <% end %>
                                     

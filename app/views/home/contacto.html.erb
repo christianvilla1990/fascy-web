@@ -1,0 +1,400 @@
+<% content_for :title, "Contacto" %>
+<% content_for :meta_description, "Contactate con Fascy: teléfono, WhatsApp, email y formulario de consulta. Te respondemos en menos de 24 horas hábiles." %>
+
+<div class="site__body contacto-page">
+  <style>
+    .contacto-page { color: #2b2b2b; }
+
+    /* Hero */
+    .cto-hero {
+      background: linear-gradient(135deg, #fff8e1 0%, #fff4d1 60%, #ffe7a3 100%);
+      padding: 70px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cto-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -80px;
+      width: 320px; height: 320px;
+      background: rgba(255, 184, 40, 0.15);
+      border-radius: 50%;
+    }
+    .cto-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; left: -80px;
+      width: 280px; height: 280px;
+      background: rgba(255, 184, 40, 0.1);
+      border-radius: 50%;
+    }
+    .cto-hero__container { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 1rem; }
+    .cto-hero__eyebrow {
+      display: inline-block;
+      background: #ffb828;
+      color: #2b2b2b;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .cto-hero__title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .cto-hero__subtitle {
+      font-size: 1.08rem;
+      line-height: 1.6;
+      color: #555;
+      margin: 0 auto;
+    }
+
+    /* Container */
+    .cto-section { padding: 70px 0; }
+    .cto-section__inner { max-width: 1140px; margin: 0 auto; padding: 0 1rem; }
+
+    /* Layout: left info + right form */
+    .cto-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Info side */
+    .cto-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .cto-info__title { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .cto-info__lead { color: #666; line-height: 1.6; margin-bottom: 10px; }
+    .cto-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      border: 1px solid #f0f0f0;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .cto-info-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+      border-color: #ffb828;
+    }
+    .cto-info-item__icon {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(255,184,40,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .cto-info-item__label {
+      font-size: 0.78rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .cto-info-item__value {
+      font-weight: 600;
+      color: #2b2b2b;
+      font-size: 0.98rem;
+    }
+    .cto-info-item__value a { color: inherit; text-decoration: none; transition: color .15s; }
+    .cto-info-item__value a:hover { color: #ffb828; }
+
+    /* Socials */
+    .cto-socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .cto-socials a {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: #2b2b2b;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .cto-socials a:hover {
+      background: #ffb828;
+      color: #2b2b2b;
+      transform: translateY(-2px);
+    }
+
+    /* Form side */
+    .cto-form-wrap {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 32px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.08);
+    }
+    .cto-form__title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .cto-form__lead { color: #666; margin-bottom: 24px; line-height: 1.5; font-size: 0.95rem; }
+
+    .cto-alert {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 0.92rem;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .cto-alert--error { background: #fff0ee; color: #b33; border: 1px solid #ffd7d0; }
+    .cto-alert--ok { background: #eefaf0; color: #137a2e; border: 1px solid #c5ecd1; }
+
+    .cto-field { margin-bottom: 16px; }
+    .cto-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .cto-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .cto-label__req { color: #ffb828; font-weight: 700; }
+
+    .cto-input,
+    .cto-textarea,
+    .cto-select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      color: #2b2b2b;
+      background: #f7f8fa;
+      border: 1.5px solid transparent;
+      border-radius: 10px;
+      transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      font-family: inherit;
+    }
+    .cto-input::placeholder,
+    .cto-textarea::placeholder { color: #a5a8ad; }
+    .cto-input:hover,
+    .cto-textarea:hover,
+    .cto-select:hover {
+      background: #f0f1f3;
+    }
+    .cto-input:focus,
+    .cto-textarea:focus,
+    .cto-select:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: #ffb828;
+      box-shadow: 0 0 0 3px rgba(255,184,40,0.18);
+    }
+    .cto-textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .cto-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 24px;
+      background: #ffb828;
+      color: #2b2b2b;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+      margin-top: 8px;
+    }
+    .cto-submit:hover {
+      background: #f0a81c;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(255,184,40,0.4);
+    }
+    .cto-submit:active { transform: translateY(0); }
+
+    .cto-privacy {
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .cto-privacy a { color: #2b2b2b; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .cto-hero__title { font-size: 2.2rem; }
+      .cto-layout { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 575px) {
+      .cto-hero { padding: 55px 0 50px; }
+      .cto-hero__title { font-size: 1.7rem; }
+      .cto-hero__subtitle { font-size: 0.95rem; }
+      .cto-section { padding: 50px 0; }
+      .cto-form-wrap { padding: 26px 20px; }
+      .cto-grid-2 { grid-template-columns: 1fr; }
+      .cto-form__title { font-size: 1.25rem; }
+    }
+  </style>
+
+  <!-- Hero -->
+  <section class="cto-hero">
+    <div class="cto-hero__container">
+      <span class="cto-hero__eyebrow">Estamos para ayudarte</span>
+      <h1 class="cto-hero__title">Contactanos</h1>
+      <p class="cto-hero__subtitle">
+        ¿Tenés una consulta, comentario o sugerencia? Escribinos y nuestro equipo te responderá a la brevedad.
+      </p>
+    </div>
+  </section>
+
+  <!-- Form section -->
+  <section class="cto-section">
+    <div class="cto-section__inner">
+      <div class="cto-layout">
+
+        <!-- Info -->
+        <aside class="cto-info">
+          <div>
+            <h2 class="cto-info__title">Hablemos</h2>
+            <p class="cto-info__lead">Elegí el canal que te resulte más cómodo, todos están activos.</p>
+          </div>
+
+          <div class="cto-info-item">
+            <div class="cto-info-item__icon">📞</div>
+            <div>
+              <div class="cto-info-item__label">Teléfono</div>
+              <div class="cto-info-item__value"><a href="tel:0212091234">(021) 209 123</a></div>
+            </div>
+          </div>
+
+          <div class="cto-info-item">
+            <div class="cto-info-item__icon">💬</div>
+            <div>
+              <div class="cto-info-item__label">WhatsApp</div>
+              <div class="cto-info-item__value"><a href="https://wa.me/595981123456" target="_blank" rel="noopener">+595 981 123 456</a></div>
+            </div>
+          </div>
+
+          <div class="cto-info-item">
+            <div class="cto-info-item__icon">✉️</div>
+            <div>
+              <div class="cto-info-item__label">Email</div>
+              <div class="cto-info-item__value"><a href="mailto:contacto@fascy.com.py">contacto@fascy.com.py</a></div>
+            </div>
+          </div>
+
+          <div class="cto-info-item">
+            <div class="cto-info-item__icon">📍</div>
+            <div>
+              <div class="cto-info-item__label">Dirección</div>
+              <div class="cto-info-item__value">Av. Mariscal López 1234, Asunción</div>
+            </div>
+          </div>
+
+          <div class="cto-info-item">
+            <div class="cto-info-item__icon">🕑</div>
+            <div>
+              <div class="cto-info-item__label">Horario de atención</div>
+              <div class="cto-info-item__value">Lun–Vie 8:00 a 19:00<br><small style="font-weight:400;color:#888;">Sáb 8:00 a 13:00</small></div>
+            </div>
+          </div>
+
+          <div class="cto-socials" aria-label="Redes sociales">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="TikTok">♪</a>
+          </div>
+        </aside>
+
+        <!-- Form -->
+        <div class="cto-form-wrap">
+          <h2 class="cto-form__title">Escribinos un mensaje</h2>
+          <p class="cto-form__lead">Completá el formulario y te respondemos dentro de las próximas 24 horas hábiles.</p>
+
+          <% if flash[:contacto_error].present? %>
+            <div class="cto-alert cto-alert--error">
+              <span>⚠️</span><span><%= flash[:contacto_error] %></span>
+            </div>
+          <% end %>
+          <% if flash[:notice].present? %>
+            <div class="cto-alert cto-alert--ok">
+              <span>✅</span><span><%= flash[:notice] %></span>
+            </div>
+          <% end %>
+
+          <%= form_with url: enviar_contacto_path, method: :post, local: true, html: { novalidate: true } do |f| %>
+            <div class="cto-grid-2">
+              <div class="cto-field">
+                <label class="cto-label" for="nombre">Nombre completo <span class="cto-label__req">*</span></label>
+                <input type="text" name="nombre" id="nombre" class="cto-input" placeholder="Tu nombre"
+                       value="<%= @contacto[:nombre] %>" required>
+              </div>
+              <div class="cto-field">
+                <label class="cto-label" for="email">Email <span class="cto-label__req">*</span></label>
+                <input type="email" name="email" id="email" class="cto-input" placeholder="tucorreo@ejemplo.com"
+                       value="<%= @contacto[:email] %>" required>
+              </div>
+            </div>
+
+            <div class="cto-grid-2">
+              <div class="cto-field">
+                <label class="cto-label" for="telefono">Teléfono</label>
+                <input type="tel" name="telefono" id="telefono" class="cto-input" placeholder="(021) 000 000"
+                       value="<%= @contacto[:telefono] %>">
+              </div>
+              <div class="cto-field">
+                <label class="cto-label" for="asunto">Asunto</label>
+                <select name="asunto" id="asunto" class="cto-select">
+                  <option value="">Elegí un motivo</option>
+                  <% ["Consulta general", "Información de productos", "Pedido / Compra", "Reclamo o sugerencia", "Atención post-venta", "Otro"].each do |opt| %>
+                    <option value="<%= opt %>" <%= "selected" if @contacto[:asunto] == opt %>><%= opt %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+
+            <div class="cto-field">
+              <label class="cto-label" for="mensaje">Mensaje <span class="cto-label__req">*</span></label>
+              <textarea name="mensaje" id="mensaje" class="cto-textarea"
+                        placeholder="Contanos en qué podemos ayudarte..." required><%= @contacto[:mensaje] %></textarea>
+            </div>
+
+            <button type="submit" class="cto-submit">
+              Enviar mensaje →
+            </button>
+
+            <p class="cto-privacy">
+              Tus datos serán utilizados únicamente para responder tu consulta.
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%= render 'footer' %>
+</div>

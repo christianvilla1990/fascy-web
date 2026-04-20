@@ -331,21 +331,24 @@
                     responsive: {
                         1200: {items: 4, margin: 14},
                         992:  {items: 4, margin: 10},
-                        768:  {items: 3, margin: 10},
+                        768:  {items: 4, margin: 10},
+                        576:  {items: 3, margin: 10},
                     }
                 },
                 'grid-4-sm': {
                     responsive: {
                         1200: {items: 4, margin: 14},
-                        992:  {items: 3, margin: 10},
+                        992:  {items: 4, margin: 10},
                         768:  {items: 3, margin: 10},
+                        576:  {items: 3, margin: 10},
                     }
                 },
                 'grid-5': {
                     responsive: {
                         1200: {items: 5, margin: 12},
                         992:  {items: 4, margin: 10},
-                        768:  {items: 3, margin: 10},
+                        768:  {items: 4, margin: 10},
+                        576:  {items: 3, margin: 10},
                     }
                 },
                 'horizontal': {
@@ -371,13 +374,13 @@
                 if (parseFloat($(this).data('mobile-grid-columns')) === 2) {
                     mobileResponsiveOptions = {
                         420:  {items: 2, margin: 10},
-                        320:  {items: 2, margin: 0},
-                        0:    {items: 1},
+                        360:  {items: 2, margin: 6},
+                        0:    {items: 2, margin: 4},
                     };
                 } else {
                     mobileResponsiveOptions = {
                         475:  {items: 2, margin: 10},
-                        0:    {items: 1},
+                        0:    {items: 2, margin: 6},
                     };
                 }
 

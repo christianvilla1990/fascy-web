@@ -7,13 +7,14 @@
                                 <div class="site-footer__widget footer-contacts">
                                     <h5 class="footer-contacts__title">Contacto</h5>
                                     <div class="footer-contacts__text">
-                                        ¿Tienes dudas? Escríbenos o visítanos. Estamos para ayudarte.
+                                        ¿Tenés dudas? Escribinos o visitanos. Estamos para ayudarte.
                                     </div>
                                     <ul class="footer-contacts__contacts">
-                                        <li><i class="footer-contacts__icon fas fa-globe-americas"></i> Calle Falsa 715, Ciudad, País</li>
-                                        <li><i class="footer-contacts__icon far fa-envelope"></i> contacto@tuempresa.com</li>
-                                        <li><i class="footer-contacts__icon fas fa-mobile-alt"></i> +34 912 345 678</li>
-                                        <li><i class="footer-contacts__icon far fa-clock"></i> Lun-Sáb 10:00 - 19:00</li>
+                                        <li><i class="footer-contacts__icon fas fa-globe-americas"></i> Av. Mariscal López 1234, Asunción, Paraguay</li>
+                                        <li><i class="footer-contacts__icon far fa-envelope"></i> contacto@fascy.com.py</li>
+                                        <li><i class="footer-contacts__icon fas fa-mobile-alt"></i> (021) 209 123</li>
+                                        <li><i class="footer-contacts__icon fab fa-whatsapp"></i> +595 981 123 456</li>
+                                        <li><i class="footer-contacts__icon far fa-clock"></i> Lun-Vie 8:00 - 19:00 / Sáb 8:00 - 13:00</li>
                                     </ul>
                                 </div>
                             </div>
@@ -21,13 +22,12 @@
                                 <div class="site-footer__widget footer-links">
                                     <h5 class="footer-links__title">Información</h5>
                                     <ul class="footer-links__list">
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Sobre nosotros</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Envíos y entregas</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Política de privacidad</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Marcas</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Contacto</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Devoluciones</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Mapa del sitio</a></li>
+                                        <li class="footer-links__item"><%= link_to 'Sobre nosotros', sobre_nosotros_path, class: 'footer-links__link' %></li>
+                                        <li class="footer-links__item"><%= link_to 'Sucursales', sucursales_path, class: 'footer-links__link' %></li>
+                                        <li class="footer-links__item"><%= link_to 'Contacto', contacto_path, class: 'footer-links__link' %></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Envíos y entregas</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Política de privacidad</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Devoluciones</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -35,13 +35,10 @@
                                 <div class="site-footer__widget footer-links">
                                     <h5 class="footer-links__title">Mi cuenta</h5>
                                     <ul class="footer-links__list">
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Tiendas</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Pedidos</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Lista de deseos</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Boletín</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Ofertas</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Tarjetas regalo</a></li>
-                                        <li class="footer-links__item"><a href="" class="footer-links__link">Afiliados</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Mis pedidos</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Lista de deseos</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Boletín</a></li>
+                                        <li class="footer-links__item"><a href="#" class="footer-links__link">Ofertas</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -49,38 +46,38 @@
                                 <div class="site-footer__widget footer-newsletter">
                                     <h5 class="footer-newsletter__title">Boletín</h5>
                                     <div class="footer-newsletter__text">
-                                        Suscríbete para recibir novedades y ofertas exclusivas.
+                                        Suscribite para recibir novedades y ofertas exclusivas.
                                     </div>
                                     <%= render 'home/newsletter_form' %>
                                     <div class="footer-newsletter__text footer-newsletter__text--social">
-                                        Síguenos en redes sociales
+                                        Seguinos en redes sociales
                                     </div>
                                     <!-- social-links -->
                                     <div class="social-links footer-newsletter__social-links social-links--shape--circle">
                                         <ul class="social-links__list">
                                             <li class="social-links__item">
-                                                <a class="social-links__link social-links__link--type--rss" href="" target="_blank">
-                                                    <i class="fas fa-rss"></i>
-                                                </a>
-                                            </li>
-                                            <li class="social-links__item">
-                                                <a class="social-links__link social-links__link--type--youtube" href="" target="_blank">
-                                                    <i class="fab fa-youtube"></i>
-                                                </a>
-                                            </li>
-                                            <li class="social-links__item">
-                                                <a class="social-links__link social-links__link--type--facebook" href="" target="_blank">
+                                                <a class="social-links__link social-links__link--type--facebook" href="https://facebook.com/fascy" target="_blank" rel="noopener" aria-label="Facebook">
                                                     <i class="fab fa-facebook-f"></i>
                                                 </a>
                                             </li>
                                             <li class="social-links__item">
-                                                <a class="social-links__link social-links__link--type--twitter" href="" target="_blank">
-                                                    <i class="fab fa-twitter"></i>
+                                                <a class="social-links__link social-links__link--type--instagram" href="https://instagram.com/fascy" target="_blank" rel="noopener" aria-label="Instagram">
+                                                    <i class="fab fa-instagram"></i>
                                                 </a>
                                             </li>
                                             <li class="social-links__item">
-                                                <a class="social-links__link social-links__link--type--instagram" href="" target="_blank">
-                                                    <i class="fab fa-instagram"></i>
+                                                <a class="social-links__link social-links__link--type--whatsapp" href="https://wa.me/595981123456" target="_blank" rel="noopener" aria-label="WhatsApp">
+                                                    <i class="fab fa-whatsapp"></i>
+                                                </a>
+                                            </li>
+                                            <li class="social-links__item">
+                                                <a class="social-links__link social-links__link--type--tiktok" href="https://tiktok.com/@fascy" target="_blank" rel="noopener" aria-label="TikTok">
+                                                    <i class="fab fa-tiktok"></i>
+                                                </a>
+                                            </li>
+                                            <li class="social-links__item">
+                                                <a class="social-links__link social-links__link--type--youtube" href="https://youtube.com/@fascy" target="_blank" rel="noopener" aria-label="YouTube">
+                                                    <i class="fab fa-youtube"></i>
                                                 </a>
                                             </li>
                                         </ul>
@@ -92,12 +89,10 @@
                     </div>
                     <div class="site-footer__bottom">
                         <div class="site-footer__copyright">
-                            <!-- copyright -->
-                            © <%= Time.current.year %> TuEmpresa. Todos los derechos reservados. — Diseño por <a href="https://themeforest.net/user/kos9" target="_blank" rel="noopener">Kos</a>
-                            <!-- copyright / end -->
+                            © <%= Time.current.year %> Fascy
                         </div>
                         <div class="site-footer__payments">
-                            <img src="images/payments.png" alt="">
+                            <%= image_tag 'payments.png', alt: 'Métodos de pago' %>
                         </div>
                     </div>
                 </div>
@@ -106,9 +101,9 @@
                         <div class="totop__start"></div>
                         <div class="totop__container container"></div>
                         <div class="totop__end">
-                            <button type="button" class="totop__button">
+                            <button type="button" class="totop__button" aria-label="Volver arriba">
                                 <svg width="13px" height="8px">
-                                    <use xlink:href="images/sprite.svg#arrow-rounded-up-13x8"></use>
+                                    <use xlink:href="<%= asset_path('sprite.svg#arrow-rounded-up-13x8') %>"></use>
                                 </svg>
                             </button>
                         </div>

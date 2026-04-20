@@ -3,22 +3,37 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="block-slideshow__body">
-                                                        <div class="owl-carousel">
-                                                                <% banners = @banners_principales || [] %>
-                                                                <% seen = {} %>
-                                                                <% banners.each do |b| %>
-                                                                    <% next unless b.respond_to?(:imagen) && b.imagen.attached? %>
-                                                                    <% key = b.imagen.blob.key rescue nil %>
-                                                                    <% next if key && seen[key] %>
-                                                                    <% seen[key] = true if key %>
-                                                                    <a class="block-slideshow__slide" href="<%= b.respond_to?(:link) && b.link.present? ? b.link : '#' %>">
-                                                                        <div class="block-slideshow__slide-media">
-                                                                            <img src="<%= url_for(b.imagen.variant(resize_to_limit: [1600,800])) %>" alt="<%= b.respond_to?(:titulo) ? b.titulo : 'Banner' %>" class="banner-principal-img">
-                                                                        </div>
-                                                            
-                                                                    </a>
-                                                                <% end %>
-                                                        </div>
+                                <div class="owl-carousel">
+                                    <% banners = @banners_principales || [] %>
+                                    <% seen = {} %>
+                                    <% banners.each do |b| %>
+                                        <% next unless b.respond_to?(:imagen) && b.imagen.attached? %>
+                                        <% key = b.imagen.blob.key rescue nil %>
+                                        <% next if key && seen[key] %>
+                                        <% seen[key] = true if key %>
+                                        <a class="block-slideshow__slide" href="<%= b.respond_to?(:link) && b.link.present? ? b.link : '#' %>">
+                                            <div class="block-slideshow__slide-media">
+                                                <picture>
+                                                    <%# Mobile: use imagen_mobile if available, otherwise crop desktop image %>
+                                                    <% if b.respond_to?(:imagen_mobile) && b.imagen_mobile.attached? %>
+                                                        <source media="(max-width: 575px)"
+                                                                srcset="<%= url_for(b.imagen_mobile.variant(resize_to_limit: [600, 900])) %>">
+                                                    <% else %>
+                                                        <source media="(max-width: 575px)"
+                                                                srcset="<%= url_for(b.imagen.variant(resize_to_fill: [600, 380])) %>">
+                                                    <% end %>
+                                                    <%# Tablet: medium size crop %>
+                                                    <source media="(max-width: 991px)"
+                                                            srcset="<%= url_for(b.imagen.variant(resize_to_limit: [992, 520])) %>">
+                                                    <%# Desktop fallback %>
+                                                    <img src="<%= url_for(b.imagen.variant(resize_to_limit: [1600, 800])) %>"
+                                                         alt="<%= b.respond_to?(:titulo) ? b.titulo : 'Banner' %>"
+                                                         class="banner-principal-img">
+                                                </picture>
+                                            </div>
+                                        </a>
+                                    <% end %>
+                                </div>
                             </div>
                         </div>
                     </div>

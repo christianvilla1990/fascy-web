@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_13_132052) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_20_145600) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -70,6 +71,19 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_13_132052) do
     t.datetime "updated_at", null: false
     t.boolean "principal", default: false
     t.integer "prioridad", default: 0
+    t.string "slug"
+    t.index ["slug"], name: "index_categorias_on_slug", unique: true
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "marcas", force: :cascade do |t|
@@ -108,10 +122,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_13_132052) do
     t.boolean "mas_vendido", default: false, null: false
     t.text "descripcion"
     t.text "especificaciones_tecnicas"
+    t.string "slug"
+    t.index ["caracteristica"], name: "index_productos_on_caracteristica_trgm", opclass: :gin_trgm_ops, using: :gin
     t.index ["categoria_id"], name: "index_productos_on_categoria_id"
     t.index ["destacado"], name: "index_productos_on_destacado"
     t.index ["marca_id"], name: "index_productos_on_marca_id"
     t.index ["mas_vendido"], name: "index_productos_on_mas_vendido"
+    t.index ["slug"], name: "index_productos_on_slug", unique: true
     t.index ["source"], name: "index_productos_on_source"
     t.index ["subcategoria_id"], name: "index_productos_on_subcategoria_id"
   end
@@ -131,7 +148,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_13_132052) do
     t.bigint "categoria_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["categoria_id"], name: "index_subcategorias_on_categoria_id"
+    t.index ["slug"], name: "index_subcategorias_on_slug", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

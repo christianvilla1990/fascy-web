@@ -8,16 +8,22 @@
 .block-banner {
     margin: 0;
     padding-bottom: 10px;
+    max-height: none;
 }
-.block-banner .container {
+
+.block-banner > .container {
     padding-top: 0;
-    padding-bottom: 10px;
+    padding-bottom: 0;
 }
+
 .block-banner__body {
     position: relative;
     display: block;
-    height: auto; /* make body height automatic so images can define their height */
+    height: auto;
     min-height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
     text-align: center;
     color: inherit;
 
@@ -25,169 +31,59 @@
         color: inherit;
     }
 }
-.block-banner__image {
-    /* legacy background image container (div) stays absolute */
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: -1;
-}
 
-/* If the image is rendered as an <img> element with class .block-banner__image, make it responsive */
+/* Responsive image — width fills container, height follows natural aspect ratio */
 img.block-banner__image {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-    z-index: 0 !important;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
     object-position: center center;
 }
-.block-banner__image--mobile {
-    display: none;
-}
+
 .block-banner__title {
     padding-top: 28px;
     font-size: 30px;
     line-height: 1;
     font-weight: $font-weight-bold;
 }
+
 .block-banner__text {
     padding-top: 8px;
 }
+
 .block-banner__button {
     padding-top: 20px;
 }
+
 .block-banner__mobile-br {
     display: none;
 }
 
-
-@media (max-width: breakpoint(sm-end)) {
+/* Secondary banner — used on home page */
+.block-banner--secondary {
     .block-banner__body {
-        height: auto; /* let mobile images determine height */
-    }
-    .block-banner__image--desktop {
-        display: none;
-    }
-    .block-banner__image--mobile {
         display: block;
+        padding: 0;
     }
-    // .block-banner__title,
-    // .block-banner__text,
-    // // .block-banner__button {
-    // //     width: 220px;
-    // //     margin-left: auto;
-    // //     margin-right: auto;
-    // // }
+}
+
+/* Tablet and below: tighter spacing */
+@media (max-width: 991px) {
+    .block-banner {
+        padding-bottom: 6px;
+    }
     .block-banner__title {
-        padding-top: 48px;
+        padding-top: 32px;
         line-height: 1.1;
     }
     .block-banner__text {
         padding-top: 12px;
     }
     .block-banner__button {
-        padding-top: 28px;
+        padding-top: 24px;
     }
     .block-banner__mobile-br {
         display: block;
-    }
-}
-
-/* Taller secondary banner rules */
-.block-banner--secondary {
-    .block-banner__body {
-        min-height: 0; /* let the image determine height to avoid extra whitespace */
-        display: block;
-        padding: 0;
-        overflow: hidden;
-    }
-    img.block-banner__image {
-        width: 100% !important;
-        height: auto !important;
-        max-height: 85vh; /* prevent banner from becoming too tall (increased further) */
-        display: block !important;
-        object-fit: contain !important; /* show full image across devices */
-    }
-}
-
-@media (max-width: 767px) {
-    .block-banner--secondary .block-banner__body {
-        // min-height: 360px; /* phone-friendly minimum */
-        padding: 0;
-    }
-    .block-banner--secondary img.block-banner__image {
-        // max-height: 65vh;
-    }
-
-    /* Very narrow screens (e.g. 393px) — reduce forced height and avoid letterboxing */
-    @media (max-width: 420px) {
-        .block-banner--secondary .block-banner__body {
-            // min-height: 300px !important; /* moderate height on very narrow screens */
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            padding: 0 !important;
-            margin: 0 !important;
-            max-height: none !important;
-        }
-        .block-banner--secondary img.block-banner__image,
-        .block-banner--secondary a.block-banner__body > img.block-banner__image.banner-desktop-only {
-            height: auto !important;
-            width: 100% !important;
-            max-height: 65vh !important;
-            object-fit: contain !important; /* prevent stretching */
-            margin: 0 !important;
-            display: block !important;
-        }
-    }
-
-    @media (min-width: 992px) {
-        .block-banner__body {
-            min-height: 640px; /* enforce larger desktop height */
-            padding-bottom: 10px;
-        }
-    }
-}
-
-/* Normalize general .block-banner sizing to match secondary banner behavior */
-.block-banner {
-    max-height: none;
-}
-.block-banner > .container {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.block-banner .block-banner__body {
-    height: auto;
-    min-height: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.block-banner .block-banner__body img.block-banner__image {
-    width: 100% !important;
-    height: auto !important;
-    max-height: 85vh !important;
-    object-fit: contain !important;
-    display: block !important;
-}
-
-@media (max-width: 420px) {
-    .block-banner .block-banner__body {
-        // min-height: 300px !important;
-    }
-    .block-banner .block-banner__body img.block-banner__image {
-        height: auto !important;
-        max-height: 65vh !important;
-        object-fit: contain !important;
     }
 }
