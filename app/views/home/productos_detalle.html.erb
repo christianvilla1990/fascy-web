@@ -19,273 +19,278 @@
   <%= json_ld_breadcrumbs(crumbs) %>
 <% end %>
 
-    <div id="quickview-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content"></div>
-        </div>
+<% wa_phone   = '595981123456' %>
+<% wa_message = "Hola Fascy! Quería consultar por: #{@producto.caracteristica}#{" (SKU #{@producto.sku})" if @producto.sku.present?}" %>
+<% wa_href    = "https://wa.me/#{wa_phone}?text=#{ERB::Util.url_encode(wa_message)}" %>
+
+<style>
+  .pd-page{ padding:24px 0 }
+  .pd-breadcrumb{ background:#fafafa; border-bottom:1px solid #ececec; padding:14px 0; margin-bottom:24px; font-size:.85rem }
+  .pd-breadcrumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px; align-items:center }
+  .pd-breadcrumb a{ color:#6b7280; text-decoration:none }
+  .pd-breadcrumb a:hover{ color:#ffb828 }
+  .pd-breadcrumb .sep{ color:#cfd3da }
+  .pd-breadcrumb .current{ color:#1f2329; font-weight:600 }
+
+  .pd-grid{ display:grid; grid-template-columns:1fr; gap:24px }
+  @media(min-width:992px){ .pd-grid{ grid-template-columns:1.1fr 1fr; gap:36px } }
+
+  /* Galería */
+  .pd-gallery__main{
+    border:1px solid #ececec; border-radius:12px; overflow:hidden; background:#fff;
+    aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
+  }
+  .pd-gallery__main img{ width:100%; height:100%; object-fit:contain; padding:20px }
+  .pd-gallery__thumbs{
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-top:12px;
+  }
+  .pd-thumb{
+    border:1.5px solid #ececec; border-radius:8px; padding:6px; background:#fff;
+    aspect-ratio:1/1; cursor:pointer; transition:border-color .2s ease, transform .2s ease;
+  }
+  .pd-thumb:hover{ border-color:#ffb828 }
+  .pd-thumb.active{ border-color:#ffb828; box-shadow:0 0 0 2px rgba(255,184,40,.2) }
+  .pd-thumb img{ width:100%; height:100%; object-fit:contain }
+
+  /* Info */
+  .pd-info__name{ font-size:1.6rem; font-weight:700; line-height:1.2; margin:0 0 14px; color:#1f2329 }
+  @media(min-width:768px){ .pd-info__name{ font-size:2rem } }
+
+  .pd-meta{ display:flex; flex-wrap:wrap; gap:8px 18px; margin-bottom:18px; font-size:.9rem; color:#6b7280 }
+  .pd-meta strong{ color:#1f2329; font-weight:600 }
+  .pd-meta__chip{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#fff7e0; color:#7a5500; border:1px solid #ffe18a;
+    padding:4px 10px; border-radius:999px; font-size:.78rem; font-weight:600;
+  }
+
+  .pd-card{ background:#fff; border:1px solid #ececec; border-radius:12px; padding:18px 20px; margin-bottom:14px }
+  .pd-card__title{ font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:#8b95a1; margin:0 0 10px }
+
+  .pd-attrs{ display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; font-size:.92rem }
+  .pd-attrs dt{ color:#6b7280; font-weight:500 }
+  .pd-attrs dd{ margin:0; color:#1f2329; font-weight:600 }
+
+  .pd-cta{ display:flex; flex-direction:column; gap:10px }
+  .pd-cta__primary{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    background:#25D366; color:#fff !important; text-decoration:none;
+    padding:14px 22px; border-radius:10px;
+    font-weight:700; font-size:1rem;
+    box-shadow:0 6px 16px rgba(37,211,102,.35);
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .pd-cta__primary:hover{ background:#1ebe57; transform:translateY(-1px); box-shadow:0 10px 22px rgba(37,211,102,.45); color:#fff !important }
+  .pd-cta__primary i{ font-size:1.2rem }
+  .pd-cta__secondary{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:#fff; color:#1f2329; text-decoration:none;
+    padding:12px 20px; border-radius:10px; border:1.5px solid #d9dde3;
+    font-weight:600; font-size:.92rem; transition:border-color .2s ease, color .2s ease;
+  }
+  .pd-cta__secondary:hover{ border-color:#1f2329; color:#1f2329 }
+
+  /* Tabs */
+  .pd-tabs{ margin-top:32px }
+  .pd-tabs__nav{
+    display:flex; gap:4px; border-bottom:2px solid #ececec; margin-bottom:18px; flex-wrap:wrap;
+  }
+  .pd-tabs__btn{
+    padding:12px 18px; background:transparent; border:0; border-bottom:2px solid transparent;
+    font-weight:600; color:#6b7280; cursor:pointer; margin-bottom:-2px; font-size:.95rem;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .pd-tabs__btn:hover{ color:#1f2329 }
+  .pd-tabs__btn.active{ color:#1f2329; border-color:#ffb828 }
+  .pd-tabs__pane{ display:none; line-height:1.7 }
+  .pd-tabs__pane.active{ display:block }
+  .pd-tabs__pane p{ margin:0 0 10px }
+  .pd-tabs__empty{ color:#8b95a1; font-style:italic }
+
+  /* Tabla de especificaciones */
+  .specs-table{
+    width:100%; border-collapse:collapse; max-width:720px;
+    background:#fff; border:1px solid #ececec; border-radius:10px; overflow:hidden;
+  }
+  .specs-table tr + tr th, .specs-table tr + tr td{ border-top:1px solid #f1f1f1 }
+  .specs-table th, .specs-table td{
+    padding:12px 16px; text-align:left; vertical-align:top; font-size:.94rem; line-height:1.5;
+  }
+  .specs-table th{
+    width:40%; color:#6b7280; font-weight:500; background:#fafafa;
+    border-right:1px solid #f1f1f1;
+  }
+  .specs-table td{ color:#1f2329; font-weight:600 }
+  @media(max-width:575.98px){
+    .specs-table th{ width:45%; font-size:.88rem }
+    .specs-table td{ font-size:.9rem }
+    .specs-table th, .specs-table td{ padding:10px 12px }
+  }
+</style>
+
+<div class="site__body pd-page">
+  <%# Breadcrumb %>
+  <div class="pd-breadcrumb">
+    <div class="container">
+      <ol>
+        <li><a href="/">Inicio</a></li>
+        <% if @producto.categoria.present? %>
+          <li class="sep">/</li>
+          <li><%= link_to @producto.categoria.nombre, home_categoria_path(@producto.categoria), data: { turbo_frame: "productos-detalle" } %></li>
+        <% end %>
+        <% if @producto.subcategoria.present? %>
+          <li class="sep">/</li>
+          <li><%= link_to @producto.subcategoria.nombre, home_categoria_path(@producto.subcategoria), data: { turbo_frame: "productos-detalle" } %></li>
+        <% end %>
+        <li class="sep">/</li>
+        <li class="current"><%= @producto.caracteristica %></li>
+      </ol>
     </div>
-<div class="site__body">
-            <div class="page-header">
-                <div class="page-header__container container">
-                    <div class="page-header__breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="/">INICIO</a>
-                                    <svg class="breadcrumb-arrow" width="6px" height="9px">
-                                        <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
-                                    </svg>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <%= link_to home_categoria_path(@producto.subcategoria), data: { turbo_frame: "productos-detalle" } do %>
-                                             <%= @producto.subcategoria.nombre %>
-                                    <% end %>
-                                    
-                                   
-                                    <svg class="breadcrumb-arrow" width="6px" height="9px">
-                                        <use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
-                                    </svg>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page"><%= @producto.caracteristica %></li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
+  </div>
+
+  <div class="container">
+    <div class="pd-grid">
+      <%# Galería %>
+      <div>
+        <% portada = @producto.imagen_portada
+           ordered = @producto.imagenes.to_a
+           if portada && ordered.first != portada
+             ordered.delete(portada)
+             ordered.unshift(portada)
+           end %>
+
+        <% if ordered.any? %>
+          <div class="pd-gallery">
+            <div class="pd-gallery__main" id="pd-main-image">
+              <%= image_tag ordered.first.variant(resize_to_limit: [800,800]).processed,
+                  alt: @producto.caracteristica %>
             </div>
-            <div class="block">
-                <div class="container">
-                    <div class="product product--layout--standard" data-layout="standard">
-                        <div class="product__content">
-                            <div class="product__gallery">
-                                <div class="product-gallery">
+            <% if ordered.size > 1 %>
+              <div class="pd-gallery__thumbs">
+                <% ordered.each_with_index do |att, i| %>
+                  <div class="pd-thumb <%= 'active' if i == 0 %>"
+                       data-pd-thumb
+                       data-src="<%= url_for(att.variant(resize_to_limit: [800,800]).processed) %>">
+                    <%= image_tag att.variant(resize_to_limit: [120,120]).processed, alt: @producto.caracteristica %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="pd-gallery__main">
+            <img src="/images/products/default.jpg" alt="<%= @producto.caracteristica %>">
+          </div>
+        <% end %>
+      </div>
 
-                                    <% portada = @producto.imagen_portada
-                                        ordered = @producto.imagenes.to_a
-                                        if portada && ordered.first != portada
-                                            ordered.delete(portada)
-                                            ordered.unshift(portada)
-                                        end %>
-                                    <div class="product-gallery__featured">
-                                        <button class="product-gallery__zoom">
-                                            <svg width="24px" height="24px">
-                                                <use xlink:href="images/sprite.svg#zoom-in-24"></use>
-                                            </svg>
-                                        </button>
+      <%# Info %>
+      <div class="pd-info">
+        <h1 class="pd-info__name"><%= @producto.caracteristica %></h1>
 
-                                        <div class="owl-carousel" id="product-image">
+        <div class="pd-meta">
+          <% if @producto.respond_to?(:marca) && @producto.marca.present? %>
+            <span>Marca: <strong><%= @producto.marca.nombre %></strong></span>
+          <% end %>
+          <% if @producto.sku.present? %>
+            <span>SKU: <strong><%= @producto.sku %></strong></span>
+          <% end %>
+          <% if @producto.destacado %>
+            <span class="pd-meta__chip"><i class="fas fa-star"></i> Destacado</span>
+          <% end %>
+          <% if @producto.mas_vendido %>
+            <span class="pd-meta__chip" style="background:#ffe9e6;color:#a83524;border-color:#ffb8af"><i class="fas fa-fire"></i> Promo del Mes</span>
+          <% end %>
+        </div>
 
-                                              <% ordered.each_with_index do |att,i| %>
-                                                    <div class="product-image product-image--location--gallery" data-index="<%= i %>">
-                                                       <a href="<%= url_for(att.variant(resize_to_limit: [700,700]).processed) %>" data-width="700" data-height="700" class="product-image__body" >
-                                                             <%= image_tag att.variant(resize_to_limit: [700,700]).processed,class: "product-image__img",alt: @producto.caracteristica %>
-                                                        </a>
-                                                    </div>
-                                                <% end %>
-                                         </div>   
-                                    </div>
-
-
-
-                                    <div class="product-gallery__carousel">
-                                        <div class="owl-carousel" id="product-carousel">
-                                                <% ordered.each_with_index do |att,i| %>
-                                                   <a href="javascript:void(0)" class="product-image product-gallery__carousel-item" data-slide="<%= i %>">
-                                                        <div class="product-image__body">
-                                                        <%= image_tag att.variant(resize_to_limit: [120,120]).processed,
-                                                                        class: "product-image__img product-gallery__carousel-image",
-                                                                        alt: @producto.caracteristica %>
-                                                        </div>
-                                                   </a>
-                                                <% end %>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- .product__gallery / end -->
-                            <!-- .product__info -->
-                            <div class="product__info">
-                                <div class="product__wishlist-compare">
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Wishlist">
-                                        <svg width="16px" height="16px">
-                                            <use xlink:href="images/sprite.svg#wishlist-16"></use>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Compare">
-                                        <svg width="16px" height="16px">
-                                            <use xlink:href="images/sprite.svg#compare-16"></use>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <h1 class="product__name"><%= @producto.caracteristica %></h1>
-                                <div class="product__rating">
-                                    <div class="product__rating-stars">
-                                        <div class="rating">
-                                            <div class="rating__body">
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="images/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="images/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="images/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="images/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="images/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="images/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="images/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="images/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="images/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="images/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                                                <div class="product__description" style="white-space: pre-wrap;">
-                                                                    <% if @producto.descripcion.present? %>
-                                                                        <% desc = @producto.descripcion %>
-                                                                        <% if desc =~ /<[^>]+>/ %>
-                                                                            <%= sanitize(desc).html_safe %>
-                                                                        <% else %>
-                                                                            <%= simple_format(desc) %>
-                                                                        <% end %>
-                                                                    <% else %>
-                                                                        <p>No hay descripción disponible.</p>
-                                                                    <% end %>
-                                                                </div>
-                                <ul class="product__features">
-                                    <li>Speed: 750 RPM</li>
-                                    <li>Power Source: Cordless-Electric</li>
-                                    <li>Battery Cell Type: Lithium</li>
-                                    <li>Voltage: 20 Volts</li>
-                                    <li>Battery Capacity: 2 Ah</li>
-                                </ul>
-                                
-                            </div>
-                            <!-- .product__info / end -->
-                            <!-- .product__sidebar -->
-                            <div class="product__sidebar">
-                                
-                                
-                                <!-- .product__options / end -->
-                            </div>
-                            <!-- .product__end -->
-                            
-                        </div>
-                    </div>
-                    <div class="product-tabs  product-tabs--sticky">
-                        <div class="product-tabs__list">
-                            <div class="product-tabs__list-body">
-                                <div class="product-tabs__list-container container">
-                                    <a href="#tab-description" class="product-tabs__item product-tabs__item--active">Descripción</a>
-                                    <a href="#tab-specification" class="product-tabs__item">Especificación</a>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-tabs__content">
-                            <div class="product-tabs__pane product-tabs__pane--active" id="tab-description">
-                                <div class="typography">
-                                  <% if @producto.descripcion.present? %>
-                                    <% desc = @producto.descripcion %>
-                                    <% if desc =~ /<[^>]+>/ %>
-                                      <%= sanitize(desc).html_safe %>
-                                    <% else %>
-                                      <%= simple_format(desc) %>
-                                    <% end %>
-                                  <% else %>
-                                    <p>No hay descripción disponible para este producto.</p>
-                                  <% end %>
-                                </div>
-                            </div>
-                            <div class="product-tabs__pane" id="tab-specification">
-                                <div class="typography">
-                                  <% if @producto.especificaciones_tecnicas.present? %>
-                                    <% spec = @producto.especificaciones_tecnicas %>
-                                    <% if spec =~ /<[^>]+>/ %>
-                                      <%= sanitize(spec).html_safe %>
-                                    <% else %>
-                                      <%= simple_format(spec) %>
-                                    <% end %>
-                                  <% else %>
-                                    <p>No hay especificaciones técnicas para este producto.</p>
-                                  <% end %>
-                                </div>
-                            </div>
-                  
-                        </div>
-                    </div>
-                </div>
+        <% if @producto.descripcion.present? %>
+          <div class="pd-card">
+            <p class="pd-card__title">Descripción rápida</p>
+            <div style="line-height:1.7">
+              <%= truncate(strip_tags(@producto.descripcion).strip, length: 280, separator: ' ') %>
             </div>
-                        <!-- Related products (dynamic) -->
-                        <div class="container mt-4">
-                            <%= render 'home/productos_relacionados', productos: (@producto.related_products || []) %>
-                        </div>
-            <!-- .block-products-carousel -->
-    <!-- photoswipe / end -->
+          </div>
+        <% end %>
 
-   
+        <% if @producto.categoria.present? || @producto.subcategoria.present? %>
+          <div class="pd-card">
+            <p class="pd-card__title">Categorización</p>
+            <dl class="pd-attrs">
+              <% if @producto.categoria.present? %>
+                <dt>Categoría</dt>
+                <dd><%= link_to @producto.categoria.nombre, home_categoria_path(@producto.categoria), style: 'color:inherit;text-decoration:none' %></dd>
+              <% end %>
+              <% if @producto.subcategoria.present? %>
+                <dt>Subcategoría</dt>
+                <dd><%= link_to @producto.subcategoria.nombre, home_categoria_path(@producto.subcategoria), style: 'color:inherit;text-decoration:none' %></dd>
+              <% end %>
+            </dl>
+          </div>
+        <% end %>
+
+        <div class="pd-cta">
+          <a href="<%= wa_href %>" class="pd-cta__primary" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+          </a>
+          <a href="<%= contacto_path %>" class="pd-cta__secondary">
+            <i class="fas fa-envelope"></i> Enviar consulta por formulario
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <%# Tabs %>
+    <div class="pd-tabs" data-pd-tabs>
+      <div class="pd-tabs__nav">
+        <button class="pd-tabs__btn active" data-pd-tab="desc">Descripción</button>
+        <button class="pd-tabs__btn" data-pd-tab="spec">Especificaciones</button>
+      </div>
+
+      <div class="pd-tabs__pane active" data-pd-pane="desc">
+        <%= render_rich_text(@producto.descripcion) %>
+      </div>
+
+      <div class="pd-tabs__pane" data-pd-pane="spec">
+        <%= render_rich_text(@producto.especificaciones_tecnicas) %>
+      </div>
+    </div>
+
+    <%# Productos relacionados %>
+    <div class="mt-4">
+      <%= render 'home/productos_relacionados', productos: (@producto.related_products || []) %>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    function init(){
+      // Galería: cambiar imagen principal al click en thumbs
+      document.querySelectorAll('[data-pd-thumb]').forEach(function(thumb){
+        if (thumb.__pdInit) return; thumb.__pdInit = true;
+        thumb.addEventListener('click', function(){
+          var src = thumb.getAttribute('data-src'); if (!src) return;
+          var main = document.querySelector('#pd-main-image img');
+          if (main) main.src = src;
+          document.querySelectorAll('[data-pd-thumb]').forEach(function(t){ t.classList.remove('active') });
+          thumb.classList.add('active');
+        });
+      });
+
+      // Tabs
+      document.querySelectorAll('[data-pd-tabs]').forEach(function(tabs){
+        if (tabs.__pdInit) return; tabs.__pdInit = true;
+        tabs.querySelectorAll('[data-pd-tab]').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var key = btn.getAttribute('data-pd-tab');
+            tabs.querySelectorAll('[data-pd-tab]').forEach(function(b){ b.classList.toggle('active', b===btn) });
+            tabs.querySelectorAll('[data-pd-pane]').forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-pd-pane')===key) });
+          });
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('turbo:load', init);
+    document.addEventListener('turbo:frame-load', init);
+  })();
+</script>

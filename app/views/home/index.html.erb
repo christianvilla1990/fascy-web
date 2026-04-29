@@ -8,17 +8,17 @@
     </h1>
 
              <%= render 'banner_principal' %>
-        
+
         <!-- .block-slideshow / end -->
-             <%= render 'productos_destacados' %>
-            <!-- Aquí continúa el resto del contenido original de la página -->
-
-            <%= render 'banner_secundario' %>  
-
-            <%= render 'productos_promo' %>
 
             <% categorias_principales = Categoria.where(principal: true).order(:prioridad) %>
             <%= render partial: 'categorias_principales', locals: { categorias: categorias_principales } %>
+
+             <%= render 'productos_destacados' %>
+
+            <%= render 'banner_secundario' %>
+
+            <%= render 'productos_promo' %>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function(){

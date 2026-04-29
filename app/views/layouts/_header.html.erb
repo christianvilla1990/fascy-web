@@ -12,7 +12,7 @@
                                 </svg>
                             </button>
                             <a class="mobile-header__logo" href="<%= root_path %>">
-                                <%= image_tag 'slides/marca.jpg', alt: 'Fascy', class: 'mobile-header__img', style: 'height:80px;width:auto;' %>
+                                <%= site_logo_tag(variant: :mobile, class: 'mobile-header__img', style: 'height:80px;width:auto;') %>
                             </a>
                         </div>
                         <div class="mobile-header__search-container">
@@ -170,7 +170,7 @@
                 <!-- .topbar / end -->
                 <div class="site-header__middle container">
                     <div class="site-header__logo" >
-                       <img src="<%= asset_path('slides/marca.jpg') %>" alt="Marca" style="width:200px;height:80px;">
+                       <%= site_logo_tag(variant: :desktop, style: "width:200px;height:80px;object-fit:contain;") %>
                     </div>
                     <div class="site-header__search">
                         <div class="search search--location--header ">
@@ -215,49 +215,93 @@
                                             <div class="departments__links-wrapper">
                                                 <div class="departments__submenus-container"></div>
                                                 <ul class="departments__links">
+                                                <% current_cat_path  = (defined?(@categoria) && @categoria.present?) ? home_categoria_path(@categoria) : nil %>
+                                                <% current_sub_path  = (defined?(@subcategoria) && @subcategoria.present?) ? home_categoria_path(@subcategoria) : nil %>
+                                                <% current_sub_id    = (defined?(@subcategoria) && @subcategoria.present?) ? @subcategoria.id : nil %>
 
-                                                                                                <% @categorias.each do |cat| %>
-                                                                                                        <li class="departments__item">
-                                                                                                                <a class="departments__item-link" href="<%= home_categoria_path(cat) %>" data-turbo-frame="productos">
-                                                                                                                    <% if cat.imagen.attached? %>
-                                                                                                                        <%= image_tag cat.imagen.variant(resize_to_limit: [32,32]), alt: cat.nombre, style: 'margin-right:8px;vertical-align:middle;border-radius:4px;' %>
-                                                                                                                    <% else %>
-                                                                                                                        <%= image_tag 'default.jpg', alt: '', style: 'width:32px;height:32px;margin-right:8px;vertical-align:middle;border-radius:4px;' %>
-                                                                                                                    <% end %>
-                                                                                                                    <span style="vertical-align:middle;"> <%= cat.nombre.to_s.strip %> </span>
-                                                                                                                    <svg class="departments__item-arrow" width="6px" height="9px">
-                                                                                                                        <use xlink:href="<%= asset_path('sprite.svg#arrow-rounded-right-6x9') %>"></use>
-                                                                                                                    </svg>
-                                                                                                                </a>
-                                                        <div class="departments__submenu departments__submenu--type--menu">
-                                                            <!-- .menu -->
-                                                            <div class="menu menu--layout--classic ">
-                                                                <div class="menu__submenus-container"></div>
-                                                                <ul class="menu__list">
-                                                                <% cat.subcategorias.each do |sub| %>
-                                                                    <li class="menu__item">
-                                                                        <!-- This is a synthetic element that allows to adjust the vertical offset of the submenu using CSS. -->
-                                                                        <div class="menu__item-submenu-offset"></div>
-                                                                        <%= link_to sub.nombre, home_categoria_path(sub), data: { turbo_frame: "productos" }, class: "menu__item-link" %>
-                                                                    </li>
-                                                                <% end %>    
-                                                                </ul>
+                                                <% @categorias.each do |cat| %>
+                                                    <% subs        = cat.subcategorias.to_a %>
+                                                    <% subs_count  = subs.size %>
+                                                    <% sub_belongs = subs.any? { |s| s.id == current_sub_id } %>
+                                                    <% is_active   = (current_cat_path == home_categoria_path(cat)) || sub_belongs %>
+
+                                                    <li class="departments__item dept-cat <%= 'dept-cat--active' if is_active %>">
+                                                        <a class="departments__item-link dept-cat__link" href="<%= home_categoria_path(cat) %>" data-turbo-frame="productos">
+                                                            <span class="dept-cat__icon">
+                                                                <% if cat.imagen.attached? %>
+                                                                    <%= image_tag cat.imagen.variant(resize_to_limit: [32,32]), alt: cat.nombre %>
+                                                                <% else %>
+                                                                    <i class="fas fa-tag"></i>
+                                                                <% end %>
+                                                            </span>
+                                                            <span class="dept-cat__name"><%= cat.nombre.to_s.strip %></span>
+                                                            <% if subs_count > 0 %>
+                                                                <i class="fas fa-chevron-right dept-cat__arrow"></i>
+                                                            <% end %>
+                                                        </a>
+                                                        <% if subs_count > 0 %>
+                                                            <div class="departments__submenu departments__submenu--type--menu">
+                                                                <div class="menu menu--layout--classic">
+                                                                    <div class="menu__submenus-container"></div>
+                                                                    <ul class="menu__list">
+                                                                        <% subs.each do |sub| %>
+                                                                            <% sub_active = current_sub_path == home_categoria_path(sub) %>
+                                                                            <li class="menu__item dept-sub <%= 'dept-sub--active' if sub_active %>">
+                                                                                <div class="menu__item-submenu-offset"></div>
+                                                                                <%= link_to sub.nombre, home_categoria_path(sub), data: { turbo_frame: "productos" }, class: "menu__item-link dept-sub__link" %>
+                                                                            </li>
+                                                                        <% end %>
+                                                                    </ul>
+                                                                </div>
                                                             </div>
-                                                            <!-- .menu / end -->
-                                                        </div>
-                                                    </li>   
+                                                        <% end %>
+                                                    </li>
                                                 <% end %>
                                                 </ul>
                                             </div>
                                         </div>
                                         <button class="departments__button">
-                                           
                                             CATEGORIAS
-                                           
                                         </button>
                                     </div>
                                     <!-- .departments / end -->
                                 </div>
+
+                                <style>
+                                    /* Categorías: estilo de items */
+                                    .departments__links .dept-cat__link{
+                                        display:flex; align-items:center; gap:10px;
+                                        padding:8px 16px; transition:background .2s ease, color .2s ease;
+                                    }
+                                    .departments__links .dept-cat__icon{
+                                        width:32px; height:32px; flex:0 0 32px;
+                                        border-radius:6px; background:#f4f6f9;
+                                        display:flex; align-items:center; justify-content:center;
+                                        overflow:hidden; color:#8b95a1;
+                                    }
+                                    .departments__links .dept-cat__icon img{
+                                        width:100%; height:100%; object-fit:cover; border-radius:0;
+                                    }
+                                    .departments__links .dept-cat__icon i{ font-size:.9rem }
+                                    .departments__links .dept-cat__name{ flex:1; font-size:.92rem }
+                                    .departments__links .dept-cat__arrow{
+                                        font-size:.7rem; color:#cfd3da; transition:transform .2s ease, color .2s ease;
+                                    }
+                                    .departments__links .dept-cat:hover .dept-cat__arrow{ color:#1f2329; transform:translateX(2px) }
+
+                                    /* Activa */
+                                    .departments__links .dept-cat--active .dept-cat__link{
+                                        background:rgba(255,184,40,.1); color:#1f2329;
+                                        border-left:3px solid #ffb828; padding-left:13px;
+                                    }
+                                    .departments__links .dept-cat--active .dept-cat__icon{ background:#ffb828; color:#fff }
+                                    .departments__links .dept-cat--active .dept-cat__name{ font-weight:700 }
+
+                                    /* Subcategorías activas resaltadas */
+                                    .dept-sub--active .menu__item-link{
+                                        background:rgba(255,184,40,.15); color:#1f2329; font-weight:600;
+                                    }
+                                </style>
                                 <!-- .nav-links -->
                                 <div class="nav-panel__nav-links nav-links">
                                     <ul class="nav-links__list">

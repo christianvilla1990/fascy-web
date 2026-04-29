@@ -1,27 +1,99 @@
-    <div class="block block-banner block-banner--secondary">
-        <div class="container">
-            <% @banners_secundarios.each do |banner| %>
-                <a href="<%= banner.link %>" class="block-banner__body fade-in-banner">
-                    <% if banner.imagen.attached? %>
-                        <picture>
-                            <%# Mobile: use imagen_mobile if available, otherwise crop desktop %>
-                            <% if banner.respond_to?(:imagen_mobile) && banner.imagen_mobile.attached? %>
-                                <source media="(max-width: 575px)"
-                                        srcset="<%= url_for(banner.imagen_mobile.variant(resize_to_limit: [600, 900])) %>">
-                            <% else %>
-                                <source media="(max-width: 575px)"
-                                        srcset="<%= url_for(banner.imagen.variant(resize_to_fill: [600, 400])) %>">
-                            <% end %>
-                            <%# Tablet %>
-                            <source media="(max-width: 991px)"
-                                    srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [992, 420])) %>">
-                            <%# Desktop fallback %>
-                            <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>"
-                                 alt="<%= banner.titulo %>"
-                                 class="block-banner__image">
-                        </picture>
-                    <% end %>
-                </a>
+<% banners = @banners_secundarios.to_a %>
+<% multi    = banners.size >= 2 %>
+
+<% if banners.any? %>
+  <div class="block block-banner block-banner--secondary banners-mejorados">
+    <div class="container">
+      <div class="banners-mejorados__grid <%= 'banners-mejorados__grid--multi' if multi %>">
+        <% banners.each do |banner| %>
+          <a href="<%= banner.link.presence || '#' %>" class="banner-card fade-in-banner">
+            <% if banner.imagen.attached? %>
+              <picture>
+                <% if banner.respond_to?(:imagen_mobile) && banner.imagen_mobile.attached? %>
+                  <source media="(max-width: 575px)"
+                          srcset="<%= url_for(banner.imagen_mobile.variant(resize_to_limit: [800, 1000])) %>">
+                <% else %>
+                  <source media="(max-width: 575px)"
+                          srcset="<%= url_for(banner.imagen.variant(resize_to_fill: [800, 500])) %>">
+                <% end %>
+                <source media="(max-width: 991px)"
+                        srcset="<%= url_for(banner.imagen.variant(resize_to_limit: [1200, 500])) %>">
+                <img src="<%= url_for(banner.imagen.variant(resize_to_limit: [1600, 650])) %>"
+                     alt="<%= banner.titulo %>"
+                     class="banner-card__image"
+                     loading="lazy">
+              </picture>
             <% end %>
-        </div>
+
+            <% if banner.titulo.present? || banner.descripcion.present? %>
+              <div class="banner-card__overlay">
+                <% if banner.titulo.present? %>
+                  <h3 class="banner-card__title"><%= banner.titulo %></h3>
+                <% end %>
+                <% if banner.descripcion.present? %>
+                  <p class="banner-card__text"><%= banner.descripcion %></p>
+                <% end %>
+              </div>
+            <% end %>
+          </a>
+        <% end %>
+      </div>
     </div>
+  </div>
+
+  <style>
+    .banners-mejorados{ padding:24px 0 }
+    .banners-mejorados__grid{ display:grid; gap:20px; grid-template-columns:1fr }
+    @media (min-width: 768px){
+      .banners-mejorados__grid--multi{ grid-template-columns:repeat(2, minmax(0, 1fr)) }
+    }
+
+    .banner-card{
+      position:relative; display:block; overflow:hidden;
+      border-radius:14px; text-decoration:none; color:#fff;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+      transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+      isolation:isolate;
+    }
+    .banner-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 36px rgba(0,0,0,.18);
+    }
+    .banner-card picture, .banner-card picture > *{ display:block; width:100% }
+    .banner-card__image{
+      width:100%; height:auto; display:block;
+      transition:transform .7s cubic-bezier(.2,.8,.2,1);
+    }
+    .banner-card:hover .banner-card__image{ transform:scale(1.05) }
+
+    .banner-card__overlay{
+      position:absolute; left:0; right:0; bottom:0;
+      padding:18px 22px 20px;
+      background:linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,0) 100%);
+      pointer-events:none;
+    }
+    .banner-card__title{
+      margin:0 0 4px; font-size:1.25rem; font-weight:700; color:#fff;
+      text-shadow:0 2px 6px rgba(0,0,0,.35);
+      line-height:1.2;
+    }
+    .banner-card__text{
+      margin:0; font-size:.92rem; color:rgba(255,255,255,.92);
+      text-shadow:0 1px 4px rgba(0,0,0,.4);
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+
+    @media (max-width: 575.98px){
+      .banner-card{ border-radius:10px }
+      .banner-card__overlay{ padding:14px 16px 16px }
+      .banner-card__title{ font-size:1.05rem }
+      .banner-card__text{ font-size:.85rem; -webkit-line-clamp:2 }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .banner-card, .banner-card__image{ transition:none }
+      .banner-card:hover{ transform:none }
+      .banner-card:hover .banner-card__image{ transform:none }
+    }
+  </style>
+<% end %>

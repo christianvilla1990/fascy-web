@@ -58,6 +58,7 @@ test:
 #
 production:
   <<: *default
-  database: fascy_web_production
-  username: fascy_web
+  database: fascy_production
+  username: fascy
   password: <%= ENV["FASCY_WEB_DATABASE_PASSWORD"] %>
+  host: localhost

@@ -1,66 +1,97 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 m-0">Productos</h1>
-  <%= link_to "Nuevo", new_dashboard_producto_path, class: "btn btn-primary" %>
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <div>
+    <h1 class="h3 m-0"><i class="fas fa-box text-muted me-2"></i>Productos</h1>
+    <p class="text-muted small mb-0">Listado, búsqueda y gestión.</p>
+  </div>
+  <%= link_to new_dashboard_producto_path, class: 'btn btn-fascy d-flex align-items-center gap-2' do %>
+    <i class="fas fa-plus"></i> Nuevo
+  <% end %>
 </div>
 
-<div class="card mb-3">
+<div class="card shadow-sm border-0 mb-3">
   <div class="card-body">
     <%= form_with url: dashboard_productos_path, method: :get, local: true, html: { class: "row g-2 align-items-end" } do %>
-      <div class="col-md-6">
-        <label class="form-label">Buscar</label>
-        <input type="text" name="q" value="<%= @q %>" class="form-control" placeholder="Característica, SKU, External ID, marca, categoría, subcategoría">
+      <div class="col-md-7">
+        <label class="form-label small text-muted">Buscar</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="fas fa-magnifying-glass text-muted"></i></span>
+          <input type="text" name="q" value="<%= @q %>" class="form-control" placeholder="Característica, SKU, External ID, marca, categoría, subcategoría">
+        </div>
       </div>
       <div class="col-md-3">
-        <label class="form-label">Por página</label>
+        <label class="form-label small text-muted">Por página</label>
         <select name="per_page" class="form-select">
           <% [10, 20, 50, 100].each do |n| %>
             <option value="<%= n %>" <%= 'selected' if params[:per_page].to_i == n %>><%= n %></option>
           <% end %>
         </select>
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-outline-primary w-100" type="submit">Aplicar</button>
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit"><i class="fas fa-filter me-1"></i>Aplicar</button>
       </div>
     <% end %>
   </div>
 </div>
 
-
 <%= turbo_frame_tag "productos" do %>
-<table class="table table-striped align-middle">
-  <thead>
-      <tr>
-        <th>Portada</th>
-      <th>Nombre</th>
-      <th>Sku</th>
-      <th>External</th>
-      <th>Promo</th>
-      <th>Destacado</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @productos.each do |p| %>
-      <tr>
-        <td style="width:90px">
-          <% if p.portada.present? %>
-            <%= image_tag(p.portada.variant(resize_to_limit: [80, 80])) rescue image_tag(p.portada) %>
+<div class="card shadow-sm border-0">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th style="width:80px">Portada</th>
+          <th>Nombre</th>
+          <th>SKU</th>
+          <th>External</th>
+          <th class="text-center">Promo</th>
+          <th class="text-center">Destacado</th>
+          <th class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @productos.any? %>
+          <% @productos.each do |p| %>
+            <tr>
+              <td>
+                <% if p.portada.present? %>
+                  <%= image_tag(p.portada.variant(resize_to_limit: [60, 60]), class: 'rounded') rescue image_tag(p.portada, style: 'max-width:60px') %>
+                <% else %>
+                  <span class="text-muted"><i class="fas fa-image"></i></span>
+                <% end %>
+              </td>
+              <td class="fw-semibold"><%= p.caracteristica %></td>
+              <td class="text-muted"><%= p.sku %></td>
+              <td class="text-muted small"><%= p.external_id %></td>
+              <td class="text-center">
+                <% if p.mas_vendido %>
+                  <span class="badge bg-danger-subtle text-danger"><i class="fas fa-fire me-1"></i>Promo</span>
+                <% else %>
+                  <span class="text-muted">—</span>
+                <% end %>
+              </td>
+              <td class="text-center">
+                <% if p.destacado %>
+                  <span class="badge" style="background:#ffb828;color:#1f2329"><i class="fas fa-star me-1"></i>Destacado</span>
+                <% else %>
+                  <span class="text-muted">—</span>
+                <% end %>
+              </td>
+              <td class="text-end">
+                <%= link_to [:dashboard, p], class: 'btn btn-sm btn-outline-secondary', title: 'Ver' do %><i class="fas fa-eye"></i><% end %>
+                <%= link_to edit_dashboard_producto_path(p), class: 'btn btn-sm btn-outline-primary', title: 'Editar' do %><i class="fas fa-pen"></i><% end %>
+                <%= button_to [:dashboard, p], method: :delete, data: { confirm: '¿Eliminar este producto?' }, form: { class: 'd-inline' }, class: 'btn btn-sm btn-outline-danger', title: 'Eliminar' do %>
+                  <i class="fas fa-trash"></i>
+                <% end %>
+              </td>
+            </tr>
           <% end %>
-        </td>
-        <td><%= p.caracteristica %></td>
-        <td><%= p.sku %></td>
-        <td><%= p.external_id %></td>
-        <td><%= p.mas_vendido ? "Sí" : "No" %></td>
-        <td><%= p.destacado ? "Sí" : "No" %></td>
-        <td class="text-end">
-          <%= link_to "Ver", [:dashboard, p], class: "btn btn-sm btn-outline-secondary" %>
-          <%= link_to "Editar", edit_dashboard_producto_path(p), class: "btn btn-sm btn-primary" %>
-          <%= button_to "Eliminar", [:dashboard, p], method: :delete, data: { confirm: '¿Eliminar?' }, form: { class: 'd-inline' }, class: "btn btn-sm btn-danger" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <% else %>
+          <tr><td colspan="7" class="text-center text-muted py-4">No hay productos para mostrar.</td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <% if @pagy && @pagy.pages > 1 %>
   <div class="d-flex justify-content-center my-3">

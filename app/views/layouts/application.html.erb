@@ -10,6 +10,7 @@
 
     <%= yield :head %>
      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -31,6 +32,8 @@
           <%= render 'layouts/header' %>
 
        <%= yield %>
+
+       <%= render 'layouts/whatsapp_float' %>
 
         <%# <%= javascript_include_tag "application" %>
         <script>
@@ -59,11 +62,11 @@
       // total height needed to clear the lowest element (header or search)
       var totalHeight = Math.max(0, maxBottom - headerRect.top);
 
-      // Add a small visual gap between header and banner so they don't feel glued
-      var gap = 24; // px (increased gap between header and banner)
+      // Visual gap mínimo entre header y banner
+      var gap = 6; // px
 
-      // Clamp to avoid huge gaps (allow more room now)
-      var maxPadding = 64; // px
+      // Clamp para no inflar el padding
+      var maxPadding = 40; // px
       if (totalHeight + gap > maxPadding) totalHeight = maxPadding - gap;
 
       siteBody.style.paddingTop = Math.ceil(totalHeight + gap) + 'px';

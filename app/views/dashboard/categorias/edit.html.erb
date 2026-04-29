@@ -1,23 +1,59 @@
-<h1>Editar Categoría</h1>
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <div>
+    <h1 class="h3 m-0"><i class="fas fa-layer-group text-muted me-2"></i>Editar categoría</h1>
+    <p class="text-muted small mb-0"><%= @categoria.nombre %></p>
+  </div>
+  <%= link_to dashboard_categorias_path, class: 'btn btn-outline-secondary d-flex align-items-center gap-2' do %>
+    <i class="fas fa-arrow-left"></i> Volver
+  <% end %>
+</div>
 
 <%= form_with model: [:dashboard, @categoria], local: true, html: { multipart: true } do |f| %>
-  <div class="form-group">
-    <%= f.label :nombre %>
-    <%= f.text_field :nombre, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :principal, '¿Principal?' %>
-    <%= f.check_box :principal %>
-  </div>
-  <div class="form-group">
-    <%= f.label :imagen %>
-    <% if @categoria.imagen.attached? %>
-      <div>
-        <%= image_tag @categoria.imagen.variant(resize_to_limit: [100,100]) rescue image_tag @categoria.imagen %>
+  <% if @categoria.errors.any? %>
+    <div class="alert alert-danger">
+      <strong><i class="fas fa-circle-exclamation me-1"></i>Hay errores en el formulario:</strong>
+      <ul class="mb-0">
+        <% @categoria.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-7">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-header bg-white"><strong>Información</strong></div>
+        <div class="card-body">
+          <div class="mb-3">
+            <%= f.label :nombre, class: 'form-label' %>
+            <%= f.text_field :nombre, class: 'form-control' %>
+          </div>
+          <div class="form-check form-switch mb-3">
+            <%= f.check_box :principal, class: 'form-check-input' %>
+            <%= f.label :principal, '¿Mostrar como principal?', class: 'form-check-label' %>
+          </div>
+        </div>
       </div>
-    <% end %>
-    <%= f.file_field :imagen, class: 'form-control' %>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-header bg-white"><strong>Imagen</strong></div>
+        <div class="card-body">
+          <% if @categoria.imagen.attached? %>
+            <div class="mb-2">
+              <%= image_tag @categoria.imagen.variant(resize_to_limit: [180,180]), class: 'img-thumbnail' rescue image_tag @categoria.imagen, class: 'img-thumbnail', style: 'max-width:180px' %>
+            </div>
+          <% end %>
+          <%= f.file_field :imagen, class: 'form-control', accept: 'image/*' %>
+        </div>
+      </div>
+    </div>
   </div>
-  <%= f.submit 'Guardar', class: 'btn btn-success' %>
-  <%= link_to 'Volver', dashboard_categorias_path, class: 'btn btn-secondary' %>
+
+  <div class="d-flex gap-2 mt-2">
+    <%= f.submit 'Guardar cambios', class: 'btn btn-fascy' %>
+    <%= link_to 'Cancelar', dashboard_categorias_path, class: 'btn btn-outline-secondary' %>
+  </div>
 <% end %>

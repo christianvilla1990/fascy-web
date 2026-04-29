@@ -124,7 +124,8 @@
     $(function() {
         $('.block-slideshow .owl-carousel').owlCarousel({
             items: 1,
-            nav: false,
+            nav: true,
+            navText: ['<span aria-label="Anterior"></span>', '<span aria-label="Siguiente"></span>'],
             dots: true,
             loop: true,
             rtl: isRTL(),

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :categorias, only: [:index, :edit, :update]
     get 'categorias/:id/subcategorias', to: 'categorias#subcategorias', as: 'categoria_subcategorias'
     post 'import_products', to: 'imports#create', as: 'import_products'
+    resource :site_setting, only: [:edit, :update]
   end
 
   resources :newsletter_subscriptions, only: [:create]

@@ -16,7 +16,9 @@
     <div class="block-header">
       <h3 class="block-header__title">Promo del Mes</h3>
       <div class="block-header__divider"></div>
-      <%= link_to 'Ver todos', home_categoria_path('promo_mes'), class: 'btn btn-outline-primary btn-lg' %>
+      <%= link_to home_categoria_path('promo_mes'), class: 'btn-ver-todos' do %>
+        Ver todos <i class="fas fa-arrow-right"></i>
+      <% end %>
     </div>
     <div class="block-products-carousel__slider">
       <div class="block-products-carousel__preloader"></div>

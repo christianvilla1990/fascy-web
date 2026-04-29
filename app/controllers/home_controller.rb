@@ -3,16 +3,20 @@ class HomeController < ApplicationController
     query = params[:search].to_s.strip
     @categoria = nil
     @subcategoria = nil
+    @search_term = query
+    @sort = sanitize_sort(params[:sort])
 
-    scope =
-      if query.length >= 2
-        Producto.with_attached_imagenes.where("caracteristica ILIKE ?", "%#{query}%")
-      else
-        Producto.none
-      end
+    base = if query.length >= 2
+             Producto.with_attached_imagenes
+                     .includes(:marca)
+                     .where("caracteristica ILIKE ?", "%#{query}%")
+           else
+             Producto.none
+           end
 
-    @productos = scope.order(:caracteristica)
-    @pagy, @productos = pagy(@productos, items: 24)
+    @section_title = query.present? ? "Resultados para \"#{query}\"" : "Búsqueda"
+    @pagy, @productos = pagy(apply_sort(base, @sort), items: 24)
+    @total_count = @pagy.count
     render :categoria
   end
   def index
@@ -37,28 +41,46 @@ class HomeController < ApplicationController
   end
 
   def categoria
-    productos_scope = Producto.with_attached_imagenes
+    productos_scope = Producto.with_attached_imagenes.includes(:marca)
     @categoria    = nil
     @subcategoria = nil
+    @sort = sanitize_sort(params[:sort])
+    @q_refine = params[:q_refine].to_s.strip
 
     if params[:id] == 'destacados'
-      @productos = productos_scope.destacados.order(:caracteristica)
+      base = productos_scope.destacados
+      @section_title = 'Productos destacados'
     elsif params[:id] == 'promo_mes'
-      @productos = productos_scope.where(mas_vendido: true).order(:caracteristica)
+      base = productos_scope.where(mas_vendido: true)
+      @section_title = 'Promo del Mes'
     elsif (@categoria = find_friendly(Categoria, params[:id]))
       redirect_to(home_categoria_path(@categoria), status: :moved_permanently) and return if request.path != home_categoria_path(@categoria)
 
-      subcategorias_ids = @categoria.subcategorias.pluck(:id)
-      @productos = productos_scope.where(subcategoria_id: subcategorias_ids).order(:caracteristica)
+      @subcategorias_filtro = @categoria.subcategorias.order(:nombre).load
+      subcategorias_ids = @subcategorias_filtro.map(&:id)
+      base = productos_scope.where(subcategoria_id: subcategorias_ids)
+      @section_title = @categoria.nombre
+
+      if params[:sub].present?
+        @subcategoria_actual = @subcategorias_filtro.detect { |s| s.slug == params[:sub] || s.id.to_s == params[:sub].to_s }
+        base = base.where(subcategoria_id: @subcategoria_actual.id) if @subcategoria_actual
+      end
     elsif (@subcategoria = find_friendly(Subcategoria, params[:id]))
       redirect_to(home_categoria_path(@subcategoria), status: :moved_permanently) and return if request.path != home_categoria_path(@subcategoria)
 
-      @productos = productos_scope.where(subcategoria_id: @subcategoria.id).order(:caracteristica)
+      base = productos_scope.where(subcategoria_id: @subcategoria.id)
+      @section_title = @subcategoria.nombre
     else
-      @productos = Producto.none
+      base = Producto.none
+      @section_title = 'Sin resultados'
     end
 
-    @pagy, @productos = pagy(@productos, items: 24)
+    if @q_refine.length >= 2
+      base = base.where("caracteristica ILIKE ?", "%#{@q_refine}%")
+    end
+
+    @pagy, @productos = pagy(apply_sort(base, @sort), items: 24)
+    @total_count = @pagy.count
     render layout: false if turbo_frame_request?
   end
 
@@ -81,6 +103,21 @@ class HomeController < ApplicationController
     klass.friendly.find(id)
   rescue ActiveRecord::RecordNotFound
     nil
+  end
+
+  ALLOWED_SORTS = %w[name_asc name_desc recent].freeze
+
+  def sanitize_sort(value)
+    s = value.to_s
+    ALLOWED_SORTS.include?(s) ? s : 'name_asc'
+  end
+
+  def apply_sort(scope, sort)
+    case sort
+    when 'name_desc' then scope.order(caracteristica: :desc)
+    when 'recent'    then scope.order(updated_at: :desc)
+    else                  scope.order(:caracteristica)
+    end
   end
 
   public

@@ -1,43 +1,110 @@
-<div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Panel de administración</h1>
-    <div>
-      <%= button_to 'Sincronizar productos (ejecutar)', dashboard_import_products_path, method: :post, class: 'btn btn-primary', data: { confirm: 'Esto importará/actualizará productos desde la API. Continuar?' } %>
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+  <div>
+    <h1 class="h3 mb-1">Panel de administración</h1>
+    <p class="text-muted small mb-0">Resumen general del catálogo y contenido del sitio.</p>
+  </div>
+  <%= button_to dashboard_import_products_path, method: :post,
+        data: { confirm: 'Esto importará/actualizará productos desde la API. Continuar?' },
+        class: 'btn btn-fascy d-flex align-items-center gap-2' do %>
+    <i class="fas fa-rotate"></i> Sincronizar productos
+  <% end %>
+</div>
+
+<% cards = [
+     { label: 'Productos',        value: @stats[:productos],            icon: 'fa-box',          bg: '#0d6efd', path: dashboard_productos_path },
+     { label: 'Destacados',       value: @stats[:productos_destacados], icon: 'fa-star',         bg: '#ffb828', path: dashboard_productos_path },
+     { label: 'Promo del mes',    value: @stats[:productos_promo],      icon: 'fa-fire',         bg: '#dc3545', path: dashboard_productos_path },
+     { label: 'Categorías',       value: @stats[:categorias],           icon: 'fa-layer-group',  bg: '#198754', path: dashboard_categorias_path },
+     { label: 'Subcategorías',    value: @stats[:subcategorias],        icon: 'fa-sitemap',      bg: '#6f42c1', path: dashboard_categorias_path },
+     { label: 'Banners',          value: @stats[:banners],              icon: 'fa-image',        bg: '#0dcaf0', path: dashboard_banners_path }
+   ] %>
+
+<div class="row g-3 mb-4">
+  <% cards.each do |c| %>
+    <div class="col-6 col-md-4 col-xl-2">
+      <a href="<%= c[:path] %>" class="text-decoration-none text-reset">
+        <div class="card stat-card h-100 shadow-sm border-0">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background: <%= c[:bg] %>;">
+              <i class="fas <%= c[:icon] %>"></i>
+            </div>
+            <div>
+              <div class="text-muted small text-uppercase"><%= c[:label] %></div>
+              <div class="fs-4 fw-bold"><%= c[:value] %></div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% end %>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <strong><i class="fas fa-clock-rotate-left me-2 text-muted"></i>Últimos productos modificados</strong>
+        <%= link_to dashboard_productos_path, class: 'btn btn-sm btn-outline-secondary' do %>
+          Ver todos <i class="fas fa-arrow-right ms-1"></i>
+        <% end %>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th style="width:70px"></th>
+              <th>Producto</th>
+              <th>SKU</th>
+              <th>Actualizado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @ultimos_productos.any? %>
+              <% @ultimos_productos.each do |p| %>
+                <tr>
+                  <td>
+                    <% if p.portada.present? %>
+                      <%= image_tag(p.portada.variant(resize_to_limit: [50, 50])) rescue image_tag(p.portada, style: 'max-width:50px') %>
+                    <% else %>
+                      <span class="text-muted"><i class="fas fa-image"></i></span>
+                    <% end %>
+                  </td>
+                  <td><%= p.caracteristica %></td>
+                  <td class="text-muted small"><%= p.sku %></td>
+                  <td class="text-muted small"><%= l(p.updated_at, format: :short) rescue p.updated_at.strftime('%d/%m/%Y %H:%M') %></td>
+                  <td class="text-end">
+                    <%= link_to edit_dashboard_producto_path(p), class: 'btn btn-sm btn-outline-primary' do %>
+                      <i class="fas fa-pen"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr><td colspan="5" class="text-center text-muted py-4">Aún no hay productos.</td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <div class="row g-3">
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Productos</h5>
-          <p class="card-text">Crear, editar y listar productos.</p>
-          <a href="<%= dashboard_productos_path %>" class="btn btn-outline-primary">Ver productos</a>
-          <a href="<%= new_dashboard_producto_path %>" class="btn btn-primary ms-2">Crear producto</a>
-        </div>
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white">
+        <strong><i class="fas fa-bolt me-2 text-warning"></i>Acciones rápidas</strong>
       </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Banners</h5>
-          <p class="card-text">Administrar banners del sitio.</p>
-          <a href="<%= dashboard_banners_path %>" class="btn btn-outline-primary">Ver banners</a>
-          <a href="<%= new_dashboard_banner_path %>" class="btn btn-primary ms-2">Crear banner</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Categorías</h5>
-          <p class="card-text">Gestionar categorías y subcategorías.</p>
-          <a href="<%= dashboard_categorias_path %>" class="btn btn-outline-primary">Ver categorías</a>
-        </div>
+      <div class="card-body d-grid gap-2">
+        <%= link_to new_dashboard_producto_path, class: 'btn btn-fascy d-flex align-items-center gap-2' do %>
+          <i class="fas fa-plus"></i> Nuevo producto
+        <% end %>
+        <%= link_to new_dashboard_banner_path, class: 'btn btn-outline-secondary d-flex align-items-center gap-2' do %>
+          <i class="fas fa-plus"></i> Nuevo banner
+        <% end %>
+        <%= link_to dashboard_categorias_path, class: 'btn btn-outline-secondary d-flex align-items-center gap-2' do %>
+          <i class="fas fa-pen"></i> Editar categorías
+        <% end %>
       </div>
     </div>
   </div>
 </div>
- 

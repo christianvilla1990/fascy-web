@@ -2,7 +2,14 @@ class Dashboard::CategoriasController < Dashboard::BaseController
   before_action :set_categoria, only: %i[edit update]
 
   def index
-    @categorias = Categoria.all
+    @q = params[:q].to_s.strip
+    scope = Categoria.order(:nombre)
+    if @q.present?
+      scope = scope.where("LOWER(nombre) LIKE ?", "%#{@q.downcase}%")
+    end
+    per_page = params[:per_page].to_i
+    per_page = 20 if per_page <= 0 || per_page > 100
+    @pagy, @categorias = pagy(scope, items: per_page)
   end
 
   def edit

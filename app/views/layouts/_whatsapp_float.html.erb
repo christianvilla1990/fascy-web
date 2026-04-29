@@ -1,0 +1,51 @@
+<%# Botón flotante de WhatsApp %>
+<% wa_phone   = '595981123456' %>
+<% wa_message = 'Hola Fascy! Quería hacer una consulta.' %>
+<% wa_href    = "https://wa.me/#{wa_phone}?text=#{ERB::Util.url_encode(wa_message)}" %>
+
+<a class="wa-float" href="<%= wa_href %>" target="_blank" rel="noopener" aria-label="Hablanos por WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-float__label">¿Necesitás ayuda?</span>
+</a>
+
+<style>
+  .wa-float{
+    position:fixed; right:20px; bottom:24px; z-index:1050;
+    display:flex; align-items:center; gap:10px;
+    background:#25D366; color:#fff; text-decoration:none;
+    padding:12px 16px 12px 14px; border-radius:999px;
+    box-shadow:0 6px 18px rgba(37,211,102,.45), 0 2px 6px rgba(0,0,0,.15);
+    font-family:inherit; font-weight:600; font-size:.92rem;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .wa-float:hover, .wa-float:focus{
+    background:#1ebe57; color:#fff; transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(37,211,102,.55), 0 2px 6px rgba(0,0,0,.2);
+  }
+  .wa-float i{ font-size:1.4rem; line-height:1 }
+  .wa-float__label{ white-space:nowrap }
+
+  /* Pulso sutil para llamar la atención */
+  .wa-float::before{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    box-shadow:0 0 0 0 rgba(37,211,102,.55);
+    animation:waPulse 2.4s ease-out infinite;
+    pointer-events:none;
+  }
+  @keyframes waPulse{
+    0%   { box-shadow:0 0 0 0 rgba(37,211,102,.55) }
+    70%  { box-shadow:0 0 0 18px rgba(37,211,102,0) }
+    100% { box-shadow:0 0 0 0 rgba(37,211,102,0) }
+  }
+
+  /* En móvil, ocultar el texto y dejar solo el ícono */
+  @media (max-width: 575.98px){
+    .wa-float{ padding:14px; right:14px; bottom:18px }
+    .wa-float__label{ display:none }
+    .wa-float i{ font-size:1.6rem }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .wa-float::before{ animation:none }
+  }
+</style>

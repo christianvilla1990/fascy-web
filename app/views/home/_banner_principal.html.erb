@@ -1,41 +1,139 @@
-            <div class="block-slideshow block-slideshow--layout--with-departments block">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="block-slideshow__body">
-                                <div class="owl-carousel">
-                                    <% banners = @banners_principales || [] %>
-                                    <% seen = {} %>
-                                    <% banners.each do |b| %>
-                                        <% next unless b.respond_to?(:imagen) && b.imagen.attached? %>
-                                        <% key = b.imagen.blob.key rescue nil %>
-                                        <% next if key && seen[key] %>
-                                        <% seen[key] = true if key %>
-                                        <a class="block-slideshow__slide" href="<%= b.respond_to?(:link) && b.link.present? ? b.link : '#' %>">
-                                            <div class="block-slideshow__slide-media">
-                                                <picture>
-                                                    <%# Mobile: use imagen_mobile if available, otherwise crop desktop image %>
-                                                    <% if b.respond_to?(:imagen_mobile) && b.imagen_mobile.attached? %>
-                                                        <source media="(max-width: 575px)"
-                                                                srcset="<%= url_for(b.imagen_mobile.variant(resize_to_limit: [600, 900])) %>">
-                                                    <% else %>
-                                                        <source media="(max-width: 575px)"
-                                                                srcset="<%= url_for(b.imagen.variant(resize_to_fill: [600, 380])) %>">
-                                                    <% end %>
-                                                    <%# Tablet: medium size crop %>
-                                                    <source media="(max-width: 991px)"
-                                                            srcset="<%= url_for(b.imagen.variant(resize_to_limit: [992, 520])) %>">
-                                                    <%# Desktop fallback %>
-                                                    <img src="<%= url_for(b.imagen.variant(resize_to_limit: [1600, 800])) %>"
-                                                         alt="<%= b.respond_to?(:titulo) ? b.titulo : 'Banner' %>"
-                                                         class="banner-principal-img">
-                                                </picture>
-                                            </div>
-                                        </a>
-                                    <% end %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="block-slideshow block-slideshow--layout--with-departments block bp-mejorado">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="block-slideshow__body">
+          <div class="owl-carousel">
+            <% banners = @banners_principales || [] %>
+            <% seen = {} %>
+            <% banners.each do |b| %>
+              <% next unless b.respond_to?(:imagen) && b.imagen.attached? %>
+              <% key = b.imagen.blob.key rescue nil %>
+              <% next if key && seen[key] %>
+              <% seen[key] = true if key %>
+              <% link = (b.respond_to?(:link) && b.link.present?) ? b.link : nil %>
+              <% titulo = b.respond_to?(:titulo) ? b.titulo : nil %>
+              <% descripcion = b.respond_to?(:descripcion) ? b.descripcion : nil %>
+
+              <% has_mobile = b.respond_to?(:imagen_mobile) && b.imagen_mobile.attached? %>
+              <a class="block-slideshow__slide bp-slide <%= 'bp-slide--has-mobile' if has_mobile %>" href="<%= link || '#' %>">
+                <div class="block-slideshow__slide-media bp-slide__media">
+                  <picture>
+                    <% if b.respond_to?(:imagen_mobile) && b.imagen_mobile.attached? %>
+                      <source media="(max-width: 575px)"
+                              srcset="<%= url_for(b.imagen_mobile.variant(resize_to_limit: [800, 1100])) %>">
+                    <% else %>
+                      <source media="(max-width: 575px)"
+                              srcset="<%= url_for(b.imagen.variant(resize_to_fill: [800, 500])) %>">
+                    <% end %>
+                    <source media="(max-width: 991px)"
+                            srcset="<%= url_for(b.imagen.variant(resize_to_limit: [1200, 600])) %>">
+                    <img src="<%= url_for(b.imagen.variant(resize_to_limit: [1920, 800])) %>"
+                         alt="<%= titulo || 'Banner' %>"
+                         class="bp-slide__image">
+                  </picture>
                 </div>
-            </div>
+
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bp-mejorado .block-slideshow__body{
+    position:relative; border-radius:14px; overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,.10);
+  }
+  .bp-mejorado .owl-carousel, .bp-mejorado .owl-stage-outer, .bp-mejorado .owl-stage, .bp-mejorado .owl-item{ height:100% }
+
+  /* Aspect-ratio fijo para que no haya saltos al cambiar de slide */
+  .bp-slide{
+    position:relative; display:block; width:100%; overflow:hidden;
+    aspect-ratio: 1920 / 720;
+    background:#1f2329;
+  }
+  .bp-slide__media, .bp-slide__media picture, .bp-slide__media picture > *{
+    position:absolute; inset:0; width:100%; height:100%;
+  }
+  .bp-slide__image{
+    width:100%; height:100%; object-fit:cover; object-position:center;
+    transition:transform 6s ease-out;
+  }
+  .bp-mejorado .owl-item.active .bp-slide__image{ transform:scale(1.05) } /* Ken Burns sutil */
+
+  /* Flechas custom */
+  .bp-mejorado .owl-nav{
+    position:absolute; inset:0; pointer-events:none; margin:0;
+  }
+  .bp-mejorado .owl-nav button.owl-prev,
+  .bp-mejorado .owl-nav button.owl-next{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%;
+    background:rgba(255,255,255,.92) !important; color:#1f2329 !important;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+    pointer-events:auto;
+    transition:background .2s ease, transform .2s ease;
+    margin:0 !important; padding:0 !important;
+  }
+  .bp-mejorado .owl-nav button.owl-prev:hover,
+  .bp-mejorado .owl-nav button.owl-next:hover{
+    background:#ffb828 !important; transform:translateY(-50%) scale(1.05);
+  }
+  .bp-mejorado .owl-nav button.owl-prev{ left:18px }
+  .bp-mejorado .owl-nav button.owl-next{ right:18px }
+  .bp-mejorado .owl-nav button span{ font-size:0; line-height:0 }
+  .bp-mejorado .owl-nav button.owl-prev::before{
+    content:""; width:10px; height:10px;
+    border-left:2.5px solid currentColor; border-bottom:2.5px solid currentColor;
+    transform:rotate(45deg); margin-left:4px;
+  }
+  .bp-mejorado .owl-nav button.owl-next::before{
+    content:""; width:10px; height:10px;
+    border-right:2.5px solid currentColor; border-top:2.5px solid currentColor;
+    transform:rotate(45deg); margin-right:4px;
+  }
+
+  /* Dots custom */
+  .bp-mejorado .owl-dots{
+    position:absolute; left:0; right:0; bottom:14px;
+    text-align:center; margin:0;
+  }
+  .bp-mejorado .owl-dots .owl-dot{ outline:none }
+  .bp-mejorado .owl-dots .owl-dot span{
+    width:10px; height:10px; margin:0 4px; border-radius:999px;
+    background:rgba(255,255,255,.5);
+    transition:width .25s ease, background .25s ease;
+  }
+  .bp-mejorado .owl-dots .owl-dot.active span,
+  .bp-mejorado .owl-dots .owl-dot:hover span{
+    background:#ffb828; width:26px;
+  }
+
+  /* Mobile */
+  @media (max-width: 767.98px){
+    /* Default: respeta formato horizontal del banner (16:9) */
+    .bp-slide{ aspect-ratio: 16 / 9; max-height: 260px }
+    /* Si hay imagen mobile (vertical), un cuadrado para no quedar enorme */
+    .bp-slide--has-mobile{ aspect-ratio: 1 / 1; max-height: 380px }
+
+    .bp-mejorado .block-slideshow__body{ border-radius:10px }
+    .bp-mejorado .owl-nav button.owl-prev,
+    .bp-mejorado .owl-nav button.owl-next{ width:36px; height:36px }
+    .bp-mejorado .owl-nav button.owl-prev{ left:8px }
+    .bp-mejorado .owl-nav button.owl-next{ right:8px }
+    .bp-mejorado .owl-dots{ bottom:8px }
+    .bp-mejorado .owl-dots .owl-dot span{ width:8px; height:8px }
+    .bp-mejorado .owl-dots .owl-dot.active span,
+    .bp-mejorado .owl-dots .owl-dot:hover span{ width:20px }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bp-slide__image{ transition:none }
+    .bp-mejorado .owl-item.active .bp-slide__image{ transform:none }
+  }
+</style>

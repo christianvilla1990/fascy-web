@@ -2,7 +2,14 @@ class Dashboard::BannersController < Dashboard::BaseController
   before_action :set_banner, only: [:edit, :update, :destroy]
 
   def index
-    @banners = Banner.all
+    @q = params[:q].to_s.strip
+    @tipo = params[:tipo].to_s.strip
+    scope = Banner.order(created_at: :desc)
+    scope = scope.where("LOWER(titulo) LIKE ?", "%#{@q.downcase}%") if @q.present?
+    scope = scope.where(tipo: @tipo) if @tipo.present?
+    per_page = params[:per_page].to_i
+    per_page = 20 if per_page <= 0 || per_page > 100
+    @pagy, @banners = pagy(scope, items: per_page)
   end
 
   def new

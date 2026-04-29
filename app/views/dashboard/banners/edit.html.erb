@@ -1,47 +1,11 @@
-<h1>Editar Banner</h1>
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <div>
+    <h1 class="h3 m-0"><i class="fas fa-image text-muted me-2"></i>Editar banner</h1>
+    <p class="text-muted small mb-0"><%= @banner.titulo.presence || "Sin título" %></p>
+  </div>
+  <%= link_to dashboard_banners_path, class: 'btn btn-outline-secondary d-flex align-items-center gap-2' do %>
+    <i class="fas fa-arrow-left"></i> Volver
+  <% end %>
+</div>
 
-<%= form_with(model: [:dashboard, @banner], local: true, html: { multipart: true }) do |f| %>
-  <div class="mb-3">
-    <%= f.label :titulo, "Título" %>
-    <%= f.text_field :titulo, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :descripcion, "Descripción" %>
-    <%= f.text_area :descripcion, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :tipo, "Tipo" %>
-    <%= f.select :tipo, [["Principal", "principal"], ["Secundario", "secundario"]], {}, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :link, "Link" %>
-    <%= f.text_field :link, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :imagen, "Imagen para escritorio" %>
-    <%= f.file_field :imagen, class: "form-control", accept: "image/*" %>
-    <small class="form-text text-muted">
-      Proporción recomendada: horizontal panorámica (ej. 1600×500 px o 1600×650 px para banner secundario).
-    </small>
-    <% if @banner.imagen.attached? %>
-      <div class="mt-2">
-        <%= image_tag @banner.imagen.variant(resize_to_limit: [320, 160]), class: "img-thumbnail" %>
-      </div>
-    <% end %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :imagen_mobile, "Imagen para móvil (opcional, recomendada)" %>
-    <%= f.file_field :imagen_mobile, class: "form-control", accept: "image/*" %>
-    <small class="form-text text-muted">
-      Proporción recomendada: vertical o cuadrada (ej. 600×800 px).
-      Si no cargás una imagen móvil, se recortará el centro de la imagen de escritorio.
-    </small>
-    <% if @banner.imagen_mobile.attached? %>
-      <div class="mt-2">
-        <%= image_tag @banner.imagen_mobile.variant(resize_to_limit: [180, 240]), class: "img-thumbnail" %>
-      </div>
-    <% end %>
-  </div>
-  <%= f.submit "Guardar", class: "btn btn-primary" %>
-  <%= link_to "Volver", dashboard_banners_path, class: "btn btn-secondary ms-2" %>
-<% end %>
+<%= render 'form', banner: @banner %>
