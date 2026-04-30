@@ -42,34 +42,29 @@
 
   </body>
   <script>
-    // Adjust site__body padding to account for mobile header height
+    // Adjust site__body padding so the mobile search bar (absolutely positioned)
+    // does not overlap the banner / first content block.
     function adjustSiteBodyForMobileHeader() {
       var siteHeader = document.querySelector('.site__header.d-lg-none');
       var siteBody = document.querySelector('.site__body');
       if (!siteHeader || !siteBody) return;
 
-      var headerRect = siteHeader.getBoundingClientRect();
-      var maxBottom = headerRect.bottom;
+      // Reset to measure the natural top of the body (without our previous padding)
+      siteBody.style.paddingTop = '';
+
+      if (window.getComputedStyle(siteHeader).display === 'none') return;
 
       var searchContainer = siteHeader.querySelector('.mobile-header__search-container');
-      if (searchContainer) {
-        try {
-          var scRect = searchContainer.getBoundingClientRect();
-          if (scRect.bottom > maxBottom) maxBottom = scRect.bottom;
-        } catch (e) {}
+      if (!searchContainer) return;
+
+      var bodyTop = siteBody.getBoundingClientRect().top;
+      var searchBottom = searchContainer.getBoundingClientRect().bottom;
+      var gap = 8; // px
+
+      var overlap = (searchBottom + gap) - bodyTop;
+      if (overlap > 0) {
+        siteBody.style.paddingTop = Math.ceil(overlap) + 'px';
       }
-
-      // total height needed to clear the lowest element (header or search)
-      var totalHeight = Math.max(0, maxBottom - headerRect.top);
-
-      // Visual gap mínimo entre header y banner
-      var gap = 6; // px
-
-      // Clamp para no inflar el padding
-      var maxPadding = 40; // px
-      if (totalHeight + gap > maxPadding) totalHeight = maxPadding - gap;
-
-      siteBody.style.paddingTop = Math.ceil(totalHeight + gap) + 'px';
     }
     document.addEventListener('DOMContentLoaded', function() {
       adjustSiteBodyForMobileHeader();

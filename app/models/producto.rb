@@ -8,6 +8,8 @@ class Producto < ApplicationRecord
 
   has_many_attached :imagenes
 
+  after_commit :enqueue_variant_preprocessing, on: [:create, :update]
+
   # Related products (self-referential)
   has_many :related_product_links, class_name: 'RelatedProduct', foreign_key: 'producto_id', dependent: :destroy, inverse_of: :producto
   has_many :related_products, through: :related_product_links, source: :related_producto
@@ -54,5 +56,14 @@ class Producto < ApplicationRecord
 
   def should_generate_new_friendly_id?
     caracteristica_changed? || sku_changed? || slug.blank?
+  end
+
+  private
+
+  def enqueue_variant_preprocessing
+    return unless imagenes.attached?
+    PreprocessProductoVariantsJob.perform_later(id)
+  rescue => e
+    Rails.logger.warn("[enqueue variants] producto=#{id}: #{e.message}")
   end
 end

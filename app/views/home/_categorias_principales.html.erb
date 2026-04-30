@@ -9,6 +9,12 @@
                   .block-categories__list.owl-carousel { display: block; }
                   .block-categories__item { margin: 0; }
 
+                  /* Tighten the highlighted block's vertical breathing room */
+                  .block-categories.block--highlighted { padding: 32px 0 28px; margin-bottom: 0; }
+                  @media (max-width: 575px) {
+                    .block-categories.block--highlighted { padding: 22px 0 20px; }
+                  }
+
                   /* Card container: full width, block level */
                   .block-categories .category-card { display: block; width: 100%; }
 
