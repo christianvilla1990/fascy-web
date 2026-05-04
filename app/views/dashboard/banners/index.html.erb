@@ -80,7 +80,7 @@
                 <%= link_to edit_dashboard_banner_path(banner), class: 'btn btn-sm btn-outline-primary', title: 'Editar' do %>
                   <i class="fas fa-pen"></i>
                 <% end %>
-                <%= link_to dashboard_banner_path(banner), method: :delete, data: { confirm: '¿Eliminar este banner?' }, class: 'btn btn-sm btn-outline-danger', title: 'Eliminar' do %>
+                <%= button_to dashboard_banner_path(banner), method: :delete, data: { turbo_confirm: '¿Eliminar este banner?' }, form: { class: 'd-inline' }, class: 'btn btn-sm btn-outline-danger', title: 'Eliminar' do %>
                   <i class="fas fa-trash"></i>
                 <% end %>
               </td>
